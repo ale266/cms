@@ -1,2 +1,2 @@
 # cms
-Repo de ingenieria de softaware 2
+Repo de ingenieria de software 2
