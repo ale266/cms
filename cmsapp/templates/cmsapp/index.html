@@ -7,7 +7,11 @@
         <div class="row gx-5 align-items-center justify-content-center">
             <div class="col-lg-8 col-xl-7 col-xxl-6">
                 <div class="my-5 text-center text-xl-start">
+<<<<<<< HEAD
                     <h1 class="display-5 fw-bolder text-white mb-2">A Bootstrap 5 template for modern businesses</h1>
+=======
+                    <h1 class="display-5 fw-bolder text-white mb-2">CMS site</h1>
+>>>>>>> 4fd213ece1917d14a2e2ebc4836d4d309639e922
                     <p class="lead fw-normal text-white-50 mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit!</p>
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
                         <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Get Started</a>
@@ -19,6 +23,7 @@
         </div>
     </div>
 </header>
+<<<<<<< HEAD
 <!-- Features section-->
 <section class="py-5" id="features">
     <div class="container px-5 my-5">
@@ -71,6 +76,9 @@
         </div>
     </div>
 </div>
+=======
+
+>>>>>>> 4fd213ece1917d14a2e2ebc4836d4d309639e922
 <!-- Blog preview section-->
 <section class="py-5">
     <div class="container px-5 my-5">
@@ -83,6 +91,7 @@
             </div>
         </div>
         <div class="row gx-5">
+<<<<<<< HEAD
             <div class="col-lg-4 mb-5">
                 <div class="card h-100 shadow border-0">
                     <img class="card-img-top" src="https://dummyimage.com/600x350/ced4da/6c757d" alt="..." />
@@ -90,6 +99,17 @@
                         <div class="badge bg-primary bg-gradient rounded-pill mb-2">News</div>
                         <a class="text-decoration-none link-dark stretched-link" href="#!"><h5 class="card-title mb-3">Blog post title</h5></a>
                         <p class="card-text mb-0">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+=======
+            {% for post in posts %}
+             <div class="col-lg-4 mb-5">
+                <a class="text-decoration-none link-dark stretched-link" href="{% url 'detail' post.slug %}">
+                <div class="card h-100 shadow border-0">
+                    <img class="card-img-top" src=" {{ post.image.url   }}" alt="..." />
+                    <div class="card-body p-4">
+                        <div class="badge bg-primary bg-gradient rounded-pill mb-2">News</div>
+                        <h5 class="card-title mb-3">{{ post.title}}</h5>
+                        <p class="card-text mb-0">{{post.body | truncatechars:200}}</p>
+>>>>>>> 4fd213ece1917d14a2e2ebc4836d4d309639e922
                     </div>
                     <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                         <div class="d-flex align-items-end justify-content-between">
@@ -99,6 +119,7 @@
                                     <div class="fw-bold">Kelly Rowan</div>
                                     <div class="text-muted">March 12, 2023 &middot; 6 min read</div>
                                 </div>
+<<<<<<< HEAD
                             </div>
                         </div>
                     </div>
@@ -147,6 +168,18 @@
                 </div>
             </div>
         </div>
+=======
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                </a>
+            </div>
+            </a>
+            {% endfor%}
+        </div>
+
+>>>>>>> 4fd213ece1917d14a2e2ebc4836d4d309639e922
         <!-- Call to action-->
         <aside class="bg-primary bg-gradient rounded-3 p-4 p-sm-5 mt-5">
             <div class="d-flex align-items-center justify-content-between flex-column flex-xl-row text-center text-xl-start">
