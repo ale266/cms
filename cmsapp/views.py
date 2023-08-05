@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-from django.shortcuts import render
-
-# Create your views here.
-
-def index(request):
-    context = {}
-    return render(request, 'cmsapp/index.html', context)
-=======
 from django.shortcuts import render, redirect
 from .models import Post
 from .forms import PostForm
@@ -36,4 +27,3 @@ def createPost(request):
             return redirect('index')
     context = {'form': form}    
     return render(request, 'cmsapp/create.html', context)
->>>>>>> 4fd213ece1917d14a2e2ebc4836d4d309639e922

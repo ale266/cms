@@ -24,10 +24,7 @@ urlpatterns = [
     path('', include('cmsapp.urls'))
 ]
 
-<<<<<<< HEAD
 urlpatterns += static (settings.IMAGE_URL, document_root = settings.IMAGE_ROOT)
-=======
 urlpatterns += static (settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
->>>>>>> 4fd213ece1917d14a2e2ebc4836d4d309639e922
 
 
