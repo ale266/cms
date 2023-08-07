@@ -8,7 +8,7 @@
     }
     #container{
         width: 50%;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        box-shadow: rgba(0,0,0,0.24) 0px 3px 8px;
         height: auto;
         padding: 30px 20px 20px 20px;
         border-radius: 30px;
@@ -20,12 +20,12 @@
 </style>
 
 <div class='container' id = 'container'>
-     <h3><strong>Crear Blog</strong></h3>
+     <h3><strong>Estás seguro de borrar este blog?</strong></h3>
     <form method='POST' enctype="multipart/form-data">
         {% csrf_token %}
         {{form.as_p}}
         {{form.media}}
-        <input type="submit" class="btn btn-primary" value="Guardar">
+        <input type="submit" class="btn btn-danger" value="Delete">
     </form>
 </div>
 </form>

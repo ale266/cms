@@ -4,6 +4,7 @@ from .forms import PostForm
 from django.utils.text import slugify
 
 # Create your views here.
+#solo ver los posts que estan activos, los inactivos solo lo puede ver el administrador
 def index(request):
     posts = Post.objects.all()
     context = {'posts': posts}
@@ -27,3 +28,28 @@ def createPost(request):
             return redirect('index')
     context = {'form': form}    
     return render(request, 'cmsapp/create.html', context)
+
+def updatePost (request, slug):
+    post = Post.objects.get(slug=slug)
+    form = PostForm(instance=post)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance = post)
+        if form.is_valid():
+            form.save()
+            return redirect('detail', slug=post.slug)
+
+    context = {'form': form}
+    return render(request, 'cmsapp/create.html', context) 
+
+#modificar este view para que desactive los blogs en vez de eliminarlos
+def deletePost(request, slug):
+    post = Post.objects.get(slug=slug)
+    form = PostForm(instance=post)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('index')
+    context = {'form': form}
+    return render(request, 'cmsapp/delete.html', context) 
+
+
+

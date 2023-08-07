@@ -15,14 +15,17 @@
                         <!-- Post categories-->
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                        <a href='{% url "update" post.slug %}'><button class = 'btn btn-primary'>Update</button></a>
+                        <a href='{% url "delete" post.slug %}'><button class = 'btn btn-danger'>Delete</button></a>
+
                     </header>
                     <!-- Preview image figure-->
                     <figure class="mb-4"><img class="img-fluid rounded" src="{{post.image.url}}" alt="..." /></figure>
                     <!-- Post content-->
                     <section class="mb-5">
-                        <p class="fs-5 mb-4">{{post.body}}</p>
                     </section> 
                 </article>
+                <p class="fs-5 mb-4">{{post.body |safe}}</p>
                 <!-- Comments section-->
                 <section class="mb-5">
                     <div class="card bg-light">

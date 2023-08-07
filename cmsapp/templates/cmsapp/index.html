@@ -32,14 +32,15 @@
         </div>
         <div class="row gx-5">
             {% for post in posts %}
-             <div class="col-lg-4 mb-5">
-                <a class="text-decoration-none link-dark stretched-link" href="{% url 'detail' post.slug %}">
+            <div class="col-lg-4 mb-5">
+                
                 <div class="card h-100 shadow border-0">
+                    <a class="text-decoration-none link-dark stretched-link" href="{% url 'detail' post.slug %}"></a>
                     <img class="card-img-top" src=" {{ post.image.url   }}" alt="..." />
                     <div class="card-body p-4">
                         <div class="badge bg-primary bg-gradient rounded-pill mb-2">{{post.category}}</div>
                         <h5 class="card-title mb-3">{{ post.title}}</h5>
-                        <p class="card-text mb-0">{{post.body | truncatechars:200}}</p>
+                        <p class="card-text mb-0">{{post.body |safe|truncatechars:200}}</p>
                     </div>
                     <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                         <div class="d-flex align-items-end justify-content-between">
@@ -52,10 +53,9 @@
                             </div> 
                         </div>
                     </div>
+                    </a>
                 </div>
-                </a>
             </div>
-            </a>
             {% endfor%}
         </div>
 
