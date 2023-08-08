@@ -20,12 +20,14 @@ def detail(request, slug):
     return render (request , 'cmsapp/detail.html', context )
 
 def createPost(request):
+    profile = request.user.userprofile
     form = PostForm()
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid:
             post = form.save(commit = False)
             post.slug = slugify(post.title)
+            post.writer = profile
             post.save()
             messages.info(request, 'Blog creado exitosamente')
             return redirect('create')
