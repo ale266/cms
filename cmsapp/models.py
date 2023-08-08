@@ -1,9 +1,11 @@
 from django.db import models
 import uuid
 from ckeditor.fields import RichTextField
+from userprofile.models import UserProfile
 
 # Create your models here.
 class Post(models.Model):
+    writer = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True)
     title  = models.CharField(max_length=500)
     image = models.ImageField(upload_to='img', default= 'NULL')
     body = RichTextField()

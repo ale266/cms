@@ -11,8 +11,23 @@
                         <!-- Post title--> 
                         <h1 class="fw-bolder mb-1">{{ post.title}}</h1>
                         <!-- Post meta content-->
-                        <div class="text-muted fst-italic mb-2">Posted on January 1, 2023 by Start Bootstrap</div>
                         <!-- Post categories-->
+
+                        <!-- user profile  -->
+                        <div class="card mb-3" style="max-width: 440px; border: none;">
+                            <div class="row g-0">
+                              <div class="col-md-4">
+                                <img src="{{ post.writer.picture.url}}" class="img-fluid rounded-start" alt="..." style = 'width:100%; height: 100%;'>
+                              </div>
+                              <div class="col-md-8">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{ post.writer.name}}</h5>
+                                  <p class="card-text"><small class="text-muted">{{ post.created}}</small></p>
+                                </div>
+                              </div>
+                            </div>
+                        </div>    
+
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
                         <a href='{% url "update" post.slug %}'><button class = 'btn btn-primary'>Update</button></a>
