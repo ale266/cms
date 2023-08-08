@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Post
+from .models import Category, Post
 from .forms import PostForm
 from django.utils.text import slugify
 from django.contrib import messages
@@ -8,7 +8,8 @@ from django.contrib import messages
 #solo ver los posts que estan activos, los inactivos solo lo puede ver el administrador
 def index(request):
     posts = Post.objects.all()
-    context = {'posts': posts}
+    categories = Category.objects.all()
+    context = {'posts': posts, 'categories': categories}
     return render(request, 'cmsapp/index.html', context)
 
 

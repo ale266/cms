@@ -21,7 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('cmsapp.urls'))
+    path('', include('cmsapp.urls')),
+    path('profile/', include('userprofile.urls')),
 ]
 
 urlpatterns += static (settings.IMAGE_URL, document_root = settings.IMAGE_ROOT)
