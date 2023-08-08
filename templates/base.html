@@ -47,10 +47,17 @@
                     </div>
                 </div>
             </nav>
+                 {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style = 'width: 40%; margin: auto; align-items:center;'>
+                    <strong>Wow!</strong> {{message}} 
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>        
+                {% endfor %}
+
 
         {% block content %}
-        <h1>Hello World</h1>
-        {% endblock %}            
+
+        {% endblock %}           
         <!-- Footer-->
         <footer class="bg-dark py-4 mt-auto">
             <div class="container px-5">

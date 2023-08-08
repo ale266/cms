@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Post
 from .forms import PostForm
 from django.utils.text import slugify
+from django.contrib import messages
 
 # Create your views here.
 #solo ver los posts que estan activos, los inactivos solo lo puede ver el administrador
@@ -25,7 +26,10 @@ def createPost(request):
             post = form.save(commit = False)
             post.slug = slugify(post.title)
             post.save()
-            return redirect('index')
+            messages.info(request, 'Blog creado exitosamente')
+            return redirect('create')
+        else:
+            messages.error(request, 'Blog no creado')
     context = {'form': form}    
     return render(request, 'cmsapp/create.html', context)
 
@@ -36,6 +40,7 @@ def updatePost (request, slug):
         form = PostForm(request.POST, request.FILES, instance = post)
         if form.is_valid():
             form.save()
+            messages.info(request, 'Blog modificado exitosamente')
             return redirect('detail', slug=post.slug)
 
     context = {'form': form}
@@ -47,7 +52,8 @@ def deletePost(request, slug):
     form = PostForm(instance=post)
     if request.method == 'POST':
         post.delete()
-        return redirect('index')
+        messages.info(request, 'Blog eliminado exitosamente')
+        return redirect('create')
     context = {'form': form}
     return render(request, 'cmsapp/delete.html', context) 
 
