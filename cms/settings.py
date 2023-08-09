@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'cmsapp',
     'ckeditor',
     'fontawesomefree',
-    'userprofile',
+    'userprofile.apps.UserprofileConfig',
 ]
 
 MIDDLEWARE = [
