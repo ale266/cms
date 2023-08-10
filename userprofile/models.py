@@ -14,6 +14,13 @@ class UserProfile (models.Model):
     about = models.TextField()
     profile_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
 
+    @property
+    def pictureUrl(self):
+        try:
+            url = self.picture.url
+        except:
+            url = ''
+        return url
 
     def __str__(self):
         return self.username
