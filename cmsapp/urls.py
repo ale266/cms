@@ -6,5 +6,6 @@ urlpatterns = [
     path('create-post', views.createPost, name= 'create'),
     path('update-post/<str:slug>', views.updatePost, name= 'update'),
     path('delete-post/<str:slug>', views.deletePost, name= 'delete'),
-    
+    path('like-post/<str:slug>', views.likePost, name= 'like'),
+    path('dislike-post/<str:slug>', views.dislikePost, name= 'dislike'),
 ]
