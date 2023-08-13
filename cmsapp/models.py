@@ -14,6 +14,14 @@ class Post(models.Model):
     modified = models.DateTimeField(auto_now=True)
     slug = models.SlugField()
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
+    likes = models.ManyToManyField(UserProfile, related_name='blog_post')
+    dislikes = models.ManyToManyField(UserProfile, related_name='blog_post2')
+
+    def total_likes(self):
+        return self.likes.count()
+
+    def total_dislikes(self):
+        return self.dislikes.count()
 
     def __str__(self):
         return self.title

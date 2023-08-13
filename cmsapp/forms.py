@@ -4,4 +4,4 @@ from .models import Post
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        exclude = ['slug', 'writer']
+        exclude = ['slug', 'writer', 'likes', 'dislikes']

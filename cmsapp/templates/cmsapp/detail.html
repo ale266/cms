@@ -31,9 +31,11 @@
                         </a>
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
-                        <!-- <a href='{% url "update" post.slug %}'><button class = 'btn btn-primary'>Update</button></a>
-                        <a href='{% url "delete" post.slug %}'><button class = 'btn btn-danger'>Delete</button></a> -->
-
+                        
+                        {% if request.user.is_authenticated %}
+                        {{total_likes}} <a href='{% url "like" post.slug %}'><button class = 'btn btn-primary btn-sm'> <i class="fa fa-thumbs-up" aria-hidden="true"></i></button></a>
+                        {{total_dislikes}} <a href='{% url "dislike" post.slug %}'><button class = 'btn btn-primary btn-sm'> <i class="fa fa-thumbs-down" aria-hidden="true"></i></button></a>
+                        {%endif%}
                     </header>
                     <!-- Preview image figure-->
                     <figure class="mb-4"><img class="img-fluid rounded" src="{{post.image.url}}" alt="..." /></figure>
