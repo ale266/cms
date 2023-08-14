@@ -1,5 +1,8 @@
 from .base import *
 import os
+from dotenv import load_dotenv
+
+load_dotenv(Path(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
