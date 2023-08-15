@@ -1,2 +1,9 @@
 python manage.py runserver --settings=cms.settings.development
 python manage.py runserver --settings=cms.settings.production
+
+
+
+
+
+
+python manage.py collecstatic --settings=cms.settings.production </// solo para coleccionar archivos estaticos
