@@ -45,6 +45,7 @@ LOCAL_MIDDLEWARE = [
 
 ]
 THIRD_MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
 ]
 

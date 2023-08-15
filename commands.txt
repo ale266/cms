@@ -1,0 +1,2 @@
+python manage.py runserver --settings=cms.settings.development
+python manage.py runserver --settings=cms.settings.production
