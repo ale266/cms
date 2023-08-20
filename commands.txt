@@ -7,7 +7,7 @@ python manage.py runserver --settings=cms.settings.production  <//// para ejecut
 
 
 <//// para ejecutar ambiente de produccion con web service
-python manage.py collecstatic --settings=cms.settings.production </// para coleccionar archivos estaticos en produccion, si hay cambios
+python manage.py collectstatic --settings=cms.settings.production </// para coleccionar archivos estaticos en produccion, si hay cambios
 python manage.py migrate --settings=cms.settings.production </// para migrar todas las tablas en produccion, si hay cambios en las tablas
 uvicorn cms.asgi:application --host 127.0.0.1 --port 8000 --reload <//// ejecutar uvicorn asgi 
 
