@@ -1,0 +1,16 @@
+#para instalar en desarrollo todas las librerias que hay aqui, hacer: 
+#pip install -r requirements.txt
+
+#asgiref==3.7.2
+Django==4.2.4
+django-ckeditor==6.7.0 #para los textos enriquecidos
+#django-js-asset==2.1.0
+fontawesomefree==6.4.2 #para los iconos
+Pillow==10.0.0
+psycopg2==2.9.7 #para usar postgres
+python-dotenv==1.0.0 #para la config de base de datos
+whitenoise==6.5.0 #para administrar archivos estaticos
+gunicorn==21.2.0 #servidor web, para manejar varias peticiones en django
+
+#sqlparse==0.4.4
+#tzdata==2023.3
