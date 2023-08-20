@@ -21,6 +21,7 @@ BASE_APPS = [
 
 LOCAL_APPS = [
     'cmsapp',
+    'apps.core',
     'userprofile.apps.UserprofileConfig',
 ]
 
