@@ -1,7 +1,7 @@
 #!/bin/sh
 
-echo 'Running collectstatic...'
-python manage.py collectstatic --settings=cms.settings.production 
+# echo 'Running collectstatic...'
+# python manage.py collectstatic --noinput --settings=cms.settings.production 
 
 echo 'Applying migrations...'
 python manage.py wait_for_db --settings=cms.settings.production
