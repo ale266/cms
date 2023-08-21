@@ -8,11 +8,25 @@ from django.contrib import messages
 
 # Create your views here.
 #solo ver los posts que estan activos, los inactivos solo lo puede ver el administrador
+# def index(request):
+#     posts = Post.objects.all()
+#     categories = Category.objects.all()
+#     context = {'posts': posts, 'categories': categories}
+#     return render(request, 'cmsapp/index.html', context)
+
 def index(request):
     posts = Post.objects.all()
     categories = Category.objects.all()
     context = {'posts': posts, 'categories': categories}
     return render(request, 'cmsapp/index.html', context)
+
+def indexCat(request, categoria):
+    posts = Post.objects.all()
+    categories = Category.objects.all()
+    categoryO = Category.objects.get(title=categoria)
+    categoriesPosts = Post.objects.filter(category=categoryO)
+    context = {'posts': posts, 'categories': categories, 'categoriesPosts': categoriesPosts}
+    return render(request, 'cmsapp/indexCategory.html', context)
 
 
 def detail(request, slug):
@@ -74,7 +88,6 @@ def dislikePost(request, slug):
     post = Post.objects.get(slug=slug)
     post.dislikes.add(request.user.userprofile)
     return HttpResponseRedirect(reverse('detail', args=[str(slug)])) 
-
 
 
 
