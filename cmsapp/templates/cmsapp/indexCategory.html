@@ -40,7 +40,7 @@
         <br>
 
         <div class="row gx-5">
-            {% for post in posts %}
+            {% for post in categoriesPosts %}
             <div class="col-lg-4 mb-5">
                 <div class="card h-100 shadow border-0">
                     <a class="text-decoration-none link-dark stretched-link" href="{% url 'detail' post.slug %}"></a>
@@ -86,5 +86,4 @@
     </div>
 </section>
 </main>
-
 {% endblock %}
