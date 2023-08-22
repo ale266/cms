@@ -10,12 +10,14 @@
                     <h1 class="display-5 fw-bolder text-white mb-2">CMS site</h1>
                     <p class="lead fw-normal text-white-50 mb-4">Diseñar y personalizar sitios webs de manera sencilla y rapida</p>
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Crear blog</a>
+                        {% if request.user.is_authenticated %}
+                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'create' %}">Crear blog</a>
+                        {% endif %}
                         <a class="btn btn-outline-light btn-lg px-4" href="#!">Leer mas</a>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." /></div>
+            <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://i.ibb.co/mqpTZwr/fondo3.jpg" alt="..." /></div>
         </div>
     </div>
 </header>
@@ -25,8 +27,8 @@
         <div class="row gx-5 justify-content-center">
             <div class="col-lg-8 col-xl-6">
                 <div class="text-center">
-                    <h2 class="fw-bolder">From our blog</h2>
-                    <p class="lead fw-normal text-muted mb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque fugit ratione dicta mollitia. Officiis ad.</p>
+                    <h2 class="fw-bolder">Lista de blogs</h2>
+                    <p class="lead fw-normal text-muted mb-5">Visite nuestros blogs y suscribase para interactuar en ellos.</p>
                 </div>
             </div>
         </div>
@@ -71,15 +73,15 @@
         <aside class="bg-primary bg-gradient rounded-3 p-4 p-sm-5 mt-5">
             <div class="d-flex align-items-center justify-content-between flex-column flex-xl-row text-center text-xl-start">
                 <div class="mb-4 mb-xl-0">
-                    <div class="fs-3 fw-bold text-white">New products, delivered to you.</div>
-                    <div class="text-white-50">Sign up for our newsletter for the latest updates.</div>
+                    <div class="fs-3 fw-bold text-white">Envie notificaciones a otros usuarios</div>
+                    <div class="text-white-50">Registrese para recibir todas las notificaciones</div>
                 </div>
                 <div class="ms-xl-4">
                     <div class="input-group mb-2">
-                        <input class="form-control" type="text" placeholder="Email address..." aria-label="Email address..." aria-describedby="button-newsletter" />
-                        <button class="btn btn-outline-light" id="button-newsletter" type="button">Sign up</button>
+                        <input class="form-control" type="text" placeholder="Usuario..." aria-label="Email address..." aria-describedby="button-newsletter" />
+                        <button class="btn btn-outline-light" id="button-newsletter" type="button">Registrarse</button>
                     </div>
-                    <div class="small text-white-50">We care about privacy, and will never share your data.</div>
+                    <div class="small text-white-50">Sus notificaciones seran entregadas al destinatario</div>
                 </div>
             </div>
         </aside>

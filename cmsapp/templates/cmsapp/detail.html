@@ -34,7 +34,7 @@
                         
                         {% if request.user.is_authenticated %}
                         {{total_likes}} <a href='{% url "like" post.slug %}'><button class = 'btn btn-primary btn-sm'> <i class="fa fa-thumbs-up" aria-hidden="true"></i></button></a>
-                        {{total_dislikes}} <a href='{% url "dislike" post.slug %}'><button class = 'btn btn-primary btn-sm'> <i class="fa fa-thumbs-down" aria-hidden="true"></i></button></a>
+                        {{total_dislikes}} <a href='{% url "dislike" post.slug %}'><button class = 'btn btn-danger btn-sm'> <i class="fa fa-thumbs-down" aria-hidden="true"></i></button></a>
                         {%endif%}
                     </header>
                     <!-- Preview image figure-->
