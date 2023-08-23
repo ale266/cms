@@ -22,7 +22,7 @@
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg navbar-info bg-secondary">
                 <div class="container px-5">
-                    <a class="navbar-brand" style="color: aliceblue; font-size: xx-large;" href="{% url 'index' %}"><i class="fas fa-home"></i></a>
+                    <a class="navbar-brand" style="color: aliceblue; font-size: xx-large;" href="{% url 'index' %}"><i class="fas fa-home"></i></a> <!--Boton de Home -->
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -30,17 +30,30 @@
                             <!-- <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li> -->
                             {% if request.user.is_authenticated %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'create' %}">Crear blog</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{request.user.username}}</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
-                                    <li><a class="dropdown-item" href="{% url 'account' %}">Cuenta</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'signout' %}">Logout</a></li>
+                            <div class="btn-group">
+                                
+                                <button type="button" class="btn btn-danger btn-lg dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{request.user.username}}
+                                    <span class="visually-hidden">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                  <li><a class="dropdown-item btn-lg" href="{% url 'account' %}">Perfil de Usuario</a></li>
+                                  <li><a class="dropdown-item " href="{% url 'signout' %}">Cerrar Sesion</a></li>
+                                  <li><hr class="dropdown-divider"></li>
+                                  <li><a class="dropdown-item" href="#">Mas</a></li>
                                 </ul>
-                            </li>
+                            </div>
                             {% else %}
-                            <li class="nav-item"><a class="nav-link" href=" {% url 'signin' %} "><button type="button" class="btn btn-primary btn-lg ">Iniciar sesion</button></a></li>
-                            <li class="nav-item"><a class="nav-link" href=" {% url 'registration' %} "><button type="button" class="btn btn-primary btn-lg">Registro</button></a></li> 
+                            <div class="bd-example">
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-lg" href="{% url 'signin' %}">Iniciar Sesion</a>
+                                </div>
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-lg" href="{% url 'registration' %}">Registrarse</a>
+                                </div>
+                            </div>
+                            <!-- <li class="nav-item"><a class="nav-link" href=" {% url 'signin' %} "><button type="button" class="btn btn-primary btn-lg ">Iniciar sesion</button></a></li>
+                            <li class="nav-item"><a class="nav-link" href=" {% url 'registration' %} "><button type="button" class="btn btn-primary btn-lg">Registro</button></a></li>  -->
                             {% endif %}
                         </ul>
                     </div>
