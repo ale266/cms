@@ -5,13 +5,13 @@ import uuid
 # Create your models here.
 
 class UserProfile (models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
-    email=models.EmailField(max_length=200)
-    username= models.CharField(max_length=200)
-    profession = models.CharField(max_length=200)
-    picture = models.ImageField(upload_to='img', blank=True, null=True)
-    about = models.TextField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Usuario")
+    name = models.CharField(max_length=200, verbose_name="Nombre")
+    email=models.EmailField(max_length=200, verbose_name="Email")
+    username= models.CharField(max_length=200, verbose_name="Nombre de Usuario")
+    profession = models.CharField(max_length=200, verbose_name="Profesion")
+    picture = models.ImageField(upload_to='img', blank=True, null=True, verbose_name="Foto")
+    about = models.TextField(verbose_name="Sobre mi")
     profile_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
 
     @property

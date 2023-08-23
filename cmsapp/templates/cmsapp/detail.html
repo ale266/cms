@@ -91,14 +91,14 @@
             <div class="col-lg-4">
                 <!-- Search widget-->
                 <br><br>
-                <h2>Recent Posts</h2>
+                <h2>Posts Recientes</h2>
                 {% for post in posts %}
                 <div class="card" style="width: 18rem;">
                     <img src="{{post.image.url}}" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">{{post.title}}</h5>
                       <p class="card-text">{{post.body |truncatechars:200}}</p>
-                      <a href="{%url 'detail' post.slug %}" class="btn btn-primary">Go to post</a>
+                      <a href="{%url 'detail' post.slug %}" class="btn btn-primary">Ir al post</a>
                     </div>
                 </div>
                 <br>

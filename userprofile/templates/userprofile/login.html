@@ -38,23 +38,24 @@
   </style>
   <form method = 'POST'>
   {% csrf_token %}
-  <h3>Login to your account</h3>
+  <h3>Inicie sesion en su cuenta</h3>
   <br>
       <div class="form-group">
-          <label for="exampleInputEmail1">Username</label>
-          <input type="text" class="form-control" id="exampleInputUsername" aria-describedby="emailHelp" placeholder="Enter username" name ='username'>
+          <label for="exampleInputEmail1">Usuario</label>
+          <input type="text" class="form-control" id="exampleInputUsername" aria-describedby="emailHelp" placeholder="Ingrese nombre de usuario" name ='username'>
         </div>
 
         <br>
         <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name ='password'>
+          <label for="exampleInputPassword1">Contraseña</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña" name ='password'>
         </div>
 
         <br>
-        <input type = 'submit' value = 'Login' class = 'btn btn-primary'>
-        <p>Don't have an account yet?</p>
-        <a href = "{% url 'registration' %}"><p><strong>Signup</strong></p></a>
+        <input type = 'submit' value = 'Iniciar Sesion' class = 'btn btn-primary'>
+        <br><br>
+        Aun no tienes una cuenta?
+        <a href = "{% url 'registration' %}"><p><strong>Registrarse</strong></p></a>
   </form>
 </main>
 {% endblock %}

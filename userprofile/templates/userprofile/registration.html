@@ -42,7 +42,7 @@
      }
 </style>
     <form method="POST">
-        <h3>Join us now</h3><br>
+        <h3>Unete a nosotros</h3><br>
         {% csrf_token %}
         {% for field in form %}
         <div class="form-group">
@@ -54,9 +54,10 @@
         {% endfor %}
         <br>
         {% endfor %}
-        <input type = 'submit' class = 'btn btn-primary' value="SIGNUP">
-        <p>Already have an account?</p>
-        <a href = " {% url 'signin' %} " ><p><strong>Login</strong></p></a>
+        <input type = 'submit' class = 'btn btn-primary' value="Registrarse">
+        <br><br>
+        Ya tienes una cuenta?
+        <a href = " {% url 'signin' %} " ><p><strong>Iniciar Sesion</strong></p></a>
     </form>
     <script>
         let input = document.getElementsByTagName('input')

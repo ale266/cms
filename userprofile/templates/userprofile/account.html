@@ -8,8 +8,8 @@
           <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">User</a></li>
-              <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+              <li class="breadcrumb-item"><a href="#">Usuario</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Perfil de Usuario</li>
             </ol>
           </nav>
         </div>
@@ -53,7 +53,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-3">
-                        <p class="mb-0"><strong>Username</strong></p>
+                        <p class="mb-0"><strong>Usuario</strong></p>
                     </div>
                     <div class="col-sm-9">
                         <p class="text-muted mb-0">{{account.username}}</p>
@@ -71,7 +71,7 @@
               <hr>
               <div class="row">
                 <div class="col-sm-3">
-                  <p class="mb-0"><strong>About me</strong></p>
+                  <p class="mb-0"><strong>Sobre mi</strong></p>
                 </div>
                 <div class="col-sm-9">
                   <p class="text-muted mb-0">{{account.about}}</p>
@@ -81,7 +81,7 @@
             </div>
           </div>
         {% if account.post_set.all %}
-            <h3>My blogs</h3>
+            <h3>Mis blogs</h3>
             <div class="row">
             {% for post in account.post_set.all %}
             
