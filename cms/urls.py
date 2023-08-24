@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('cmsapp.urls')),
     path('', include('userprofile.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 urlpatterns += static (settings.IMAGE_URL, document_root = settings.IMAGE_ROOT)

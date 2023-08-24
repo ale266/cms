@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-
+{% load socialaccount %}
+{% providers_media_js%}
 {%load static%}
 <html lang="en">
     <head>
@@ -45,6 +46,8 @@
                             </div>
                             {% else %}
                             <div class="bd-example">
+                              
+                                
                                 <div class="btn-group">
                                     <a class="btn btn-danger btn-lg" href="{% url 'signin' %}">Iniciar Sesion</a>
                                 </div>
