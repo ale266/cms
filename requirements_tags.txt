@@ -11,6 +11,6 @@ psycopg2==2.9.7 #para usar postgres
 python-dotenv==1.0.0 #para la config de base de datos
 whitenoise==6.5.0 #para administrar archivos estaticos
 gunicorn==21.2.0 #servidor web, para manejar varias peticiones en django
-
+django-allauth==0.55.0 #para ingresar con GOOGLE
 #sqlparse==0.4.4
 #tzdata==2023.3
