@@ -26,3 +26,4 @@ docker compose up --build
 
 
 python -m django_pydoc.py -b <////  DOCUMENTATION
+
