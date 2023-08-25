@@ -22,3 +22,7 @@ docker run -p 8000:8000 ale/cms
 Restar-Service LxxsManager
 
 docker compose up --build
+
+
+
+python -m django_pydoc.py -b <////  DOCUMENTATION
