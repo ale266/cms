@@ -2,7 +2,7 @@
 
 <//// para ejecutar ambiente de desarrollo
 python manage.py runserver --settings=cms.settings.development 
-
+User: Alexis        Password: equipo10
 
 <//// para ejecutar ambiente de produccion
 python manage.py collectstatic --settings=cms.settings.production </// para coleccionar archivos estaticos en produccion, si hay cambios
@@ -26,3 +26,5 @@ docker compose up --build
 
 
 python -m django_pydoc.py -b <////  DOCUMENTATION
+
+ingresar a la carpeta donde estan los test y ejecutar en consola: pytest <////  Test
