@@ -1,7 +1,10 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from .models import Category, Post
+from .forms import PostForm, categoryForm
+from django.views.generic import ListView, CreateView, UpdateView
 from .forms import PostForm, categoryForm
 from django.views.generic import ListView, CreateView, UpdateView
 from django.utils.text import slugify
@@ -15,6 +18,7 @@ from django.contrib import messages
 #     context = {'posts': posts, 'categories': categories}
 #     return render(request, 'cmsapp/index.html', context)
 
+# VISTAS BASADAS EN FUNCIONES
 # VISTAS BASADAS EN FUNCIONES
 def index(request):
     posts = Post.objects.all()
@@ -92,46 +96,4 @@ def dislikePost(request, slug):
     return HttpResponseRedirect(reverse('detail', args=[str(slug)])) 
 
 
-class listCategory(ListView):
-    model = Category
-    template_name =  'cmsapp/listCategory.html' #object_list
 
-
-def createCategory(request):
-    form = categoryForm()
-    if request.method == 'POST':
-        form = categoryForm(request.POST)
-        if form.is_valid:
-            category = form.save(commit = False)
-            category.slug = slugify(category.title)
-            category.save()
-            messages.info(request, 'Categoria creada exitosamente')
-            return redirect('listCategory')
-        else:
-            messages.error(request, 'Categoria no creada')
-    context = {'form': form}    
-    return render(request, 'cmsapp/createCategory.html', context)
-
-
-def updateCategory (request, slug):
-    category = Category.objects.get(slug=slug)
-    form = categoryForm(instance=category)
-    if request.method == 'POST':
-        form = categoryForm(request.POST, instance = category)
-        if form.is_valid():
-            form.save()
-            messages.info(request, 'Categoria modificada exitosamente')
-            return redirect('listCategory')
-
-    context = {'form': form}
-    return render(request, 'cmsapp/createCategory.html', context) 
-
-def deleteCategory(request, slug):
-    category = Category.objects.get(slug=slug)
-    form = categoryForm(instance=category)
-    if request.method == 'POST':
-        category.delete()
-        messages.info(request, 'Categoria eliminada exitosamente')
-        return redirect('listCategory')
-    context = {'form': form}
-    return render(request, 'cmsapp/deleteCategory.html', context) 
