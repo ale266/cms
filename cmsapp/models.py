@@ -27,7 +27,7 @@ class Post(models.Model):
         return self.title
     
 class Category(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100 , verbose_name="Titulo")
     category_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     slug = models.SlugField()
 

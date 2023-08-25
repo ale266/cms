@@ -32,12 +32,14 @@
                 </div>
             </div>
         </div>
-       
-       
+
         <h3>
             {% for category in categories%}
             <div class="badge bg-primary bg-gradient rounded-pill mb-2"> <a class="text-decoration-none link-light" href="{% url 'indexCat' category %}"> {{category}}</a></div>
             {% endfor %}
+            {% if request.user.is_authenticated %}
+            <div class="badge bg-gradient rounded-pill mb-2"><a class="link-primary" href="{% url 'listCategory' %}"><i class="fas fa-edit"></i></a></div>
+            {% endif %}
         </h3>
         <br>
 
