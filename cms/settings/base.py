@@ -23,6 +23,7 @@ LOCAL_APPS = [
     'cmsapp',
     'apps.core',
     'userprofile.apps.UserprofileConfig',
+    'permisos',
 ]
 
 THIRD_APPS = [
@@ -32,6 +33,8 @@ THIRD_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
@@ -143,3 +146,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -13,7 +13,7 @@ class UserProfile (models.Model):
     picture = models.ImageField(upload_to='img', blank=True, null=True, verbose_name="Foto")
     about = models.TextField(verbose_name="Sobre mi")
     profile_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-
+    # df_rol = models.ForeignKey('Rol',on_delete=models.CASCADE,default=2)
     @property
     def pictureUrl(self):
         try:

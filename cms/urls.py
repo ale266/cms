@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('cmsapp.urls')),
     path('', include('userprofile.urls')),
     path('accounts/', include('allauth.urls')),
+    path('', include('permisos.urls')),
 ]
 
 urlpatterns += static (settings.IMAGE_URL, document_root = settings.IMAGE_ROOT)
