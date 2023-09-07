@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'fontawesomefree',
     'userprofile.apps.UserprofileConfig',
+    'crispy_bootstrap4',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
