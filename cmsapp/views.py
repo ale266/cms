@@ -6,6 +6,9 @@ from .forms import PostForm, categoryForm
 from django.views.generic import ListView, CreateView, UpdateView
 from django.utils.text import slugify
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
+
+
 
 # Create your views here.
 #solo ver los posts que estan activos, los inactivos solo lo puede ver el administrador
@@ -39,6 +42,7 @@ def detail(request, slug):
     context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes}
     return render (request , 'cmsapp/detail.html', context )
 
+@permission_required('cmsapp.can_add_post')
 def createPost(request):
     profile = request.user.userprofile
     form = PostForm()
