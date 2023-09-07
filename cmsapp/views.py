@@ -42,7 +42,7 @@ def detail(request, slug):
     context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes}
     return render (request , 'cmsapp/detail.html', context )
 
-@permission_required('cmsapp.can_add_post')
+@permission_required('cmsapp.add_post')
 def createPost(request):
     profile = request.user.userprofile
     form = PostForm()

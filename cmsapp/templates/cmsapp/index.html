@@ -10,9 +10,9 @@
                     <h1 class="display-5 fw-bolder text-white mb-2">CMS site</h1>
                     <p class="lead fw-normal text-white-50 mb-4">Diseñar y personalizar sitios webs de manera sencilla y rapida</p>
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                        <!---{% if request.user.is_authenticated %}-->
+                        {% if perms.cmsapp.add_post %}
                         <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'create' %}">Crear blog</a>
-                        <!-- {% endif %} -->
+                        {% endif %}
                         <a class="btn btn-outline-light btn-lg px-4" href="#!">Leer mas</a>
                     </div>
                 </div>
