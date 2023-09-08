@@ -14,8 +14,32 @@ class RolesdeSistema(models.Model):
 
     class Meta:
         permissions = [
-            ('_acceder_al_sistema','Acceder al sistema'),
-            ('_crear_usuario', 'Crear usuario'),         
+            ('acceder_al_sistema','Acceder al Sistema'),
+            ('administrar_rol','Administrar Rol'),
+            ('crear_rol', 'Crear Rol'),
+            ('modificar_rol', 'Modificar Rol'),
+            ('eliminar_rol','Eliminar Rol'),
+            ('editar_perfil', 'Editar Perfil'),
+            ('administrar_categoria', 'Administrar Categoria'),
+            ('crear_categoria', 'Crear Categoria'),
+            ('editar_categoria', 'Editar Categoria'),
+            ('eliminar_categoria', 'Eliminar Categoria'),
+            ('configurar_sitio_web', 'Configurar Sitio Web'),
+            ('administrar_contenido', 'Administrar Contenido'),
+            ('crear_contenido', 'Crear Contenido'),
+            ('editar_contenido', 'Editar Contenido'),
+            ('eliminar_contenido', 'Eliminar Contenido'),
+            ('publicar_contenido', 'Publicar Contenido'),
+            ('asignar_categoria_a_contenido', 'Asignar Categoria a Contenido'),
+            ('ver_estadistica_de_contenido', 'Ver estadistica del contenido'),
+            ('ver_numero_de_visualizaciones', 'Ver Numero de visualizaciones'),
+            ('ver_numero_de_likes', 'Ver numero de likes'),
+            ('ver_numero_de_dislikes', 'Ver numero de dislikes'),
+            ('comentar_contenido', 'Comentar contenido'),
+            ('administrar_tipo_de_contenido', 'Administar tipo de contenido'),
+            ('crear_tipo_de_contenido', 'Crear tipo de contenido'),
+            ('editar_tipo_de_contenido', 'editar tipo de contenido'),
+            ('eliminar_tipo_de_contenido', 'Eliminar tipo de contenido'),
         ]    
 
     def __str__(self):
