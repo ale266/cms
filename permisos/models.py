@@ -40,6 +40,20 @@ class RolesdeSistema(models.Model):
             ('crear_tipo_de_contenido', 'Crear tipo de contenido'),
             ('editar_tipo_de_contenido', 'editar tipo de contenido'),
             ('eliminar_tipo_de_contenido', 'Eliminar tipo de contenido'),
+            ('filtrar_contenidos_por_categoria', 'Filtrar contenidos por categoria'),
+            ('filtrar_contenidos_por_tipo', 'Filtrar contenidos por tipo'),
+            ('notificar_eventos', 'Notificar eventos'), 
+            ('notificar_solicitud_de_edicion', 'Notificar solicitud de edicion'),
+            ('notificar_solicitud_de_publicacion', 'Notificar solicitud de publicacion'),
+            ('notificar_publicacion_del_contenido', 'Notificar solicitud de contenido'),
+            ('administrar_estado','Administrar estado'),
+            ('crear_estado','Crear Estado'),
+            ('modificar_estado','Modificar estado'),
+            ('eliminar_estado','Eliminar estado'),
+            ('visualizar_tablero_kanban','Visualizar tablero Kanban'),
+            ('modificar_tablero_kanban','Modificar tablero Kanban'),
+            ('visualizar_historial','Visualizar historial'),
+            ('visualizar_reporte','Visualizar reporte'),
         ]    
 
     def __str__(self):
