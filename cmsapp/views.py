@@ -19,59 +19,69 @@ from django.contrib.auth.decorators import permission_required
 #     return render(request, 'cmsapp/index.html', context)
 
 # VISTAS BASADAS EN FUNCIONES
-def index(request):
+
+#Función que se encarga de mostrar una lista de todas las publicaciones (posts) y categorías disponibles.
+def index(request): 
+    #obtenemos todos los objetos "post" y "category" de la BD
     posts = Post.objects.all()
     categories = Category.objects.all()
-    context = {'posts': posts, 'categories': categories}
-    return render(request, 'cmsapp/index.html', context)
+    context = {'posts': posts, 'categories': categories} #crea un diccionario "context" y lo pasa a la plantilla HTML
+    return render(request, 'cmsapp/index.html', context) #renderiza al index.html y devuelve una respuesta HTTP
 
+
+#Función que se encarga de mostrar una lista de publicaciones (posts) que pertenecen a una categoría determinada.
 def indexCat(request, categoria):
+    #obtenemos todos los objetos "post" y "category" de la BD
     posts = Post.objects.all()
     categories = Category.objects.all()
     categoryO = Category.objects.get(title=categoria)
     categoriesPosts = Post.objects.filter(category=categoryO)
-    context = {'posts': posts, 'categories': categories, 'categoriesPosts': categoriesPosts}
-    return render(request, 'cmsapp/indexCategory.html', context)
+    context = {'posts': posts, 'categories': categories, 'categoriesPosts': categoriesPosts} #crea un diccionario "context" y lo pasa a la plantilla HTML
+    return render(request, 'cmsapp/indexCategory.html', context) #renderiza al indexCategory.html y devuelve una respuesta HTTP
 
-
+#Función que  se encarga de mostrar los detalles de una publicación en particular, incluyendo su contenido, la lista de publicaciones recientes,
+#y la cantidad de "me gusta" y "no me gusta" en esa publicación.
 def detail(request, slug):
-    post  = Post.objects.get(slug = slug )
+    post  = Post.objects.get(slug = slug ) #buscamos un objeto "post" en la BD que tenga el slug proporcionado
+    #excluimos el post actual de la lista "recent post" para asegurarnos de que no se muestre en recent posts
     posts = Post.objects.exclude(post_id__exact=post.post_id)[:5] #para mostrar en recent posts solo 5 post
+    #realizamos el conteo de "likes" y "dislikes"
     total_likes = post.total_likes()
     total_dislikes = post.total_dislikes()
-    context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes}
-    return render (request , 'cmsapp/detail.html', context )
+    context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes} #crea un diccionario "context" y lo pasa a la plantilla HTML
+    return render (request , 'cmsapp/detail.html', context ) #renderiza a detail.html y devuelve una respuesta HTTP
 
-@permission_required('cmsapp.add_post')
+@permission_required('cmsapp.add_post') #vista que requiere permisos específicos
 def createPost(request):
-    profile = request.user.userprofile
-    form = PostForm()
-    if request.method == 'POST':
+    profile = request.user.userprofile #obtenemos el perfil de usuario actual
+    form = PostForm() #creamos una instancia del formulario
+    if request.method == 'POST': #verificamos que la solicitud sea del tipo post
         form = PostForm(request.POST, request.FILES)
-        if form.is_valid:
+        if form.is_valid: #verificamos que el formulario sea válido
             post = form.save(commit = False)
             post.slug = slugify(post.title)
-            post.writer = profile
-            post.save()
+            post.writer = profile #asignamos al escritor de la publicación el perfil de usuario actual
+            post.save() #y guardamos el post en la BD
             messages.info(request, 'Blog creado exitosamente')
-            return redirect('create')
-        else:
+            return redirect('create') #redireccionamos al usuario a l pag de creación de blogs
+        else: #si el formulario no es válido emitimos mensaje de error
             messages.error(request, 'Blog no creado')
-    context = {'form': form}    
-    return render(request, 'cmsapp/create.html', context)
+    context = {'form': form}    #creamos diccionario
+    return render(request, 'cmsapp/create.html', context) #renderizamos
 
-def updatePost (request, slug):
-    post = Post.objects.get(slug=slug)
-    form = PostForm(instance=post)
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance = post)
-        if form.is_valid():
-            form.save()
+#Función que permite manejar la actualización (edición) de una publicación ya existente
+def updatePost (request, slug): 
+    post = Post.objects.get(slug=slug) #buscamos un objeto "post" en la BD que tenga el mismo slug
+    form = PostForm(instance=post) #creamos una instancia del formulario
+    if request.method == 'POST': #verificamos que la solicitud sea del tipo post
+        form = PostForm(request.POST, request.FILES, instance = post) 
+        if form.is_valid(): #verificamos que el formulario sea válido
+            form.save() #guardamos los cambios
             messages.info(request, 'Blog modificado exitosamente')
-            return redirect('detail', slug=post.slug)
+            return redirect('detail', slug=post.slug) #redireccionamos al usuario a la página de detalles de publicación
 
-    context = {'form': form}
-    return render(request, 'cmsapp/create.html', context) 
+    context = {'form': form} #creamos diccionario
+    return render(request, 'cmsapp/create.html', context) #renderizamos
 
 #modificar este view para que desactive los blogs en vez de eliminarlos
 def deletePost(request, slug):
