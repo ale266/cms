@@ -1,7 +1,10 @@
 from django.db import models
 import uuid
 from ckeditor.fields import RichTextField
+from django.conf import settings
 from userprofile.models import UserProfile
+from django.contrib.auth.models import User #Asociamos comentarios a usuarios
+
 
 # Create your models here.
 class Post(models.Model):
@@ -26,6 +29,22 @@ class Post(models.Model):
     def __str__(self):
         return self.title
     
+class Comment(models.Model):
+    content = models.CharField(max_length=2000, help_text='Escriba un comentario...', verbose_name="Comentario")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    post_date = models.DateTimeField(auto_now_add=True) #Fecha de creación
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['-post_date'] #se ordena por fecha de creación
+
+    def __str__(self):
+        len_title = 20
+        if len(self.content) > len_title:
+            return self.content[:len_title] + '...'
+        return self.content
+
+
 class Category(models.Model):
     title = models.CharField(max_length=100 , verbose_name="Titulo")
     category_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
@@ -33,3 +52,15 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+"""Creamos el modelo para comentarios
+class Comentario(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE) #Asociamos el comentario a un usuario
+    contenido_comentario = models.TextField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    
+
+def __str__(self):
+        return f'Comentario de {self.autor.username} en {self.fecha_creacion}'"""

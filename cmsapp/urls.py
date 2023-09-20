@@ -12,6 +12,7 @@ urlpatterns = [
     path('like-post/<str:slug>', views.likePost, name= 'like'),
     path('dislike-post/<str:slug>', views.dislikePost, name= 'dislike'),
     path('list-category', views.listCategory.as_view(), name= 'listCategory'),
+    path('post/<slug:slug>', views.PostView.as_view(), name= 'post'),
     path('create-category', views.createCategory, name= 'createCategory'),
     path('update-category/<str:slug>', views.updateCategory, name= 'updateCategory'),
     path('delete-category/<str:slug>', views.deleteCategory, name= 'deleteCategory'),

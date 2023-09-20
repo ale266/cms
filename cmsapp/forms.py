@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Post, Category
+from .models import Post, Category, Comment
 
 class PostForm(ModelForm):
     class Meta:
@@ -13,3 +13,11 @@ class categoryForm(ModelForm):
         model = Category
         # fields = ('title',)
         exclude = ['slug']
+
+class PostCommentForm(forms.ModelForm):
+    content = forms.CharField(label='Ingrese su comentario', widget=forms.Textarea(attrs={'rows': 4}))
+    
+    class Meta:
+        model = Comment
+        fields = ['content'] #campo del contenido
+    

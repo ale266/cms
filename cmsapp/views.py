@@ -1,13 +1,17 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
-from .models import Category, Post
-from .forms import PostForm, categoryForm
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Category, Post, Comment
+from .forms import PostForm, categoryForm, PostCommentForm
+from django.views import generic, View
 from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import FormView
+from django.views.generic.detail import SingleObjectMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib import messages
-from django.contrib.auth.decorators import permission_required
-
 
 
 # Create your views here.
@@ -42,7 +46,50 @@ def detail(request, slug):
     context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes}
     return render (request , 'cmsapp/detail.html', context )
 
-@permission_required('cmsapp.add_post')
+class PostDetailView(generic.DetailView):#Vista Detallada para el modelo Post -- comentarios
+    model = Post
+    queryset = Post.objects.filter(
+         created__lte=timezone.now()
+    )
+
+    def get_content_data(self, **kwargs): 
+        context = super().get_context_data(**kwargs) #se obtiene el contenido de la vista 
+        context['form'] = PostCommentForm()
+        return context
+
+class PostCommentFormView(LoginRequiredMixin, SingleObjectMixin, FormView):
+    template_name = 'cmsapp/detail.html'
+    form_class = PostCommentForm
+    model = Post
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        f = form.save(commit=False)
+        f.author = self.request.user
+        f.post = self.object
+        f.save()
+        return super().form_valid(form)
+        
+    def get_success_url(self):
+        return reverse('cms:post', kwargs={'slug': self.object.slug}) + '#comments-section'
+
+
+class PostView(View):
+    #metodo get
+    def get(self, request, *args, **kwargs):
+        view = PostDetailView.as_view()
+        return view(request, *args, **kwargs)
+    
+    #metodo post
+    def post(self, request, *args, **kwargs):
+        view = PostCommentFormView.as_view()
+        return view(request, *args, **kwargs)
+
+
+
 def createPost(request):
     profile = request.user.userprofile
     form = PostForm()
@@ -139,3 +186,23 @@ def deleteCategory(request, slug):
         return redirect('listCategory')
     context = {'form': form}
     return render(request, 'cmsapp/deleteCategory.html', context) 
+
+
+"""#Comentario
+def detalle_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comentarios = Comentario.objects.filter(post=post)
+
+    if request.method == 'POST':
+        comentario_form = ComentarioForm(request.POST)
+        if comentario_form.is_valid():
+            comentario = comentario_form.save(commit=False)
+            comentario.autor = request.user  # Asigna el autor actual (si se está usando autenticación de usuario)
+            comentario.post = post
+            comentario.save()
+            return redirect('detail', pk=pk)
+    else:
+        comentario_form = ComentarioForm()
+
+    return render(request, 'cmsapp/detail.html', {'post': post, 'comentarios': comentarios, 'comentario_form': comentario_form})
+"""
