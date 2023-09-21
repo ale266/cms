@@ -46,6 +46,7 @@ def detail(request, slug):
     context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes}
     return render (request , 'cmsapp/detail.html', context )
 
+#Comentarios
 class PostDetailView(generic.DetailView):#Vista Detallada para el modelo Post -- comentarios
     model = Post
     queryset = Post.objects.filter(
@@ -88,6 +89,11 @@ class PostView(View):
         view = PostCommentFormView.as_view()
         return view(request, *args, **kwargs)
 
+#Contador de comentarios
+def count_comments(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    comments_count = Comment.objects.filter(post=post).count()
+    return render(request, 'detail.html', {'comments_count': comments_count})
 
 
 def createPost(request):
