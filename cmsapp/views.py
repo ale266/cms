@@ -41,6 +41,9 @@ def indexCat(request, categoria):
 def detail(request, slug):
     post  = Post.objects.get(slug = slug )
     posts = Post.objects.exclude(post_id__exact=post.post_id)[:5] #para mostrar en recent posts solo 5 post
+    # Incrementar el contador de visualizaciones
+    post.views += 1
+    post.save()
     total_likes = post.total_likes()
     total_dislikes = post.total_dislikes()
     context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes}

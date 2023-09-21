@@ -38,6 +38,9 @@
                         {{total_dislikes}} <a href='{% url "dislike" post.slug %}'><button class = 'btn btn-danger btn-sm'> <i class="fa fa-thumbs-down" aria-hidden="true"></i></button></a>
                         {% if post.id %}{% url 'count_comments' post.id %}{% endif %} {{ post.comment_set.count }} <button class = 'btn btn-primary btn-sm'> <i class="fas fa-comment" aria-hidden="true"></i></button></a>
                         {%endif%}
+                        {{ post.views }} <i class="fas fa-eye" style="font-size: 18px; color:cornflowerblue;"></i>
+
+                        
                     </header>
                     <!-- Preview image figure-->
                     <figure class="mb-4"><img class="img-fluid rounded" src="{{post.image.url}}" alt="..." /></figure>
@@ -48,7 +51,8 @@
                 <p class="fs-5 mb-4">{{post.body |safe}}</p>
                 <!-- Comments section-->
                 <section class="mb-5">
-                    <h3 id="comments-section">Comentarios: </h3>
+                    <h3 id="comments-section">Comentarios
+                    </h3>
                     {% if request.user.is_authenticated %}
                         <hr class="d-none d-md-block my-2 mb-3 mt-2">
                         <form method="post">

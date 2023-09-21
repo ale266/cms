@@ -19,6 +19,7 @@ class Post(models.Model):
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True , verbose_name="Categoria")
     likes = models.ManyToManyField(UserProfile, related_name='blog_post')
     dislikes = models.ManyToManyField(UserProfile, related_name='blog_post2')
+    views = models.PositiveIntegerField(default=0) #número de visualizaciones
 
     def total_likes(self):
         return self.likes.count()
