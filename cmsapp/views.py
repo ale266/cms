@@ -49,10 +49,7 @@ def detail(request, slug):
         post.save()
         # Registra que esta sesión ha visto el post
         request.session[f'post_{post.post_id}_viewed'] = True
-    else : #En caso de ser visualizador igual aumenta el contador
-        post.views += 1
-        post.save()
-
+        
     posts = Post.objects.exclude(post_id__exact=post.post_id)[:5] #para mostrar en recent posts solo 5 post
     total_likes = post.total_likes()
     total_dislikes = post.total_dislikes()
