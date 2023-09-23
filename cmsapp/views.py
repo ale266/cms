@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.contrib.sessions.models import Session
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
@@ -40,10 +41,16 @@ def indexCat(request, categoria):
 
 def detail(request, slug):
     post  = Post.objects.get(slug = slug )
+    session_key = request.session.session_key
+     # Verifica si ya se ha registrado la visualización en esta sesión
+    if not request.session.get(f'post_{post.post_id}_viewed', False):
+        # Incrementa el contador de visualizaciones
+        post.views += 1
+        post.save()
+        # Registra que esta sesión ha visto el post
+        request.session[f'post_{post.post_id}_viewed'] = True
+
     posts = Post.objects.exclude(post_id__exact=post.post_id)[:5] #para mostrar en recent posts solo 5 post
-    # Incrementar el contador de visualizaciones
-    post.views += 1
-    post.save()
     total_likes = post.total_likes()
     total_dislikes = post.total_dislikes()
     context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes}
