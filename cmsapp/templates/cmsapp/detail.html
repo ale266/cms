@@ -39,6 +39,8 @@
                         {% if post.id %}{% url 'count_comments' post.id %}{% endif %} {{ post.comment_set.count }} <button class = 'btn btn-primary btn-sm'> <i class="fas fa-comment" aria-hidden="true"></i></button></a>
                         {%endif%}
                         {{ post.views }} <i class="fas fa-eye" style="font-size: 18px; color:cornflowerblue;"></i>
+                        <button onclick="copyToClipboard('{{ post.get_absolute_url }}')"> <i class="fas fa-copy"></i></button> Copiar URL
+                        
 
                         
                     </header>
@@ -78,6 +80,18 @@
                     {% endfor %}
 
 
+
+                    <script>
+                        function copyToClipboard(text) {
+                          var textArea = document.createElement("textarea");
+                          textArea.value = text;
+                          document.body.appendChild(textArea);
+                          textArea.select();
+                          document.execCommand('copy');
+                          document.body.removeChild(textArea);
+                          alert("URL copiada al portapapeles: " + text);
+                        }
+                        </script>
 
                  <!--  <h2>Agregar un comentario:</h2>
                         {% for comentario in comentarios %}

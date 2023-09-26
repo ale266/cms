@@ -4,6 +4,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('category/<str:categoria>', views.indexCat, name='indexCat'),
     # path('test/<str:categoria>', views.pregunta, name='test'),
+    path('post/<slug:slug>/', views.post_detail, name='post_detail'),
     path('dislike-post/<str:slug>', views.dislikePost, name= 'dislike'),
     path('article/<str:slug>', views.detail, name= 'detail'),
     path('create-post', views.createPost, name= 'create'),

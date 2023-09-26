@@ -2,7 +2,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.sessions.models import Session
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import render, get_object_or_404, redirect
 from .models import Category, Post, Comment
 from .forms import PostForm, categoryForm, PostCommentForm
 from django.views import generic, View
@@ -104,6 +103,11 @@ def count_comments(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     comments_count = Comment.objects.filter(post=post).count()
     return render(request, 'detail.html', {'comments_count': comments_count})
+
+#Obtener URL
+def post_detail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    return render(request, 'detail.html', {'post': post})
 
 
 def createPost(request):

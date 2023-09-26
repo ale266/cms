@@ -1,5 +1,7 @@
 from django.db import models
 import uuid
+from django.utils.text import slugify
+from django.urls import reverse
 from ckeditor.fields import RichTextField
 from django.conf import settings
 from userprofile.models import UserProfile
@@ -15,7 +17,7 @@ class Post(models.Model):
     post_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True , verbose_name="Categoria")
     likes = models.ManyToManyField(UserProfile, related_name='blog_post')
     dislikes = models.ManyToManyField(UserProfile, related_name='blog_post2')
@@ -26,7 +28,17 @@ class Post(models.Model):
 
     def total_dislikes(self):
         return self.dislikes.count()
+    
+    def save(self, *args, **kwargs):
+        # Genera automáticamente el slug a partir del título si no se proporciona uno
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        # Devuelve la URL completa de la publicación
+        return reverse('post_detail', args=[str(self.slug)])
+    
     def __str__(self):
         return self.title
     
