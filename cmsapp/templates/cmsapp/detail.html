@@ -38,8 +38,8 @@
                         {{total_dislikes}} <a href='{% url "dislike" post.slug %}'><button class = 'btn btn-danger btn-sm'> <i class="fa fa-thumbs-down" aria-hidden="true"></i></button></a>
                         {% if post.id %}{% url 'count_comments' post.id %}{% endif %} {{ post.comment_set.count }} <button class = 'btn btn-primary btn-sm'> <i class="fas fa-comment" aria-hidden="true"></i></button></a>
                         {%endif%}
-                        {{ post.views }} <i class="fas fa-eye" style="font-size: 18px; color:cornflowerblue;"></i>
-                        <button onclick="copyToClipboard('{{ post.get_absolute_url }}')"> <i class="fas fa-copy"></i></button> Copiar URL
+                        {{ post.views }}  <button class ='btn btn-danger btn-sm'><i class="fas fa-eye" style="font-size: 15px; color:rgb(255, 255, 255);"></i></button>
+                        <button class = 'btn btn-primary btn-sm' onclick="copyToClipboard('{{ post.get_absolute_url }}')" style="margin-left: 10px;"><i class="fa-solid fa-share-from-square"></i></button>
                         
 
                         
@@ -91,7 +91,7 @@
                           document.body.removeChild(textArea);
                           alert("URL copiada al portapapeles: " + text);
                         }
-                        </script>
+                    </script>
 
                  <!--  <h2>Agregar un comentario:</h2>
                         {% for comentario in comentarios %}
