@@ -1,13 +1,17 @@
 from django.http import HttpResponseRedirect
+from django.contrib.sessions.models import Session
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
-from .models import Category, Post
-from .forms import PostForm, categoryForm
+from .models import Category, Post, Comment
+from .forms import PostForm, categoryForm, PostCommentForm
+from django.views import generic, View
 from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import FormView
+from django.views.generic.detail import SingleObjectMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib import messages
-from django.contrib.auth.decorators import permission_required
-
 
 
 # Create your views here.
@@ -149,3 +153,23 @@ def deleteCategory(request, slug):
         return redirect('listCategory')
     context = {'form': form}
     return render(request, 'cmsapp/deleteCategory.html', context) 
+
+
+"""#Comentario
+def detalle_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comentarios = Comentario.objects.filter(post=post)
+
+    if request.method == 'POST':
+        comentario_form = ComentarioForm(request.POST)
+        if comentario_form.is_valid():
+            comentario = comentario_form.save(commit=False)
+            comentario.autor = request.user  # Asigna el autor actual (si se está usando autenticación de usuario)
+            comentario.post = post
+            comentario.save()
+            return redirect('detail', pk=pk)
+    else:
+        comentario_form = ComentarioForm()
+
+    return render(request, 'cmsapp/detail.html', {'post': post, 'comentarios': comentarios, 'comentario_form': comentario_form})
+"""
