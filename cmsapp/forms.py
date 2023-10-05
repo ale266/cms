@@ -15,8 +15,9 @@ class categoryForm(ModelForm):
         exclude = ['slug']
 
 class PostCommentForm(forms.ModelForm):
-    content = forms.CharField(label='Ingrese su comentario', widget=forms.Textarea(attrs={'rows': 4}))
-    
+    content = forms.CharField(label='Ingrese su comentario\n', widget=forms.Textarea(attrs={'rows': 2, 'cols': 97}))
+    comment_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+
     class Meta:
         model = Comment
         fields = ['content'] #campo del contenido
