@@ -23,95 +23,37 @@ from django.contrib import messages
 #     return render(request, 'cmsapp/index.html', context)
 
 # VISTAS BASADAS EN FUNCIONES
-def index(request):
+
+#Función que se encarga de mostrar una lista de todas las publicaciones (posts) y categorías disponibles.
+def index(request): 
+    #obtenemos todos los objetos "post" y "category" de la BD
     posts = Post.objects.all()
     categories = Category.objects.all()
-    context = {'posts': posts, 'categories': categories}
-    return render(request, 'cmsapp/index.html', context)
+    context = {'posts': posts, 'categories': categories} #crea un diccionario "context" y lo pasa a la plantilla HTML
+    return render(request, 'cmsapp/index.html', context) #renderiza al index.html y devuelve una respuesta HTTP
 
+
+#Función que se encarga de mostrar una lista de publicaciones (posts) que pertenecen a una categoría determinada.
 def indexCat(request, categoria):
+    #obtenemos todos los objetos "post" y "category" de la BD
     posts = Post.objects.all()
     categories = Category.objects.all()
     categoryO = Category.objects.get(title=categoria)
     categoriesPosts = Post.objects.filter(category=categoryO)
-    context = {'posts': posts, 'categories': categories, 'categoriesPosts': categoriesPosts}
-    return render(request, 'cmsapp/indexCategory.html', context)
-
+    context = {'posts': posts, 'categories': categories, 'categoriesPosts': categoriesPosts} #crea un diccionario "context" y lo pasa a la plantilla HTML
+    return render(request, 'cmsapp/indexCategory.html', context) #renderiza al indexCategory.html y devuelve una respuesta HTTP
 
 
 def detail(request, slug):
-    post = get_object_or_404(Post, slug=slug)
-    session_key = request.session.session_key
-     # Verifica si ya se ha registrado la visualización en esta sesión
-    if not request.session.get(f'post_{post.post_id}_viewed', False):
-        # Incrementa el contador de visualizaciones
-        post.views += 1
-        post.save()
-        # Registra que esta sesión ha visto el post
-        request.session[f'post_{post.post_id}_viewed'] = True
-        
+    post  = Post.objects.get(slug = slug ) #buscamos un objeto "post" en la BD que tenga el slug proporcionado
+    #excluimos el post actual de la lista "recent post" para asegurarnos de que no se muestre en recent posts
     posts = Post.objects.exclude(post_id__exact=post.post_id)[:5] #para mostrar en recent posts solo 5 post
-    total_likes = post.total_likes()
-    total_dislikes = post.total_dislikes()
-    if request.method == 'POST':
-        comment_form = PostCommentForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.author = request.user
-            comment.post = post
-            comment.save()
-            messages.success(request, 'Comentario agregado exitosamente.')
-            return redirect('detail', slug=slug)
-        else:
-            messages.error(request, 'Error al agregar el comentario. Por favor, verifica los datos.')
-    else:
-        comment_form = PostCommentForm()
-
-    context = {
-        'post': post,
-        'comment_form': comment_form, 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes
-    }
-
-    return render(request, 'cmsapp/detail.html', context)
-
-
-def delete_comment(request):
-    if request.method == 'POST':
-        comment_id = request.POST.get('comment_id')
-        post_id = request.POST.get('post_id')
-        comment = get_object_or_404(Comment, id=comment_id)
-        
-        # Verificar si el usuario tiene permiso para eliminar el comentario
-        if comment.author == request.user:
-            comment.delete()
-            # Redirigir a la misma página después de eliminar el comentario
-            return redirect(request.META.get('HTTP_REFERER', 'home'), pk=post_id)  # Redirigir a la página anterior, si no está disponible, redirige a 'home'
-        else:
-            # Manejar el caso si el usuario no tiene permiso para eliminar el comentario
-            # Por ejemplo, puedes mostrar un mensaje de error o redirigir a otra página
-            pass
-    
-    # Manejar la situación si alguien trata de acceder a esta vista directamente sin el método POST
-    return redirect(request.META.get('HTTP_REFERER', 'home'), pk=post_id)  # Redirigir a la página anterior, si no está disponible, redirige a 'home'
-
-"""""
-def detail(request, slug):
-    post  = Post.objects.get(slug = slug )
-    session_key = request.session.session_key
-     # Verifica si ya se ha registrado la visualización en esta sesión
-    if not request.session.get(f'post_{post.post_id}_viewed', False):
-        # Incrementa el contador de visualizaciones
-        post.views += 1
-        post.save()
-        # Registra que esta sesión ha visto el post
-        request.session[f'post_{post.post_id}_viewed'] = True
-        
-    posts = Post.objects.exclude(post_id__exact=post.post_id)[:5] #para mostrar en recent posts solo 5 post
+    #realizamos el conteo de "likes" y "dislikes"
     total_likes = post.total_likes()
     total_dislikes = post.total_dislikes()
     context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes}
     return render (request , 'cmsapp/detail.html', context )
-"""""
+
 #Comentarios
 class PostDetailView(generic.DetailView):#Vista Detallada para el modelo Post -- comentarios
     model = Post
@@ -168,34 +110,35 @@ def post_detail(request, slug):
 
 
 def createPost(request):
-    profile = request.user.userprofile
-    form = PostForm()
-    if request.method == 'POST':
+    profile = request.user.userprofile #obtenemos el perfil de usuario actual
+    form = PostForm() #creamos una instancia del formulario
+    if request.method == 'POST': #verificamos que la solicitud sea del tipo post
         form = PostForm(request.POST, request.FILES)
-        if form.is_valid:
+        if form.is_valid: #verificamos que el formulario sea válido
             post = form.save(commit = False)
             post.slug = slugify(post.title)
-            post.writer = profile
-            post.save()
+            post.writer = profile #asignamos al escritor de la publicación el perfil de usuario actual
+            post.save() #y guardamos el post en la BD
             messages.info(request, 'Blog creado exitosamente')
-            return redirect('create')
-        else:
+            return redirect('create') #redireccionamos al usuario a l pag de creación de blogs
+        else: #si el formulario no es válido emitimos mensaje de error
             messages.error(request, 'Blog no creado')
-    context = {'form': form}    
-    return render(request, 'cmsapp/create.html', context)
+    context = {'form': form}    #creamos diccionario
+    return render(request, 'cmsapp/create.html', context) #renderizamos
 
-def updatePost (request, slug):
-    post = Post.objects.get(slug=slug)
-    form = PostForm(instance=post)
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance = post)
-        if form.is_valid():
-            form.save()
+#Función que permite manejar la actualización (edición) de una publicación ya existente
+def updatePost (request, slug): 
+    post = Post.objects.get(slug=slug) #buscamos un objeto "post" en la BD que tenga el mismo slug
+    form = PostForm(instance=post) #creamos una instancia del formulario
+    if request.method == 'POST': #verificamos que la solicitud sea del tipo post
+        form = PostForm(request.POST, request.FILES, instance = post) 
+        if form.is_valid(): #verificamos que el formulario sea válido
+            form.save() #guardamos los cambios
             messages.info(request, 'Blog modificado exitosamente')
-            return redirect('detail', slug=post.slug)
+            return redirect('detail', slug=post.slug) #redireccionamos al usuario a la página de detalles de publicación
 
-    context = {'form': form}
-    return render(request, 'cmsapp/create.html', context) 
+    context = {'form': form} #creamos diccionario
+    return render(request, 'cmsapp/create.html', context) #renderizamos
 
 #modificar este view para que desactive los blogs en vez de eliminarlos
 def deletePost(request, slug):

@@ -50,7 +50,7 @@ BASE_MIDDLEWARE = [
 ]
 
 LOCAL_MIDDLEWARE = [
-
+    'allauth.account.middleware.AccountMiddleware',
 ]
 THIRD_MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
