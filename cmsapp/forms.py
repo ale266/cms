@@ -5,7 +5,7 @@ from .models import Post, Category, Comment
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        exclude = ['slug', 'writer', 'likes', 'dislikes']
+        exclude = ['slug', 'writer', 'likes', 'dislikes', 'views']
 
 
 class categoryForm(ModelForm):

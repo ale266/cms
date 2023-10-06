@@ -40,8 +40,16 @@
                                 <ul class="dropdown-menu">
                                   <li><a class="dropdown-item btn-lg" href="{% url 'account' %}">Perfil de Usuario</a></li>
                                   <li><a class="dropdown-item " href="{% url 'signout' %}">Cerrar Sesion</a></li>
+                                  
                                   <li><hr class="dropdown-divider"></li>
-                                  <li><a class="dropdown-item" href="#">Mas</a></li>
+                                  {% if perms.cmsapp.view_user %}
+                                  <li><a class="dropdown-item" href="{% url 'lista_users' %}">Usuarios</a></li>
+                                  {% endif %}
+                                  {% if perms.cmsapp.view_rolesdesistema %}
+                                  <li><a class="dropdown-item" href="{% url 'listar_roles' %}">Roles y permisos</a></li>
+                                  {% endif %}
+                                  
+                                 
                                 </ul>
                             </div>
                             {% else %}

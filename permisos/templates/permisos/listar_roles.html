@@ -19,11 +19,11 @@
     
     <div >
         <div class="row">
-            <h3 class="col-12 col-md-10">Roles de Sistema</h3>
+            <h3 class="col-12 col-md-10" >Roles</h3>
             <!-- Falta agregar condicion para que esta opcion no se muestre si no se tiene el permiso -->
             <div class="col-12 col-md-2 row">
-                {% if user.es_administrador %}
-                    <a href="{% url 'nuevo_rol_de_sistema' %}" class="btn bg-color-accent font-weight-bold col-12 ml-auto">Crear Nuevo Rol</a>
+                {% if perms.cmsapp.add_rolesdesistema %}
+                    <a href="{% url 'crear_rol' %}" class="btn bg-color-accent font-weight-bold col-12 ml-auto">Crear Nuevo Rol</a>
                 {% endif %}
             </div>
 
@@ -48,7 +48,7 @@
                     <div class="card-header bg-color-primary" id="header_rol_{{ rol.id }}">
                         <div class="row">
                             <div class="col-auto mr-auto">
-                                {{rol.nombre}}
+                                <strong>{{rol.nombre}}</strong>
                             </div>
                             <div>
                                 <!-- <a href="" class="btn bg-color-accent text-white font-weight-bold btn-sm">
