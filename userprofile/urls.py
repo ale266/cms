@@ -9,4 +9,7 @@ urlpatterns = [
     path('registration', views.registration, name = 'registration'),
     path('login', views.signin, name = 'signin'),
     path('logout', views.signout, name = 'signout'),
+    path('listar_usuarios/',views.listar_usuarios, name='lista_users'),
+    # path('asignarRol/<int:id_usuario>', views.asignarRol, name='asignarRol'),
+    path('asignarRol/<int:id>',views.asignar_rol_usuario,name='asignar_rol'),
 ]

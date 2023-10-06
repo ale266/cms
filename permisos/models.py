@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import uuid
 from django.contrib.auth.models import Permission, Group
 
+
 # Create your models here.
 class RolesdeSistema(models.Model):
     
@@ -10,7 +11,7 @@ class RolesdeSistema(models.Model):
     defecto = models.BooleanField(default=False) # indica si el rol creado es predeterminado en el sistema y no puede borrarse.
     descripcion = models.TextField(max_length=60, blank=True)
     permisos = models.ManyToManyField(Permission, blank=True)  # Indica que varios roles pueden tener varios permisos
-   # rol_usuario = models.ManyToManyField(RolUsuario, blank=True)
+    # rol_usuario = models.ManyToManyField(UserProfile, blank=True)
 
     class Meta:
         permissions = [

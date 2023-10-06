@@ -1,6 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
 import uuid
+from django.contrib.auth.models import User, Permission, Group
+
+from permisos.models import RolesdeSistema
+
 
 # Create your models here.
 
@@ -25,3 +28,46 @@ class UserProfile (models.Model):
     def __str__(self):
         return self.username
     
+
+    
+    #asignar varios roles
+    def asignar_roles_usuarios(self,roles):
+          
+     """
+     Funcion para asignar varios roles a un usuario
+     """
+     
+     for r in roles:
+        rol = RolesdeSistema.objects.get(id=r)
+        group = Group.objects.get(name=rol.nombre)
+        self.user.groups.add(group)
+       
+
+    def desasignar_rol(self,rol_id):
+        """
+         Funcion que permite quitar un rol a un usuario
+        """
+
+        rol = RolesdeSistema.objects.get(id = rol_id)
+        grupo = Group.objects.get(name = rol.nombre)
+        self.user.groups.remove(grupo)
+
+
+
+
+
+
+
+
+# class RolUsuario(models.Model):
+#     """
+#     Modelo para la clase de RolUsuario con los campos necesarios para el mismo
+#     """
+#     miembro = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+#     roles = models.ManyToManyField(RolesdeSistema)   
+ 
+#     def __str__(self):
+#         #retorna el nombre de los roles de usuario
+
+#         return ''.join([rol for rol in self.roles.all()])
+ 

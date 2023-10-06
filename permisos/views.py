@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import Group
 
 from permisos.form import NewRolForm
-
+from userprofile.models import UserProfile
+from django.contrib.auth.models import User
 
 from .models import RolesdeSistema
 from django.contrib import messages
@@ -110,3 +111,37 @@ def eliminar_rol(request, id_rol):
             return redirect('listar_roles')
 
     return render(request, 'permisos/eliminar_rol.html', contexto)
+
+
+
+
+# def asignarRol(request, id_usuario):
+#     """
+#     Vista que donde el Scrum master puede seleccionar el rol a asignar a un usuario dentro del proyecto
+#     Argumentos:request: HttpRequest
+#     Return: HttpResponse
+    
+#     """
+   
+#     usuario_rol = RolUsuario.filter(miembro=id_usuario).first()
+#     if request.method == 'POST':
+#         form = AsignarRolForm(id_usuario, request.POST, instance=usuario_rol) 
+#         if form.is_valid():
+#             roles = form.cleaned_data['roles']
+#             usuario_rol = form.save()
+#             usuario = User.objects.get(id=id_usuario)
+#             usuario_rol.miembro = usuario
+#             usuario_rol.save()
+#             RolUsuario.add(usuario_rol)
+#             messages.success(request,"Se asigno correctamente")    
+#             return redirect('listar_roles')
+#     else:
+#         if usuario_rol:
+#             form = AsignarRolForm(id_usuario, instance=usuario_rol)
+#             data = []
+#             usuario = User.objects.get(id=id_usuario)
+#             data = usuario_rol
+#         else:
+#             form = AsignarRolForm(id_usuario, )
+#     contexto = {'form': form}
+#     return render(request, 'permisos/asignarRol.html', contexto)

@@ -24,3 +24,4 @@ class NewRolForm(forms.ModelForm):
     class Meta:
         model = RolesdeSistema
         fields = ['nombre','descripcion','permisos']
+

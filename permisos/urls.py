@@ -13,4 +13,6 @@ urlpatterns = [
     path('listarRol/', views.listar_roles, name='listar_roles'), 
     path('<int:id_rol>/modificarRol', views.modificar_rol, name='modificar_rol'),
     path('<int:id_rol>/eliminarRol', views.eliminar_rol, name='eliminar_rol'),
+    # path('asignarRol/miembro/<int:id_usuario>', views.asignarRol, name='asignarRol'),
+
 ]
