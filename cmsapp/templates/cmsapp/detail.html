@@ -63,7 +63,7 @@
         <form method="post">
             {% csrf_token %}
             {{ comment_form.as_p }}
-            <button class="btn btn-primary" type="submit">Comentar</button>
+            <button class="btn btn-primary" type="submit" style="margin-bottom: 10px;">Comentar</button>
         </form>
     {% else %}
     <div class="alert alert-warning" role="alert">
