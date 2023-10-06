@@ -39,7 +39,7 @@ def indexCat(request, categoria):
 
 
 def detail(request, slug):
-    post  = Post.objects.get(slug = slug )
+    post = get_object_or_404(Post, slug=slug)
     session_key = request.session.session_key
      # Verifica si ya se ha registrado la visualización en esta sesión
     if not request.session.get(f'post_{post.post_id}_viewed', False):
@@ -52,9 +52,45 @@ def detail(request, slug):
     posts = Post.objects.exclude(post_id__exact=post.post_id)[:5] #para mostrar en recent posts solo 5 post
     total_likes = post.total_likes()
     total_dislikes = post.total_dislikes()
-    context = {'post': post , 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes}
-    return render (request , 'cmsapp/detail.html', context )
+    if request.method == 'POST':
+        comment_form = PostCommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            messages.success(request, 'Comentario agregado exitosamente.')
+            return redirect('detail', slug=slug)
+        else:
+            messages.error(request, 'Error al agregar el comentario. Por favor, verifica los datos.')
+    else:
+        comment_form = PostCommentForm()
 
+    context = {
+        'post': post,
+        'comment_form': comment_form, 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes
+    }
+
+    return render(request, 'cmsapp/detail.html', context)
+
+def delete_comment(request):
+    if request.method == 'POST':
+        comment_id = request.POST.get('comment_id')
+        post_id = request.POST.get('post_id')
+        comment = get_object_or_404(Comment, id=comment_id)
+        
+        # Verificar si el usuario tiene permiso para eliminar el comentario
+        if comment.author == request.user:
+            comment.delete()
+            # Redirigir a la misma página después de eliminar el comentario
+            return redirect(request.META.get('HTTP_REFERER', 'home'), pk=post_id)  # Redirigir a la página anterior, si no está disponible, redirige a 'home'
+        else:
+            # Manejar el caso si el usuario no tiene permiso para eliminar el comentario
+            # Por ejemplo, puedes mostrar un mensaje de error o redirigir a otra página
+            pass
+    
+    # Manejar la situación si alguien trata de acceder a esta vista directamente sin el método POST
+    return redirect(request.META.get('HTTP_REFERER', 'home'), pk=post_id)  # Redirigir a la página anterior, si no está disponible, redirige a 'home'
 #Comentarios
 class PostDetailView(generic.DetailView):#Vista Detallada para el modelo Post -- comentarios
     model = Post

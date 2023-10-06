@@ -52,99 +52,66 @@
                 </article>
                 <p class="fs-5 mb-4">{{post.body |safe}}</p>
                 <!-- Comments section-->
-                <section class="mb-5">
-                    <h3 id="comments-section">Comentarios
-                    </h3>
-                    {% if request.user.is_authenticated %}
-                        <hr class="d-none d-md-block my-2 mb-3 mt-2">
-                        <form method="post">
-                            {% csrf_token %}
-                            {{ form|crispy }}
-                            <button class="btn btn-primary" type="submit">Comentar</button>
-                        </form>
-                    {% endif %}
 
-                    <hr class="d-none d-md-block my-2 mb-3 mt-2">
-                    {% for comment in post.comment_set.all %}<!--Accedemos a todos los comentarios del post-->
-                        <div class="mt-4 mb-2 border border-opacity-10 rounded p-1">
-                            <div class="row">
-                                <div class="col-8 d-flex">
-                                    <h5>{{ comment.author.username }}</h5>
-                                    <span>- {{ comment.post_date }}</span>
-                                </div>
-                                <div class="col-4 text-end">
-                                </div>
-                            </div>
-                            {{ comment.content }}
-                        </div>
-                    {% endfor %}
+            <!-- Sección de comentarios -->
+<!-- Sección de comentarios -->
+<section class="mb-5">
+    <h3 id="comments-section">Comentarios</h3>
+
+    <!-- Formulario de comentarios -->
+    {% if request.user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button class="btn btn-primary" type="submit">Comentar</button>
+        </form>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> Iniciar sesión para dejar un comentario.
+    </div>
+    {% endif %}
+
+<!-- Mostrar comentarios existentes -->
+{% for comment in post.comment_set.all %}
+    <!-- Renderizar comentarios existentes de forma más estilizada y encuadrada con sombras -->
+    <div class="comment-container border rounded p-3 mb-3 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="comment-header bg-light shadow-sm rounded p-2 mb-2">
+                <strong class="text-dark">{{ comment.author.username }}</strong> - 
+                <span class="text-muted">{{ comment.post_date|date:"F j, Y H:i" }}</span>
+            </div>
+            {% if comment.author == request.user %}
+                <form method="post" action="{% url 'delete_comment' %}" class="mb-0">
+                    {% csrf_token %}
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                    <input type="hidden" name="post_id" value="{{ comment.post.id }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+            {% endif %}
+        </div>
+        <div class="comment-body">
+            {{ comment.content|linebreaks }}
+        </div>
+    </div>
+{% empty %}
+    <p>No hay comentarios aún.</p>
+{% endfor %}
+
+
+</section>
 
 
 
-                    <script>
-                        function copyToClipboard(text) {
-                          var textArea = document.createElement("textarea");
-                          textArea.value = text;
-                          document.body.appendChild(textArea);
-                          textArea.select();
-                          document.execCommand('copy');
-                          document.body.removeChild(textArea);
-                          alert("URL copiada al portapapeles: " + text);
-                        }
-                    </script>
 
-                 <!--  <h2>Agregar un comentario:</h2>
-                        {% for comentario in comentarios %}
-                            <div class="comentario">
-                                <p>{{ comentario.autor }} dijo:</p>
-                                <p>{{ comentario.contenido_comentario }}</p>
-                            </div>
-                        {% endfor %}
-                    <form method="post" action="{% if post.id %}{% url 'detalle_post' pk=post.id %}{% endif %}">
-                        {% csrf_token %}
-                        {{ comentario_form.as_p }}
-                        <button type="submit">Comentar</button>
-                    </form>--> 
-                    <!-- class="card bg-light">
-                        <div class="card-body">
-                            <!-- Comment form--
-                            <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                            <!-- Comment with nested comments--
-                            <div class="d-flex mb-4">
-                                <!-- Parent comment--
-                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                <div class="ms-3">
-                                    <div class="fw-bold">Commenter Name</div>
-                                    If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                    <!-- Child comment 1--
-                                    <div class="d-flex mt-4">
-                                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                        <div class="ms-3">
-                                            <div class="fw-bold">Commenter Name</div>
-                                            And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-                                        </div>
-                                    </div>
-                                    <!-- Child comment 2--
-                                    <div class="d-flex mt-4">
-                                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                        <div class="ms-3">
-                                            <div class="fw-bold">Commenter Name</div>
-                                            When you put money directly to a problem, it makes a good headline.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Single comment--
-                            <div class="d-flex">
-                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                <div class="ms-3">
-                                    <div class="fw-bold">Commenter Name</div>
-                                    When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                </div>
-                            </div>
-                        </div>
-                    </div-->
-                </section>
+
+            <!----> 
+
+
+
+
+                
+                
+                <!---->
             </div>
             <!-- Side widgets-->
             <div class="col-lg-4">

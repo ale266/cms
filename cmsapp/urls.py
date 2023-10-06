@@ -18,4 +18,6 @@ urlpatterns = [
     path('create-category', views.createCategory, name= 'createCategory'),
     path('update-category/<str:slug>', views.updateCategory, name= 'updateCategory'),
     path('delete-category/<str:slug>', views.deleteCategory, name= 'deleteCategory'),
+    path('eliminar-comentario/', views.delete_comment, name= 'delete_comment'),
+
 ]
