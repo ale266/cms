@@ -95,9 +95,10 @@
                             </div>
                             <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                                         <a href="{%url 'detail' post.slug %}" class="btn btn-primary">Leer mas</a>
-                                        
+                                        {% if perms.cmsapp.change_post %}
                                         <a href='{% url "update" post.slug %}' class = 'btn btn-primary'><i class="fas fa-pen"></i></a>
                                         <a href='{% url "delete" post.slug %}' class = 'btn btn-danger'><i class="fas fa-trash"></i></a>
+                                        {% endif%}
 
                                         
                             </div>
