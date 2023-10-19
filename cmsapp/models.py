@@ -6,7 +6,22 @@ from ckeditor.fields import RichTextField
 from django.conf import settings
 from userprofile.models import UserProfile
 from django.contrib.auth.models import User #Asociamos comentarios a usuarios
+#-------------------------------
 
+class Tarea(models.Model):
+    ESTADOS_CHOICES = (
+        ('pendiente', 'Pendiente'),
+        ('en_proceso', 'En Proceso'),
+        ('completada', 'Completada'),
+    )
+
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=200)
+    descripcion = models.TextField()
+    estado = models.CharField(max_length=20, choices=ESTADOS_CHOICES, default='pendiente')
+    eliminada = models.BooleanField(default=False)
+
+#------------------------------------------------------
 
 # Create your models here.
 class Post(models.Model):
