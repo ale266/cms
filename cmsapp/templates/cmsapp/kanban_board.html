@@ -13,7 +13,7 @@
                 <div class="task-list">
                     {% for tarea in tareas_pendientes %}
                         <div class="card task-item">
-                            {{ tarea.titulo }}
+                            {{ tarea.titulo }}<br>
                             {{ tarea.descripcion }}
                             <a href="{% url 'mover_tarea' tarea.id 'en_proceso' %}" class="btn btn-primary btn-sm">Mover a En Proceso</a>
                         </div>
@@ -29,7 +29,7 @@
                 <div class="task-list">
                     {% for tarea in tareas_en_proceso %}
                         <div class="card task-item">
-                            {{ tarea.titulo }}
+                            {{ tarea.titulo }}<br>
                             {{ tarea.descripcion }}
                             <a href="{% url 'mover_tarea' tarea.id 'completada' %}" class="btn btn-success btn-sm">Mover a Completada</a>
                         </div>
