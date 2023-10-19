@@ -116,6 +116,9 @@ def asignar_rol_usuario(request,id):
     
   else:
     form = AsignarRolForm(usuario=usuario)
+    if form.is_valid():
+        usuario.desasignar_rol(form.cleaned_data.get('Roles')) #obtiene los roles seleccionado
+        return redirect('lista_users')  
 
   contexto = {'usuario':usuario, 'user':request.user, 'form':form}
 

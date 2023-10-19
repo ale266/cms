@@ -26,5 +26,7 @@ docker compose up --build
 
 
 python -m django_pydoc.py -b <////  DOCUMENTATION
+sphinx-apidoc -o source/modules ..    <////  DOCUMENTATION
+make html <////  DOCUMENTATION
 
 ingresar a la carpeta donde estan los test y ejecutar en consola: pytest <////  Test

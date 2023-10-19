@@ -3,7 +3,24 @@
 {%  load static %}
 {% block title %}Nuevo Rol de Sistema{% endblock %}
 {% block content %}
-    <div class="container mt-3">
+<style>
+    #cke_id_body{
+        width: 100% !important;
+        align-content: center;
+    }
+    #container{
+        width: 40%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: auto;
+        padding: 30px 20px 20px 20px;
+        border-radius: 30px;
+        margin-bottom: 20x;
+    }
+    #container h3{
+        text-align: center;  
+    }
+</style>
+    <div class="container" id = 'container'>
         <h3>Crear Nuevo Rol </h3><hr>
         {%  if mensajeError %}
             <div class="alert alert-danger" role="alert">
@@ -11,7 +28,7 @@
                 <p>{{mensajeError}}</p>
             </div>
         {% endif %}
-        <form method="POST" class="col-12 col-md-8 mx-auto border rounded bg-white p-4">
+        <form method="POST">
             {% csrf_token %}
             {{ form|crispy }}
         </br>

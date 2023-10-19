@@ -2,8 +2,24 @@
 {% load crispy_forms_tags %}
 {% block title %} Editar Rol de Sistema {% endblock %}
 {% block content %}
-
-<div class="container mt-3">
+<style>
+    #cke_id_body{
+        width: 100% !important;
+        align-content: center;
+    }
+    #container{
+        width: 40%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: auto;
+        padding: 30px 20px 20px 20px;
+        border-radius: 30px;
+        margin-bottom: 20x;
+    }
+    #container h3{
+        text-align: center;  
+    }
+</style>
+<div class="container" id="container">
     {% if form.errors %}
         {% for field in form %}
             {% for error in field.errors %}
@@ -29,7 +45,7 @@
     {% endif %}
     <h3>Editar Rol de Sistema</h3>
     <hr>
-    <form method="POST" class="col-12 col-md-8 mx-auto">
+    <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
         
