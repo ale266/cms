@@ -5,25 +5,31 @@
 
 {% block content %}
 
-    <style>
-        [data-toggle="collapse"] .fa:before {
-            content: "\f077";
+<style>
+    #cke_id_body{
+        width: 100% !important;
+        align-content: center;
+    }
+    #container{
+        width: 40%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: auto;
+        padding: 30px 20px 20px 20px;
+        border-radius: 30px;
+        margin-bottom: 20x;
+    }
+    #container h3{
+        text-align: center;  
+    }
+</style>
 
-        }
-
-        [data-toggle="collapse"].collapsed .fa:before {
-            content: "\f078";
-
-        }
-    </style>
-    
-    <div >
+    <div class='container' id = 'container'>
         <div class="row">
-            <h3 class="col-12 col-md-10" >Roles</h3>
+            <div class="col"><h3 >Roles</h3></div>
             <!-- Falta agregar condicion para que esta opcion no se muestre si no se tiene el permiso -->
-            <div class="col-12 col-md-2 row">
+            <div class="col" style="text-align: right; padding-right: 23px;">
                 {% if perms.cmsapp.add_rolesdesistema %}
-                    <a href="{% url 'crear_rol' %}" class="btn bg-color-accent font-weight-bold col-12 ml-auto">Crear Nuevo Rol</a>
+                    <a href="{% url 'crear_rol' %}" class="btn btn-primary">Crear Rol</a>
                 {% endif %}
             </div>
 
@@ -76,8 +82,8 @@
                                 <div class="d-flex flex-row-reverse">
                                     <!-- if rol is not defecto -->
                                     {% if not rol.defecto %}
-                                        <a href="{% url 'eliminar_rol' rol.id %}" class="btn btn-outline-danger m-2">Eliminar Rol<a>
-                                        <a href="{% url 'modificar_rol' rol.id %}" class="btn btn-outline-primary m-2">Modificar Rol<a>
+                                        <a href="{% url 'eliminar_rol' rol.id %}" class="btn btn-danger m-2">Eliminar Rol<a>
+                                        <a href="{% url 'modificar_rol' rol.id %}" class="btn btn-primary m-2">Modificar Rol<a>
                                     {% endif %}
                                 </div>
                             </div>
@@ -87,6 +93,7 @@
             {% endfor %}
         </div>
     </div>
+    
     </br> 
     <!-- <div class="">
         <svg onclick="window.history.back()" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">

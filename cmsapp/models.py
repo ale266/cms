@@ -1,16 +1,31 @@
 from django.db import models
 import uuid
+from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from django.conf import settings
+from permisos.models import RolesdeSistema
 from userprofile.models import UserProfile
 from django.contrib.auth.models import User #Asociamos comentarios a usuarios
 
 
 # Create your models here.
+
+class RolUsuario(models.Model):
+    """
+    Modelo para la clase de RolUsuario con los campos necesarios para el mismo
+    """
+    miembro = models.ForeignKey(User, on_delete=models.CASCADE)
+    roles = models.ManyToManyField(RolesdeSistema)   
+ 
+    def __str__(self):
+        #retorna el nombre de los roles de usuario
+
+        return ''.join([rol for rol in self.roles.all()])
+
 class Post(models.Model):
-    writer = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True)
+    writer = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Creador')
     title  = models.CharField(max_length=500, verbose_name="Titulo")
     image = models.ImageField(upload_to='img', default= 'NULL', verbose_name="Logo")
     body = RichTextField(verbose_name="Contenido")
@@ -22,6 +37,9 @@ class Post(models.Model):
     likes = models.ManyToManyField(UserProfile, related_name='blog_post')
     dislikes = models.ManyToManyField(UserProfile, related_name='blog_post2')
     views = models.PositiveIntegerField(default=0) #número de visualizaciones
+    miembros = models.ManyToManyField(User, related_name='set_miembros', verbose_name='Miembros')
+    roles = models.ManyToManyField(RolesdeSistema)
+    usuario_roles = models.ManyToManyField(RolUsuario)
 
     def total_likes(self):
         return self.likes.count()
@@ -38,6 +56,20 @@ class Post(models.Model):
     def get_absolute_url(self):
         # Devuelve la URL completa de la publicación
         return reverse('post_detail', args=[str(self.slug)])
+    
+    
+    def get_Writer(self):
+        """
+        Metodo que retorna el Usuario del Writer del post
+        """
+        return self.writer
+
+    def miembros_post(self):
+        
+        miembros = [self.set_miembros.get(usuario=self.writer)]
+        miembros.extend(list(self.set_miembros.all().filter(rol__isnull=False)))
+
+        return miembros
     
     def __str__(self):
         return self.title

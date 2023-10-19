@@ -8,10 +8,26 @@
 
 {# body #}
 {% block content %}
-
-<div>
+<style>
+    #cke_id_body{
+        width: 100% !important;
+        align-content: center;
+    }
+    #container{
+        width: 40%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: auto;
+        padding: 30px 20px 20px 20px;
+        border-radius: 30px;
+        margin-bottom: 20x;
+    }
+    #container h3{
+        text-align: center;  
+    }
+</style>
+<div class="container" id="container">
     <div>
-        <h2> Usuarios</h2>
+        <h3> Usuarios</h2>
         <hr>
     </div>
          </br>
@@ -21,7 +37,6 @@
                      <tr>
                           <th>User</th>
                           <th>Email</th>
-                          <th>Rol</th>
                      </tr>
                  </thead>
                  <tbody>
@@ -29,10 +44,7 @@
                           <tr>
                               <td>{{ u.username }}</td>
                               <td>{{ u.email }}</td>
-                              <td><a href="{% url 'asignar_rol' u.id %}" class="ml-3 bg-color-danger border-0">Asignar Rol o Desasignar Rol</a></td>
                               
-                              </td>
-            
                           </tr>
                       {% endfor %}
                  </tbody>

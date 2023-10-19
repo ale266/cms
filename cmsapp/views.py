@@ -3,7 +3,7 @@ from django.contrib.sessions.models import Session
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
 from .models import Category, Post, Comment
-from .forms import PostForm, categoryForm, PostCommentForm
+from .forms import AsignarMiembroForm, PostForm, categoryForm, PostCommentForm
 from django.views import generic, View
 from django.views.generic import ListView, CreateView, UpdateView
 from django.views.generic import FormView
@@ -242,6 +242,63 @@ def deleteCategory(request, slug):
         return redirect('listCategory')
     context = {'form': form}
     return render(request, 'cmsapp/deleteCategory.html', context) 
+
+ 
+
+def asignar_miembro(request, slug):
+    """
+    Vista que donde el Creador puede seleccionar los participantes del post
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
+    print(slug)
+    post = get_object_or_404(Post, slug=slug)
+    form = AsignarMiembroForm(instance=post)
+    if request.method == 'POST':
+        form = AsignarMiembroForm( instance=post, data=request.POST)
+        if form.is_valid():
+            miembros = form.cleaned_data['miembros']
+            form.save()
+            messages.success(request, 'Los miembros han sido asignados al post')
+            return redirect('detail', slug=slug)
+    contexto = {
+        'form': form,
+        'post': post,
+    }
+    return render(request, 'cmsapp/asignar_miembro.html', contexto)
+
+# def asignarRol(request, id_proyecto, id_usuario):
+#     """
+#     Vista que donde el Scrum master puede seleccionar el rol a asignar a un usuario dentro del proyecto
+#     Argumentos:request: HttpRequest
+#     Return: HttpResponse
+    
+#     """
+   
+#     proyecto = get_object_or_404(Proyecto, id=id_proyecto)
+#     usuario_rol = proyecto.usuario_roles.filter(miembro=id_usuario).first()
+#     if request.method == 'POST':
+#         form = AsignarRolForm(id_proyecto, id_usuario, request.POST, instance=usuario_rol) 
+#         if form.is_valid():
+#             roles = form.cleaned_data['roles']
+#             usuario_rol = form.save()
+#             usuario = Usuario.objects.get(id=id_usuario)
+#             usuario_rol.miembro = usuario
+#             usuario_rol.save()
+#             proyecto.usuario_roles.add(usuario_rol)
+#             messages.success(request,"Se asigno correctamente")
+#             return redirect('mostrarProyecto', id_proyecto=id_proyecto)
+#     else:
+#         if usuario_rol:
+#             form = AsignarRolForm(id_proyecto, id_usuario, instance=usuario_rol)
+#             data = []
+#             usuario = Usuario.objects.get(id=id_usuario)
+#             data = usuario_rol
+#         else:
+#             form = AsignarRolForm(id_proyecto, id_usuario, )
+#     contexto = {'form': form}
+#     return render(request, 'proyectos/asignarRol.html', contexto)
+
 
 
 """#Comentario

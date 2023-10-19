@@ -19,5 +19,6 @@ urlpatterns = [
     path('update-category/<str:slug>', views.updateCategory, name= 'updateCategory'),
     path('delete-category/<str:slug>', views.deleteCategory, name= 'deleteCategory'),
     path('eliminar-comentario/', views.delete_comment, name= 'delete_comment'),
+    path('asignar_miembro/<str:slug>', views.asignar_miembro, name='asignar_miembro'),
 
 ]

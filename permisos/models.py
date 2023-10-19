@@ -7,7 +7,7 @@ from django.contrib.auth.models import Permission, Group
 # Create your models here.
 class RolesdeSistema(models.Model):
     
-    nombre = models.CharField(max_length=20, blank=False, unique=True, verbose_name='Roles de Sistema')
+    nombre = models.CharField(max_length=20, blank=False, unique=True, verbose_name='Rol de Sistema')
     defecto = models.BooleanField(default=False) # indica si el rol creado es predeterminado en el sistema y no puede borrarse.
     descripcion = models.TextField(max_length=60, blank=True)
     permisos = models.ManyToManyField(Permission, blank=True)  # Indica que varios roles pueden tener varios permisos
