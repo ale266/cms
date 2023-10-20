@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/stylesKanban.css' %}">
+<div class="container"></div>
+<div class="container">
+    <h1 class="titulo-principal">Tablero Kanban</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="task-section">
+                <h2 class="section-title">Pendiente</h2>
+                <div class="task-list">
+                    {% for tarea in tareas_pendientes %}
+                        <div class="card task-item">
+                            {{ tarea.titulo }}<br>
+                            {{ tarea.descripcion }}
+                            <a href="{% url 'mover_tarea' tarea.id 'en_proceso' %}" class="btn btn-primary btn-sm">Mover a En Proceso</a>
+                        </div>
+                    {% empty %}
+                        <p class="empty-message">No hay tareas pendientes.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="task-section">
+                <h2 class="section-title">En Proceso</h2>
+                <div class="task-list">
+                    {% for tarea in tareas_en_proceso %}
+                        <div class="card task-item">
+                            {{ tarea.titulo }}<br>
+                            {{ tarea.descripcion }}
+                            <a href="{% url 'mover_tarea' tarea.id 'completada' %}" class="btn btn-success btn-sm">Mover a Completada</a>
+                        </div>
+                    {% empty %}
+                        <p class="empty-message">No hay tareas en proceso.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="task-section">
+                <h2 class="section-title">Completada</h2>
+                <div class="task-list">
+                    {% for tarea in tareas_completadas %}
+                        <div class="card task-item">
+                            {{ tarea.titulo}}
+                            <p class="titulo-pequeno"></p> <!--- USO COMO PARA QUE HAGA UN ENTER ENTRE DESCRIPCION Y TITULO-->
+                            {{ tarea.descripcion }}
+                            <a href="{% url 'eliminar-tarea' tarea.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </div>
+                    {% empty %}
+                        <p class="empty-message">No hay tareas completadas.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h2>Agregar Nueva Tarea</h2>
+            <form method="post" action="{% url 'crear-tarea' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="titulo">Título:</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Agregar Tarea</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

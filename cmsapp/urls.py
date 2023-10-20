@@ -20,4 +20,10 @@ urlpatterns = [
     path('delete-category/<str:slug>', views.deleteCategory, name= 'deleteCategory'),
     path('eliminar-comentario/', views.delete_comment, name= 'delete_comment'),
 
+    path('kanban-board/', views.kanban_board, name='kanban-board'),
+    path('mover_tarea/<int:tarea_id>/<str:nuevo_estado>/', views.mover_tarea, name='mover_tarea'),
+    path('crear-tarea/', views.crear_tarea, name='crear-tarea'),  # Nueva URL para el formulario de creación
+    path('mover-tarea/<int:tarea_id>/<str:nuevo_estado>/', views.mover_tarea, name='mover-tarea'),
+    path('tarea/<int:tarea_id>/eliminar/', views.eliminar_tarea, name='eliminar-tarea'),
+
 ]

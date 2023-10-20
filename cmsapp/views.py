@@ -12,8 +12,63 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib import messages
+#-------------------------------------eliminar
+def eliminar_tarea(request, tarea_id):
+    tarea = get_object_or_404(Tarea, id=tarea_id, usuario=request.user)
+    tarea.delete()
+    # Redirigir al usuario de vuelta a la página de su tablero Kanban
+    messages.success(request, 'La tarea ha sido eliminada correctamente.')
+    return redirect('kanban-board')
+#------------------------------------
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .models import Tarea
+
+@login_required
+def crear_tarea(request):
+    if request.method == 'POST':
+        titulo = request.POST['titulo']
+        descripcion = request.POST['descripcion']
+        usuario = request.user
+
+        # Crea una nueva tarea en la base de datos
+        Tarea.objects.create(titulo=titulo, descripcion=descripcion, usuario=usuario, estado='pendiente')
+
+        # Redirige al usuario de vuelta a la página de su tablero Kanban
+        return redirect('kanban-board')
+
+    return render(request, 'cmsapp/crear_tarea.html')
 
 
+#-------------------------------------------
+from .models import Tarea
+
+def kanban_board(request):
+    tareas_pendientes = Tarea.objects.filter(usuario=request.user, estado='pendiente')
+    tareas_en_proceso = Tarea.objects.filter(usuario=request.user, estado='en_proceso')
+    tareas_completadas = Tarea.objects.filter(usuario=request.user, estado='completada')
+
+    return render(request, 'cmsapp/kanban_board.html', {
+        'tareas_pendientes': tareas_pendientes,
+        'tareas_en_proceso': tareas_en_proceso,
+        'tareas_completadas': tareas_completadas,
+    })
+
+#--------------------------------------------
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
+
+def mover_tarea(request, tarea_id, nuevo_estado):
+    tarea = get_object_or_404(Tarea, id=tarea_id, usuario=request.user)
+    tarea.estado = nuevo_estado
+    tarea.save()
+    
+    # Redirigir al usuario de vuelta a la página de su tablero Kanban
+    return redirect(reverse('kanban-board'))
+
+
+
+#----------------------------------------------
 # Create your views here.
 #solo ver los posts que estan activos, los inactivos solo lo puede ver el administrador
 # def index(request):

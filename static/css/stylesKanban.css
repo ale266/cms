@@ -1,0 +1,60 @@
+/* stylesKanban.css */
+.titulo-principal {
+    font-size: 36px; /* Tamaño de la fuente */
+    color: #ff00aa; /* Color del texto (azul en este caso) */
+    text-align: center; /* Alineación del texto al centro */
+    margin-bottom: 20px; /* Espacio en la parte inferior del título */
+    /* Otros estilos opcionales, como fuente, peso del texto, etc. */
+    font-weight: bold; /* Texto en negrita */
+
+}
+.titulo-pequeno {
+    font-size: 10px; /* Puedes ajustar el tamaño de la fuente según tus necesidades */
+    color: #333; /* Cambia el color del texto si es necesario */
+    /* Otros estilos opcionales, como espaciado, peso del texto, etc. */
+}
+/* Estilos para las secciones de tareas */
+.task-section {
+    margin-bottom: 50px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.section-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Estilos para las tarjetas de tarea */
+
+.task-item {
+    box-sizing: content-box; 
+    margin-top: 10px; /* Agrega un margen superior para las tarjetas */
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+
+/* Estilos para el mensaje de "No hay tareas..." */
+.empty-message {
+    color: #888;
+    font-style: italic;
+}
+
+/* Estilos para el formulario de nueva tarea */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Estilos para los botones */
+.btn {
+    margin-right: 10px;
+}
+.container {
+    margin-top: 20px; /* Espacio en la parte superior */
+    margin-bottom: 20px; /* Espacio en la parte inferior */
+}
