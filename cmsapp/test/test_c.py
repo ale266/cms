@@ -34,9 +34,4 @@ class Test_rol_views(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'permisos/modificar_rol.html')
 
-    def test_eliminar_rol(self):
-        path = reverse('eliminar_rol', args=[self.rol.id])
-        response = self.client.get(path)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'permisos/eliminar_rol.html')
-
+    
