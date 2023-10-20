@@ -3,8 +3,25 @@
 {% block content %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/stylesKanban.css' %}">
-<div class="container"></div>
-<div class="container">
+
+<style>
+    #cke_id_body{
+        width: 100% !important;
+        align-content: center;
+    }
+    #container{
+        width: 40%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: auto;
+        padding: 30px 20px 20px 20px;
+        border-radius: 30px;
+        margin-bottom: 20x;
+    }
+    #container h3{
+        text-align: center;  
+    }
+</style>
+<div class="container" id="container">
     <h1 class="titulo-principal">Tablero Kanban</h1>
     <div class="row">
         <div class="col-md-4">
@@ -76,5 +93,5 @@
         </div>
     </div>
 </div>
-
+</main>
 {% endblock %}

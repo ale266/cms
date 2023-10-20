@@ -102,11 +102,13 @@ def eliminar_rol(request, id_rol):
         HttpResponse
     """
     rol = get_object_or_404(RolesdeSistema, pk=id_rol)
+    group = get_object_or_404(Group, name=rol.nombre)
     contexto = {'user': request.user, 'rol': rol}
 
     if request.method == 'POST':
           #agregar opcion de si el rol es utilizado , no se puede eliminar
             rol.delete()
+            group.delete()
             messages.success(request,"El rol "+rol.nombre+" ha sido eliminado satisfactoriamente")
             return redirect('listar_roles')
 
