@@ -11,7 +11,32 @@ from django.contrib.auth.models import User #Asociamos comentarios a usuarios
 
 
 # Create your models here.
+class tipoPost:
+   
+    TEXTO = "Texto"
+    IMAGENES = "Imagenes"
+    COMBINADOS = "Combinados"
+    OTROS = "Otros"
 
+tipo_choices = (
+        (tipoPost.TEXTO, 'Texto'),
+        (tipoPost.IMAGENES, 'Imagenes'),
+        (tipoPost.COMBINADOS, 'Combinados'),
+        (tipoPost.OTROS, 'Otros'),
+    )
+class estadoPost:
+   
+    CREACION = "En Creacion"
+    ENEDICION = "En Edicion"
+    PUBLICACION = "En publicacion"
+    DESACTIVADO = "Desactivado"
+
+estado_choices = (
+        (estadoPost.CREACION, 'En Creacion'),
+        (estadoPost.ENEDICION, 'En Edicion'),
+        (estadoPost.PUBLICACION, 'En Publicacion'),
+        (estadoPost.DESACTIVADO, 'Desactivado'),
+    )
 class RolUsuario(models.Model):
     """
     Modelo para la clase de RolUsuario con los campos necesarios para el mismo
@@ -40,6 +65,10 @@ class Post(models.Model):
     miembros = models.ManyToManyField(User, related_name='set_miembros', verbose_name='Miembros')
     roles = models.ManyToManyField(RolesdeSistema)
     usuario_roles = models.ManyToManyField(RolUsuario)
+    estado = models.CharField(max_length=20, choices=estado_choices, 
+                    default=estadoPost.CREACION)
+    tipo = models.CharField(max_length=20, choices=tipo_choices, 
+                    default=tipoPost.TEXTO)
 
     def total_likes(self):
         return self.likes.count()

@@ -150,6 +150,7 @@ def post_detail(request, slug):
 def createPost(request):
     profile = request.user.userprofile
     form = PostForm()
+    post.estado = 'En Creacion'
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid:
@@ -166,6 +167,7 @@ def createPost(request):
 
 def updatePost (request, slug):
     post = Post.objects.get(slug=slug)
+    post.estado = 'En Edicion'
     form = PostForm(instance=post)
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance = post)
@@ -173,7 +175,6 @@ def updatePost (request, slug):
             form.save()
             messages.info(request, 'Blog modificado exitosamente')
             return redirect('detail', slug=post.slug)
-
     context = {'form': form}
     return render(request, 'cmsapp/create.html', context) 
 
@@ -188,6 +189,18 @@ def deletePost(request, slug):
     context = {'form': form}
     return render(request, 'cmsapp/delete.html', context) 
 
+def publishPost(request, slug):
+    """
+    Donde el publicador puede publicar un proyecto
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
+    
+    post = get_object_or_404(Post, slug=slug)
+    post.estado = 'En Publicacion'
+    post.save()
+    messages.success(request, 'Post publicado satisfactoriamente')
+    return redirect('detail', slug=post.slug)
 
 def likePost(request, slug):
     post = Post.objects.get(slug=slug)

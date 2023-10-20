@@ -10,6 +10,7 @@ urlpatterns = [
     path('create-post', views.createPost, name= 'create'),
     path('update-post/<str:slug>', views.updatePost, name= 'update'),
     path('delete-post/<str:slug>', views.deletePost, name= 'delete'),
+    path('publish-post/<str:slug>', views.publishPost, name='publish'),
     path('like-post/<str:slug>', views.likePost, name= 'like'),
     path('dislike-post/<str:slug>', views.dislikePost, name= 'dislike'),
     path('list-category', views.listCategory.as_view(), name= 'listCategory'),
@@ -21,5 +22,6 @@ urlpatterns = [
     path('eliminar-comentario/', views.delete_comment, name= 'delete_comment'),
     path('asignar_miembro/<str:slug>', views.asignarMiembro, name='asignar_miembro'),
     path('asignar_rol/<str:slug>/miembro/<int:id_usuario>', views.asignarRol, name='asignar_rol'),
+    
 
 ]
