@@ -15,6 +15,7 @@
                                 <h1 class="fw-bolder mb-1">{{ post.title}}</h1>
                                 <h5 class="fw-bolder mb-1">{{ post.estado}}</h5>
                             </div>
+                            {% if post.estado != 'Desactivado' %}
                             <div class="col" style="text-align: right;">
                                 {% for miembro in post.miembros.all %}
                                 {% for roles in post.usuario_roles.all %}
@@ -27,6 +28,7 @@
                                 {% endfor%}
                                  
                             </div>
+                            {% endif%}
                         </div>
                         <!-- Post meta content-->
                         <!-- Post categories-->
@@ -59,35 +61,39 @@
                         <button class = 'btn btn-primary btn-sm' onclick="copyToClipboard('{{ post.get_absolute_url }}')" style="margin-left: 10px;"><i class="fa-solid fa-share-from-square"></i></button>
                             <!-- <a href='{% url "kanban-board" %}' class = 'btn btn-danger'>Tabla Kanban</i></a> -->
                             <!-- <a href='{% url "delete" post.slug %}' class = 'btn btn-danger'><i class="fas fa-trash"></i></a> -->
-                        {% if post.writer.name == request.user.username %}
-                            <a href="{% url 'asignar_miembro' post.slug %}" class="btn btn-primary ml-3 bg-color-danger border-0">Asignar miembros</a>
-                        {% endif %}
-                        {% if request.user.is_authenticated %}
-                        <div class="card-body">
-                            <h6>Miembros del post:</h6>
-                            <ul class="list-group list-group-flush">
-                                {% for miembro in post.miembros.all %}
-                                    <li class="list-group-item">{{miembro}}
-                                        {% if post.writer.username == request.user.username %}
-                                                <a href="{% url 'asignar_rol' post.slug miembro.id %}" class="ml-3 bg-color-danger border-0">Asignar Rol o Desasignar Rol</a>
-                                        {% endif %}
-                                        <h6 class="card-text">Roles:</h6>
-                                        {% for roles in post.usuario_roles.all %}
-                                            {% for rol in roles.roles.all %}
-                                                {% if roles.miembro == miembro %}
-                                                <p>-{{rol}}</p>
-                                                {% if rol.nombre == 'Editor' and request.user.username == miembro.username  %}
-                                                <a href='{% url "update" post.slug %}' class = 'btn btn-primary'>Editar post <i class="fas fa-pen"></i></a>
-                                                {% endif %}
-                                                {% endif %}
-                                            {% endfor %} 
-                                        {% endfor %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {%endif%}
                         
+                        {% if post.estado != 'Desactivado' %}
+                            {% if post.writer.name == request.user.username %}
+                                <a href="{% url 'asignar_miembro' post.slug %}" class="btn btn-primary ml-3 bg-color-danger border-0">Asignar miembros</a>
+                            {% endif %}
+                            {% if request.user.is_authenticated %}
+                            <div class="card-body">
+                                <h6>Miembros del post:</h6>
+                                <ul class="list-group list-group-flush">
+                                    {% for miembro in post.miembros.all %}
+                                        <div class="card-body">
+                                            <li class="list-group-item">{{miembro}}
+                                                {% if post.writer.username == request.user.username %}
+                                                        <a href="{% url 'asignar_rol' post.slug miembro.id %}" class="ml-3 bg-color-danger border-0">Asignar Rol o Desasignar Rol</a>
+                                                {% endif %}
+                                                <h6 class="card-text">Roles:</h6>
+                                                {% for roles in post.usuario_roles.all %}
+                                                    {% for rol in roles.roles.all %}
+                                                        {% if roles.miembro == miembro %}
+                                                        <p>-{{rol}}</p>
+                                                        {% if rol.nombre == 'Editor' and request.user.username == miembro.username  %}
+                                                        <a href='{% url "update" post.slug %}' class = 'btn btn-primary'>Editar post <i class="fas fa-pen"></i></a>
+                                                        {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %} 
+                                                {% endfor %}
+                                            </li>
+                                        </div>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {%endif%}
+                        {%endif%}
                     </header>
                     <!-- Preview image figure-->
                     <figure class="mb-4"><img class="img-fluid rounded" src="{{post.image.url}}" alt="..." /></figure>
