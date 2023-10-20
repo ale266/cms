@@ -8,8 +8,11 @@ from django.contrib.auth.models import User
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        exclude = ['slug', 'writer', 'likes', 'dislikes', 'views', 'roles', 'usuario_roles', 'miembros']
+        exclude = ['slug', 'writer', 'likes', 'dislikes', 'views', 'roles', 'usuario_roles', 'miembros', 'estado']
 
+    def __init__(self, *args, **kwargs):
+        super(PostForm, self).__init__(*args, **kwargs)
+        # self.fields['tipo'].disabled = True
 
 class categoryForm(ModelForm):
     class Meta:

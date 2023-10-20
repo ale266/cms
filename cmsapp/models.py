@@ -63,12 +63,18 @@ class RolUsuario(models.Model):
         #retorna el nombre de los roles de usuario
 
         return ''.join([rol for rol in self.roles.all()])
+class Carrousel (models.Model):
+     image = models.ImageField(upload_to='img', default= 'NULL', verbose_name="Imagen")
+     description  = models.CharField(max_length=200, verbose_name="Descripcion")
 
+     def __str__(self):
+        return self.description
+    
 class Post(models.Model):
     writer = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Creador')
     title  = models.CharField(max_length=500, verbose_name="Titulo")
     image = models.ImageField(upload_to='img', default= 'NULL', verbose_name="Logo")
-    body = RichTextField(verbose_name="Contenido")
+    body = models.TextField(verbose_name="Contenido", blank=True, null=True )
     post_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -84,7 +90,7 @@ class Post(models.Model):
                     default=estadoPost.CREACION)
     tipo = models.CharField(max_length=20, choices=tipo_choices, 
                     default=tipoPost.TEXTO)
-
+    carrousel = models.ManyToManyField(Carrousel, verbose_name='Imagenes', blank=True )
     def total_likes(self):
         return self.likes.count()
 

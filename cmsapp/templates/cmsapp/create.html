@@ -30,17 +30,66 @@
 </div>
 </form>
 
-<script>
+<script> 
     let inputfields = document.getElementsByTagName('input')
     let bodyfield = document.getElementById('id_body')
     let selectfield = document.getElementById('id_category')
     let selectfield2 = document.getElementById('id_tipo')
+    let selectfield3 = document.getElementById('id_carrousel')
     for (let i=0; i<inputfields.length;i++){
         inputfields[i].classList.add('form-control')
     }
     bodyfield.classList.add('form-control')
     selectfield.classList.add('form-control')
     selectfield2.classList.add('form-control')
+    selectfield3.classList.add('form-control')
+
+    
+
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Manejar el cambio en el primer SelectField
+    $('#id_tipo').change(function() {
+        if ($(this).val() == 'Imagenes') {
+            $('#id_carrousel').show();
+        } else {
+
+        $('#id_carrousel').hide();
+        }
+    });
+});
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Manejar el cambio en el SelectField
+    $('#id_tipo').change(function() {
+        if ($(this).val() == 'Texto') {
+            $('#id_body').show();
+        } else {
+
+            $('#id_body').hide();
+        }
+    });
+});
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Manejar el cambio en el SelectField
+    $('#id_tipo').change(function() {
+        if ($(this).val() == 'Combinados') {
+            $('#id_body').show();
+            $('#id_carrousel').show();
+        } 
+    });
+});
 </script>
 </main>
 {% endblock %}

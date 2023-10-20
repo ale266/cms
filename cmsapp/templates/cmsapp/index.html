@@ -34,12 +34,23 @@
         </div>
 
         <h3>
-            {% for category in categories%}
-            <div class="badge bg-primary bg-gradient rounded-pill mb-2"> <a class="text-decoration-none link-light" href="{% url 'indexCat' category %}"> {{category}}</a></div>
-            {% endfor %}
-            {% if request.user.is_authenticated %}
-            <div class="badge bg-gradient rounded-pill mb-2"><a class="link-primary" href="{% url 'listCategory' %}"><i class="fas fa-edit"></i></a></div>
-            {% endif %}
+            <div class="row">
+                <div class="col">
+                    {% for category in categories%}
+                    <div class="badge bg-primary bg-gradient rounded-pill mb-2"> <a class="text-decoration-none link-light" href="{% url 'indexCat' category %}"> {{category}}</a></div>
+                    {% endfor %}
+                    
+                    {% if request.user.is_authenticated %}
+                    <div class="badge bg-gradient rounded-pill mb-2"><a class="link-primary" href="{% url 'listCategory' %}"><i class="fas fa-edit"></i> Editar Cat</a></div>
+                </div>
+                <div class="col" style="text-align: right;">
+                    <div class="badge bg-secondary bg-gradient rounded-pill mb-2"> <a class="text-decoration-none link-light" href=""> Texto </a></div>
+                    <div class="badge bg-secondary bg-gradient rounded-pill mb-2"> <a class="text-decoration-none link-light" href=""> Imagenes </a></div>
+                    <div class="badge bg-secondary bg-gradient rounded-pill mb-2"> <a class="text-decoration-none link-light" href=""> Ambas </a></div>
+                </div>
+                
+                {% endif %}
+            </div>
         </h3>
         <br>
 
@@ -52,6 +63,7 @@
                     <img class="card-img-top" src=" {{ post.image.url}}" alt="..." />
                     <div class="card-body p-4">
                         <div class="badge bg-primary bg-gradient rounded-pill mb-2">{{post.category}}</div>
+                        <div class="badge bg-secondary bg-gradient rounded-pill mb-2">{{post.tipo}}</div>
                         <div class="badge bg-success bg-gradient rounded-pill mb-2">{{post.estado}}</div>
                         <h5 class="card-title mb-3">{{ post.title}}</h5>
                         <p class="card-text mb-0">{{post.body |safe|truncatechars:200}}</p>
