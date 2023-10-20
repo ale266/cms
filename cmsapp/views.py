@@ -14,7 +14,7 @@ from django.utils.text import slugify
 from django.contrib import messages
 from django.contrib.auth.models import User 
 #-------------------------------------eliminar
-def desactivar_post(request, post_slug):
+def desactivar_post(request):
     # Redirigir al usuario de vuelta a la página de su tablero Kanban
     messages.success(request, 'El post ha sido desactivado correctamente.')
     return redirect('kanban-board')
@@ -205,7 +205,6 @@ def post_detail(request, slug):
 def createPost(request):
     profile = request.user.userprofile
     form = PostForm()
-    post.estado = 'En Creacion'
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid:

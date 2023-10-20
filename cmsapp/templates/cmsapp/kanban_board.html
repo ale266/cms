@@ -82,7 +82,8 @@
                             <a href="{% url 'detail' post.slug %}" style="color: #020101">{{ post.title}}</a><br>
                             <p class="titulo-pequeno"></p> <!--- USO COMO PARA QUE HAGA UN ENTER ENTRE DESCRIPCION Y TITULO-->
                             {{ post.created }}
-                            <a href="{% url 'desactivar-post' post.slug %}" class="btn btn-danger btn-sm">Desactivar</a>
+                            <a href="{% url 'desactivar-post' %}" class="btn btn-danger btn-sm">Desactivar</a>
+                            
                         </div>
                     {% empty %}
                         <p class="empty-message">No hay posts desactivados.</p>
