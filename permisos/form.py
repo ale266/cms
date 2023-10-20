@@ -19,7 +19,7 @@ class NewRolForm(forms.ModelForm):
         super(NewRolForm, self).__init__(*args, **kwargs)
         self.fields['permisos'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, required=False,
                                                             choices=[(p.id, p.name) for p in Permission.objects.all()
-                                                                     if p.codename.startswith('_')])
+                                                                     ])
 
     class Meta:
         model = RolesdeSistema

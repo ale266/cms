@@ -53,12 +53,6 @@ class UserProfile (models.Model):
         self.user.groups.remove(grupo)
 
 
-
-
-
-
-
-
 # class RolUsuario(models.Model):
 #     """
 #     Modelo para la clase de RolUsuario con los campos necesarios para el mismo

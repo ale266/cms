@@ -3,7 +3,7 @@ from django.contrib.sessions.models import Session
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
 from .models import Category, Post, Comment
-from .forms import PostForm, categoryForm, PostCommentForm
+from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, categoryForm, PostCommentForm
 from django.views import generic, View
 from django.views.generic import ListView, CreateView, UpdateView
 from django.views.generic import FormView
@@ -204,6 +204,7 @@ def post_detail(request, slug):
 def createPost(request):
     profile = request.user.userprofile
     form = PostForm()
+    post.estado = 'En Creacion'
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid:
@@ -220,6 +221,7 @@ def createPost(request):
 
 def updatePost (request, slug):
     post = Post.objects.get(slug=slug)
+    post.estado = 'En Edicion'
     form = PostForm(instance=post)
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance = post)
@@ -227,7 +229,6 @@ def updatePost (request, slug):
             form.save()
             messages.info(request, 'Blog modificado exitosamente')
             return redirect('detail', slug=post.slug)
-
     context = {'form': form}
     return render(request, 'cmsapp/create.html', context) 
 
@@ -242,6 +243,18 @@ def deletePost(request, slug):
     context = {'form': form}
     return render(request, 'cmsapp/delete.html', context) 
 
+def publishPost(request, slug):
+    """
+    Donde el publicador puede publicar un proyecto
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
+    
+    post = get_object_or_404(Post, slug=slug)
+    post.estado = 'En Publicacion'
+    post.save()
+    messages.success(request, 'Post publicado satisfactoriamente')
+    return redirect('detail', slug=post.slug)
 
 def likePost(request, slug):
     post = Post.objects.get(slug=slug)
@@ -297,6 +310,63 @@ def deleteCategory(request, slug):
         return redirect('listCategory')
     context = {'form': form}
     return render(request, 'cmsapp/deleteCategory.html', context) 
+
+ 
+
+def asignarMiembro(request, slug):
+    """
+    Vista que donde el Creador puede seleccionar los participantes del post
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
+    print(slug)
+    post = get_object_or_404(Post, slug=slug)
+    form = AsignarMiembroForm(instance=post)
+    if request.method == 'POST':
+        form = AsignarMiembroForm( instance=post, data=request.POST)
+        if form.is_valid():
+            miembros = form.cleaned_data['miembros']
+            form.save()
+            messages.success(request, 'Los miembros han sido asignados al post')
+            return redirect('detail', slug=slug)
+    contexto = {
+        'form': form,
+        'post': post,
+    }
+    return render(request, 'cmsapp/asignar_miembro.html', contexto)
+
+def asignarRol(request, slug, id_usuario):
+    """
+    Vista que donde el Scrum master puede seleccionar el rol a asignar a un usuario dentro del proyecto
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
+   
+    post = get_object_or_404(Post, slug=slug)
+    usuario_rol = post.usuario_roles.filter(miembro=id_usuario).first()
+    if request.method == 'POST':
+        form = AsignarRolForm(slug, id_usuario, request.POST, instance=usuario_rol) 
+        if form.is_valid():
+            roles = form.cleaned_data['roles']
+            usuario_rol = form.save()
+            usuario = User.objects.get(id=id_usuario)
+            usuario_rol.miembro = usuario
+            usuario_rol.save()
+            post.usuario_roles.add(usuario_rol)
+            messages.success(request,"Se asigno correctamente")
+            return redirect('detail', slug=slug)
+    else:
+        if usuario_rol:
+            form = AsignarRolForm(slug, id_usuario, instance=usuario_rol)
+            data = []
+            usuario = User.objects.get(id=id_usuario)
+            data = usuario_rol
+        else:
+            form = AsignarRolForm(slug, id_usuario, )
+    contexto = {'form': form}
+    return render(request, 'cmsapp/asignar_rol.html', contexto)
+
 
 
 """#Comentario
