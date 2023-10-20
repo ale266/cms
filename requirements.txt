@@ -30,5 +30,5 @@ urllib3==2.0.4
 uvicorn==0.23.2
 whitenoise==6.5.0
 pytest==7.4.0
-crispy-bootstrap4==2.0
+crispy-bootstrap4
 django-crispy-forms==2.0
