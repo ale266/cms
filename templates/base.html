@@ -48,6 +48,9 @@
                                   {% if perms.cmsapp.view_rolesdesistema %}
                                   <li><a class="dropdown-item" href="{% url 'listar_roles' %}">Roles y permisos</a></li>
                                   {% endif %}
+                                  {% if perms.cmsapp.view_tarea %}
+                                  <li><a class="dropdown-item" href='{% url "kanban-board" %}'>Tabla Kanban</a></li>
+                                  {% endif %}
                                   
                                  
                                 </ul>

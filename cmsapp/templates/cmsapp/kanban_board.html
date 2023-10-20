@@ -10,7 +10,7 @@
         align-content: center;
     }
     #container{
-        width: 40%;
+        width: 100%;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         height: auto;
         padding: 30px 20px 20px 20px;
@@ -24,61 +24,78 @@
 <div class="container" id="container">
     <h1 class="titulo-principal">Tablero Kanban</h1>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="task-section">
-                <h2 class="section-title">Pendiente</h2>
+                <h2 class="section-title">En Creacion</h2>
                 <div class="task-list">
-                    {% for tarea in tareas_pendientes %}
+                    {% for post in posts_en_creacion %}
                         <div class="card task-item">
-                            {{ tarea.titulo }}<br>
-                            {{ tarea.descripcion }}
-                            <a href="{% url 'mover_tarea' tarea.id 'en_proceso' %}" class="btn btn-primary btn-sm">Mover a En Proceso</a>
+                            <a href="{% url 'detail' post.slug %}" style="color: #020101">{{ post.title}}</a><br>
+                            {{ post.created }}
+                            <a href="{% url 'mover-post' post.slug 'En Edicion' %}" class="btn btn-primary btn-sm">Mover a En Edicion</a>
                         </div>
                     {% empty %}
-                        <p class="empty-message">No hay tareas pendientes.</p>
+                        <p class="empty-message">No hay posts en creacion.</p>
                     {% endfor %}
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="task-section">
-                <h2 class="section-title">En Proceso</h2>
+                <h2 class="section-title">En Edicion</h2>
                 <div class="task-list">
-                    {% for tarea in tareas_en_proceso %}
+                    {% for post in posts_en_edicion %}
                         <div class="card task-item">
-                            {{ tarea.titulo }}<br>
-                            {{ tarea.descripcion }}
-                            <a href="{% url 'mover_tarea' tarea.id 'completada' %}" class="btn btn-success btn-sm">Mover a Completada</a>
+                            <a href="{% url 'detail' post.slug %}" style="color: #020101">{{ post.title}}</a><br>
+                            {{ post.created }}
+                            <a href="{% url 'mover-post' post.slug 'En Publicacion' %}" class="btn btn-success btn-sm">Mover a En Publicacion</a>
                         </div>
                     {% empty %}
-                        <p class="empty-message">No hay tareas en proceso.</p>
+                        <p class="empty-message">No hay posts en edicion.</p>
                     {% endfor %}
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="task-section">
-                <h2 class="section-title">Completada</h2>
+                <h2 class="section-title">En Publicacion</h2>
                 <div class="task-list">
-                    {% for tarea in tareas_completadas %}
+                    {% for post in posts_en_publicacion %}
                         <div class="card task-item">
-                            {{ tarea.titulo}}
+                            <a href="{% url 'detail' post.slug %}" style="color: #020101">{{ post.title}}</a><br>
                             <p class="titulo-pequeno"></p> <!--- USO COMO PARA QUE HAGA UN ENTER ENTRE DESCRIPCION Y TITULO-->
-                            {{ tarea.descripcion }}
-                            <a href="{% url 'eliminar-tarea' tarea.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                            {{ post.created }}
+                            <a href="{% url 'mover-post' post.slug 'Desactivado' %}" class="btn btn-success btn-sm">Mover a Desactivados</a>
                         </div>
                     {% empty %}
-                        <p class="empty-message">No hay tareas completadas.</p>
+                        <p class="empty-message">No hay posts en publicacion.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="task-section">
+                <h2 class="section-title">Desactivado</h2>
+                <div class="task-list">
+                    {% for post in posts_desactivados %}
+                        <div class="card task-item">
+                            <a href="{% url 'detail' post.slug %}" style="color: #020101">{{ post.title}}</a><br>
+                            <p class="titulo-pequeno"></p> <!--- USO COMO PARA QUE HAGA UN ENTER ENTRE DESCRIPCION Y TITULO-->
+                            {{ post.created }}
+                            <a href="{% url 'desactivar-post' post.slug %}" class="btn btn-danger btn-sm">Desactivar</a>
+                        </div>
+                    {% empty %}
+                        <p class="empty-message">No hay posts desactivados.</p>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-    
+<!--     
     <div class="row mt-4">
         <div class="col-md-6">
-            <h2>Agregar Nueva Tarea</h2>
-            <form method="post" action="{% url 'crear-tarea' %}">
+            <h2>Agregar Nueva Post</h2>
+            <form method="post" action="">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="titulo">Título:</label>
@@ -88,10 +105,10 @@
                     <label for="descripcion">Descripción:</label>
                     <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Agregar Tarea</button>
+                <button type="submit" class="btn btn-primary">Agregar Post</button>
             </form>
         </div>
-    </div>
+    </div> -->
 </div>
 </main>
 {% endblock %}

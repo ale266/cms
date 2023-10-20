@@ -25,9 +25,8 @@ urlpatterns = [
     
 
     path('kanban-board/', views.kanban_board, name='kanban-board'),
-    path('mover_tarea/<int:tarea_id>/<str:nuevo_estado>/', views.mover_tarea, name='mover_tarea'),
-    path('crear-tarea/', views.crear_tarea, name='crear-tarea'),  # Nueva URL para el formulario de creación
-    path('mover-tarea/<int:tarea_id>/<str:nuevo_estado>/', views.mover_tarea, name='mover-tarea'),
-    path('tarea/<int:tarea_id>/eliminar/', views.eliminar_tarea, name='eliminar-tarea'),
+    # path('crear-tarea/', views.crear_tarea, name='crear-tarea'),  # Nueva URL para el formulario de creación
+    path('mover-post/<str:slug>/<str:nuevo_estado>/', views.mover_post, name='mover-post'),
+    path('post/<str:slug>/eliminar/', views.desactivar_post, name='desactivar-post'),
 
 ]
