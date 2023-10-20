@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib import messages
+from django.contrib.auth.models import User 
 #-------------------------------------eliminar
 def eliminar_tarea(request, tarea_id):
     tarea = get_object_or_404(Tarea, id=tarea_id, usuario=request.user)
