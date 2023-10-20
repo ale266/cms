@@ -34,14 +34,17 @@
         </div>
 
         <h3>
+            
             <div class="row">
                 <div class="col">
+                    {% if request.user.is_authenticated %}
                     {% for category in categories%}
                     <div class="badge bg-primary bg-gradient rounded-pill mb-2"> <a class="text-decoration-none link-light" href="{% url 'indexCat' category %}"> {{category}}</a></div>
                     {% endfor %}
                     
-                    {% if request.user.is_authenticated %}
+                    {% if categories%}
                     <div class="badge bg-gradient rounded-pill mb-2"><a class="link-primary" href="{% url 'listCategory' %}"><i class="fas fa-edit"></i> Editar Cat</a></div>
+                    {% endif%}
                 </div>
                 <div class="col" style="text-align: right;">
                     <div class="badge bg-secondary bg-gradient rounded-pill mb-2"> <a class="text-decoration-none link-light" href=""> Texto </a></div>
