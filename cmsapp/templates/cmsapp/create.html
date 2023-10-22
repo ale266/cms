@@ -67,9 +67,15 @@ $(document).ready(function() {
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('#id_body').hide();
+        $('#id_carrousel').hide();
+    });
+    </script>
+<script>
 $(document).ready(function() {
     // Manejar el cambio en el SelectField
-    $('#id_tipo').change(function() {
+    $('#id_tipo').click(function() {
         if ($(this).val() == 'Texto') {
             $('#id_body').show();
         } else {
@@ -83,7 +89,7 @@ $(document).ready(function() {
 <script>
 $(document).ready(function() {
     // Manejar el cambio en el SelectField
-    $('#id_tipo').change(function() {
+    $('#id_tipo').click(function() {
         if ($(this).val() == 'Combinados') {
             $('#id_body').show();
             $('#id_carrousel').show();

@@ -14,6 +14,16 @@ class PostForm(ModelForm):
         super(PostForm, self).__init__(*args, **kwargs)
         # self.fields['tipo'].disabled = True
 
+class PostUpdateForm(ModelForm):
+    class Meta:
+        model = Post
+        exclude = ['slug', 'writer', 'likes', 'dislikes', 'views', 'roles', 'usuario_roles', 'miembros', 'estado']
+
+    def __init__(self, *args, **kwargs):
+        super(PostUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['tipo'].disabled = True
+
+
 class categoryForm(ModelForm):
     class Meta:
         model = Category

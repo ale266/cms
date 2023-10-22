@@ -31,30 +31,38 @@
                             <!-- <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li> -->
                             {% if request.user.is_authenticated %}
-                            <div class="btn-group">
-                                
-                                <button type="button" class="btn btn-danger btn-lg dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{request.user.username}}
-                                    <span class="visually-hidden">Toggle Dropdown</span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item btn-lg" href="{% url 'account' %}">Perfil de Usuario</a></li>
-                                  <li><a class="dropdown-item " href="{% url 'signout' %}">Cerrar Sesion</a></li>
-                                  
-                                  <li><hr class="dropdown-divider"></li>
-                                  {% if perms.cmsapp.view_user %}
-                                  <li><a class="dropdown-item" href="{% url 'lista_users' %}">Usuarios</a></li>
-                                  {% endif %}
-                                  {% if perms.cmsapp.view_rolesdesistema %}
-                                  <li><a class="dropdown-item" href="{% url 'listar_roles' %}">Roles y permisos</a></li>
-                                  {% endif %}
-                                  {% if perms.cmsapp.view_tarea %}
-                                  <li><a class="dropdown-item" href='{% url "kanban-board" %}'>Tabla Kanban</a></li>
-                                  {% endif %}
-                                  
-                                 
-                                </ul>
-                            </div>
+                                {%block groups%}
+                                    {%if groups%}
+                                        {% for g in groups %}
+                                            <button class="btn btn-lg " aria-expanded="false" style="color: white;" >{{ g.name }}</button>
+                                        {% endfor %}
+                                    {%else%}
+                                    {%endif%}
+                                {%endblock %}
+                                <div class="btn-group">
+                                    
+                                    <button type="button" class="btn btn-danger btn-lg dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{request.user.username}}
+                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item btn-lg" href="{% url 'account' %}">Perfil de Usuario</a></li>
+                                    <li><a class="dropdown-item " href="{% url 'signout' %}">Cerrar Sesion</a></li>
+                                    
+                                    <li><hr class="dropdown-divider"></li>
+                                    {% if perms.cmsapp.view_user %}
+                                    <li><a class="dropdown-item" href="{% url 'lista_users' %}">Usuarios</a></li>
+                                    {% endif %}
+                                    {% if perms.cmsapp.view_rolesdesistema %}
+                                    <li><a class="dropdown-item" href="{% url 'listar_roles' %}">Roles y permisos</a></li>
+                                    {% endif %}
+                                    {% if perms.cmsapp.view_tarea %}
+                                    <li><a class="dropdown-item" href='{% url "kanban-board" %}'>Tabla Kanban</a></li>
+                                    {% endif %}
+                                    
+                                    
+                                    </ul>
+                                </div>
                             {% else %}
                             <div class="bd-example">
                               

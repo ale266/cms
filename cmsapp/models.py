@@ -72,14 +72,17 @@ class Carrousel (models.Model):
     
 class Post(models.Model):
     writer = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Creador')
-    title  = models.CharField(max_length=500, verbose_name="Titulo")
+    title  = models.CharField(max_length=500, verbose_name="Titulo", unique=True)
     image = models.ImageField(upload_to='img', default= 'NULL', verbose_name="Logo")
+    tipo = models.CharField(max_length=20, choices=tipo_choices, 
+                    default=tipoPost.TEXTO)
+    category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True , verbose_name="Categoria")
     body = models.TextField(verbose_name="Contenido", blank=True, null=True )
     post_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
-    category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True , verbose_name="Categoria")
+    
     likes = models.ManyToManyField(UserProfile, related_name='blog_post')
     dislikes = models.ManyToManyField(UserProfile, related_name='blog_post2')
     views = models.PositiveIntegerField(default=0) #número de visualizaciones
@@ -88,8 +91,7 @@ class Post(models.Model):
     usuario_roles = models.ManyToManyField(RolUsuario)
     estado = models.CharField(max_length=20, choices=estado_choices, 
                     default=estadoPost.CREACION)
-    tipo = models.CharField(max_length=20, choices=tipo_choices, 
-                    default=tipoPost.TEXTO)
+    
     carrousel = models.ManyToManyField(Carrousel, verbose_name='Imagenes', blank=True )
     def total_likes(self):
         return self.likes.count()
@@ -141,7 +143,7 @@ class Comment(models.Model):
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=100 , verbose_name="Titulo")
+    title = models.CharField(max_length=100 , verbose_name="Titulo", unique=True)
     category_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     slug = models.SlugField()
 

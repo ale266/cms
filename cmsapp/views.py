@@ -2,8 +2,10 @@ from django.http import HttpResponseRedirect
 from django.contrib.sessions.models import Session
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
-from .models import Category, Post, Comment
-from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, categoryForm, PostCommentForm
+
+from permisos.models import RolesdeSistema
+from .models import Category, Post, Comment, RolUsuario
+from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, PostUpdateForm, categoryForm, PostCommentForm
 from django.views import generic, View
 from django.views.generic import ListView, CreateView, UpdateView
 from django.views.generic import FormView
@@ -82,7 +84,10 @@ def mover_post(request,slug, nuevo_estado):
 def index(request):
     posts = Post.objects.all()
     categories = Category.objects.all()
-    context = {'posts': posts, 'categories': categories}
+    user = request.user
+    groups = user.groups.all()
+    roles = RolUsuario.roles 
+    context = {'posts': posts, 'categories': categories, 'groups': groups, 'roles': roles}
     return render(request, 'cmsapp/index.html', context)
 
 def indexCat(request, categoria):
@@ -222,9 +227,9 @@ def createPost(request):
 def updatePost (request, slug):
     post = Post.objects.get(slug=slug)
     post.estado = 'En Edicion'
-    form = PostForm(instance=post)
+    form = PostUpdateForm(instance=post)
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance = post)
+        form = PostUpdateForm(request.POST, request.FILES, instance = post)
         if form.is_valid():
             form.save()
             messages.info(request, 'Blog modificado exitosamente')
@@ -260,7 +265,6 @@ def likePost(request, slug):
     post = Post.objects.get(slug=slug)
     post.likes.add(request.user.userprofile)
     return HttpResponseRedirect(reverse('detail', args=[str(slug)])) 
-
 def dislikePost(request, slug):
     post = Post.objects.get(slug=slug)
     post.dislikes.add(request.user.userprofile)
