@@ -81,10 +81,9 @@
             </div>
           </div>
         {% if account.post_set.all %}
-            <h3>Mis blogs</h3>
+            <h3>Mis contenidos creados</h3>
             <div class="row">
             {% for post in account.post_set.all %}
-            
                     <div class="col-lg-4 mb-5">
                         <div class="card h-100 shadow border-0">
                             <img class="card-img-top" src=" {{ post.image.url   }}" alt="..." />
@@ -99,7 +98,6 @@
                             </div>
                         </div>
                     </div>
-                
             {% endfor%}
         {% endif %}
             </div>

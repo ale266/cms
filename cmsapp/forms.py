@@ -12,7 +12,7 @@ class PostForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
-        # self.fields['tipo'].disabled = True
+        self.fields['tipo'].disabled = True
 
 class PostUpdateForm(ModelForm):
     class Meta:
@@ -21,7 +21,7 @@ class PostUpdateForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PostUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['tipo'].disabled = True
+        # self.fields['tipo'].disabled = True
 
 
 class categoryForm(ModelForm):

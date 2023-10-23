@@ -235,7 +235,7 @@ def updatePost (request, slug):
             messages.info(request, 'Blog modificado exitosamente')
             return redirect('detail', slug=post.slug)
     context = {'form': form}
-    return render(request, 'cmsapp/create.html', context) 
+    return render(request, 'cmsapp/update.html', context) 
 
 #modificar este view para que desactive los blogs en vez de eliminarlos
 def deletePost(request, slug):

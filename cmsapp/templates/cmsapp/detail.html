@@ -109,12 +109,10 @@
                         {%endif%}
                     </header>
                     <!-- Preview image figure-->
-                    <figure class="mb-4"><img class="img-fluid rounded" src="{{post.image.url}}" alt="..." /></figure>
+                    <!-- <figure class="mb-4"><img class="img-fluid rounded" src="{{post.image.url}}" alt="..." /></figure> -->
                     <!-- Post content-->
-                    <section class="mb-5">
-                    </section> 
                 </article>
-                <p class="fs-5 mb-4">{{post.body |safe}}</p>
+                
                     <!-- Post carrousel-->
                     
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -123,10 +121,12 @@
                           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                         </div>
-                        <h1>Galeria de imagenes:</h1>
                         <div class="carousel-inner">
-                            {% for car in post.carrousel.all%}  
                             <div class="carousel-item active">
+                                <figure class="mb-4"><img class="img-fluid rounded" src="{{post.image.url}}" alt="..." /></figure>
+                            </div>
+                            {% for car in post.carrousel.all%}  
+                            <div class="carousel-item">
                                 <figure class="mb-4"><img class="img-fluid rounded" src="{{car.image.url}}" alt="..." /></figure>
                             </div>
                             {%endfor%} 
@@ -141,6 +141,8 @@
                         </button>
                       </div>
 
+                      <!-- Post body -->
+                      <p class="fs-5 mb-4">{{post.body |safe}}</p>
 
 
 

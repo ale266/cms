@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    #cke_id_body{
+        width: 100% !important;
+        align-content: center;
+    }
+    #container{
+        width: 40%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: auto;
+        padding: 30px 20px 20px 20px;
+        border-radius: 30px;
+        margin-bottom: 20x;
+    }
+    #container h3{
+        text-align: center;  
+    }
+</style>
+
+<div class='container' id = 'container'>
+     <h3><strong>Informacion basica del blog</strong></h3>
+    <form method='POST' enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        {{form.media}}
+        <input type="submit" class="btn btn-primary" value="Guardar">
+    </form>
+</div>
+</form>
+
+<script> 
+    let inputfields = document.getElementsByTagName('input')
+    let bodyfield = document.getElementById('id_body')
+    let selectfield = document.getElementById('id_category')
+    let selectfield2 = document.getElementById('id_tipo')
+    let selectfield3 = document.getElementById('id_carrousel')
+    for (let i=0; i<inputfields.length;i++){
+        inputfields[i].classList.add('form-control')
+    }
+    bodyfield.classList.add('form-control')
+    selectfield.classList.add('form-control')
+    selectfield2.classList.add('form-control')
+    selectfield3.classList.add('form-control')
+
+    
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Manejar el cambio en el primer SelectField
+    $('#id_tipo').click(function() {
+        if ($(this).val() == 'Imagenes') {
+            $('#id_carrousel').show();
+        } else {
+
+        $('#id_carrousel').hide();
+        }
+    });
+});
+</script>
+
+
+
+
+
+<script>
+$(document).ready(function() {
+    // Manejar el cambio en el SelectField
+    $('#id_tipo').click(function() {
+        if ($(this).val() == 'Texto') {
+            $('#id_body').show();
+        } else {
+
+            $('#id_body').hide();
+        }
+    });
+});
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Manejar el cambio en el SelectField
+    $('#id_tipo').click(function() {
+        if ($(this).val() == 'Combinados') {
+            $('#id_body').show();
+            $('#id_carrousel').show();
+        } 
+    });
+});
+</script>
+</main>
+{% endblock %}
