@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Las siguientes publicaciones han sido ocultadas:</h1>
+    <ul>
+        {% for post in publicaciones_ocultas %}
+            <li>{{ post }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django.shortcuts import get_object_or_404
 
 from permisos.models import RolesdeSistema
-from .models import Post, Category, Comment, RolUsuario
+from .models import Post, Category, Comment, RolUsuario, Report
 from django.contrib.auth.models import User 
 class PostForm(ModelForm):
     class Meta:
@@ -78,3 +78,9 @@ class AsignarRolForm(forms.ModelForm):
 
         for field in self.disabled_fields:
             self.fields[field].disabled = True
+
+#Reportes--------------------------------------------------------------
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['reason']

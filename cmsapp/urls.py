@@ -28,5 +28,6 @@ urlpatterns = [
     # path('crear-tarea/', views.crear_tarea, name='crear-tarea'),  # Nueva URL para el formulario de creación
     path('mover-post/<str:slug>/<str:nuevo_estado>/', views.mover_post, name='mover-post'),
     path('desactivar/', views.desactivar_post, name='desactivar-post'),
-
+    path('reportar/<str:slug>/', views.report_post, name='reportar_publicacion'),
+    path('post_ocultos/', views.ocultar_post_reportado, name='post_ocultos'),
 ]

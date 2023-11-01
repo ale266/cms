@@ -4,8 +4,9 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
 
 from permisos.models import RolesdeSistema
-from .models import Category, Post, Comment, RolUsuario
-from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, PostUpdateForm, categoryForm, PostCommentForm
+from django.db import models
+from .models import Category, Post, Comment, RolUsuario, Report
+from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, PostUpdateForm, categoryForm, PostCommentForm, ReportForm
 from django.views import generic, View
 from django.views.generic import ListView, CreateView, UpdateView
 from django.views.generic import FormView
@@ -371,23 +372,30 @@ def asignarRol(request, slug, id_usuario):
     contexto = {'form': form}
     return render(request, 'cmsapp/asignar_rol.html', contexto)
 
-
-
-"""#Comentario
-def detalle_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    comentarios = Comentario.objects.filter(post=post)
+#Reportes---------------------------------------------------------------------------------------------------
+def report_post(request, slug):
+    post = Post.objects.get(slug=slug)
 
     if request.method == 'POST':
-        comentario_form = ComentarioForm(request.POST)
-        if comentario_form.is_valid():
-            comentario = comentario_form.save(commit=False)
-            comentario.autor = request.user  # Asigna el autor actual (si se está usando autenticación de usuario)
-            comentario.post = post
-            comentario.save()
-            return redirect('detail', pk=pk)
-    else:
-        comentario_form = ComentarioForm()
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.user = request.user
+            report.post = post
+            report.save()
+            messages.success(request, 'Reporte Exitoso.')
+            return redirect('detail', slug=slug)
 
-    return render(request, 'cmsapp/detail.html', {'post': post, 'comentarios': comentarios, 'comentario_form': comentario_form})
-"""
+    else:
+        form = ReportForm()
+
+    return render(request, 'cmsapp/reporte.html', {'form': form, 'post': post})
+
+#Post Reportados a ser ocultados
+def ocultar_post_reportado(request):
+    reports = Report.objects.values('post').annotate(report_count=models.Count('post')).filter(report_count__gte=3)
+    for report in reports:
+        post = Post.objects.get(pk=report['post'])
+        post.visible = False
+        post.save()
+    return render(request, 'cmsapp/post_ocultos.html')
