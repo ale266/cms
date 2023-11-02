@@ -383,7 +383,7 @@ def report_post(request, slug):
             report.user = request.user
             report.post = post
             report.save()
-            messages.success(request, 'Reporte Exitoso.')
+            messages.success(request, 'Gracias por informarnos!! Analizaremos y tomaremos las medidas correspondientes para ocultar/eliminar dicho contenido')
             return redirect('detail', slug=slug)
 
     else:
