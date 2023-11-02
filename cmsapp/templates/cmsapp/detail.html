@@ -74,7 +74,9 @@
                         <button class = 'btn btn-primary btn-sm' onclick="copyToClipboard('{{ post.get_absolute_url }}')" style="margin-left: 10px;"><i class="fa-solid fa-share-from-square"></i></button>
                             <!-- <a href='{% url "kanban-board" %}' class = 'btn btn-danger'>Tabla Kanban</i></a> -->
                             <!-- <a href='{% url "delete" post.slug %}' class = 'btn btn-danger'><i class="fas fa-trash"></i></a> -->
-                        
+                        <!--Reportes----------------------------------------------------------------------------------------->
+                            <a href="{% url 'reportar_publicacion' post.slug %}" class ='btn btn-danger btn-sm' style="margin-left: 10px; margin-right: 10px;"><i class="fa fa-flag"></i> Reportar</a>
+
                         {% if post.estado != 'Desactivado' %}
                             {% if post.writer.name == request.user.username %}
                                 <a href="{% url 'asignar_miembro' post.slug %}" class="btn btn-primary ml-3 bg-color-danger border-0">Asignar miembros</a>
@@ -145,8 +147,6 @@
                       <p class="fs-5 mb-4">{{post.body |safe}}</p>
 
 
-<!--Reportes----------------------------------------------------------------------------------------->
-<a href="{% url 'reportar_publicacion' post.slug %}" class ='btn btn-danger btn-sm'><i class="fa fa-flag"></i> Reportar</a>
 
                 <!-- Comments section-->
 

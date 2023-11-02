@@ -1,24 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Reportar Publicación</h1>
-    <form method="post" class="report-form">
-        {% csrf_token %}
-        <div class="form-group">
-            <br><h5 style="margin-left: 10px;">Motivo: </h5>
-            <div style="margin-left: 10px;">
-                {{ form.reason }}
+<div class="report_form">
+    <h2 style="margin: 10px;">Reportar Publicación</h2>
+        <form method="post" class="report-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <br><h5 style="margin-left: 10px;">Motivo: </h5>
+                <div style="margin-left: 10px;">
+                    {{ form.reason }}
+                </div>
             </div>
-        </div>
+            
+            <br><h5 style="margin-left: 10px;">Más detalles sobre su molestia...</h5>
+            <div style="margin-left: 10px;">
+                {{ form.comment }}
+            </div>
         
-        <br><h5 style="margin-left: 10px;">Más detalles sobre su molestia...</h5>
-        <div style="margin-left: 10px;">
-            {{ form.comment }}
-        </div>
-    
-        <button type="submit" class ='btn btn-danger btn-sm' style="margin: 10px; "><i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar Reporte</button>
-    </form>
-    <a href="{%url 'detail' post.slug %}" class="btn btn-primary" style="margin: 10px;"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Ir al Post</a>
+            <a href="{%url 'detail' post.slug %}" class="btn btn-primary" style="margin: 10px; font-size: 12px;"> <i class="fa fa-times" aria-hidden="true"></i> Cancelar</a> <button type="submit" class ='btn btn-danger btn-sm' style="margin: 10px; "><i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar Reporte</button>
+        </form>
+        
+</div>
+
 {% endblock %}
 
 <!--<form method="post">
