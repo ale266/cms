@@ -91,8 +91,9 @@ class Post(models.Model):
     usuario_roles = models.ManyToManyField(RolUsuario)
     estado = models.CharField(max_length=20, choices=estado_choices, 
                     default=estadoPost.CREACION)
-    
+    report_count = models.PositiveIntegerField(default=0)
     carrousel = models.ManyToManyField(Carrousel, verbose_name='Imagenes', blank=True )
+    
     def total_likes(self):
         return self.likes.count()
 

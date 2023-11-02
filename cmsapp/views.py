@@ -5,7 +5,7 @@ from django.urls import reverse, reverse_lazy
 
 from permisos.models import RolesdeSistema
 from django.db import models
-from .models import Category, Post, Comment, RolUsuario, Report
+from .models import Category, Post, Comment, RolUsuario, Report, estadoPost
 from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, PostUpdateForm, categoryForm, PostCommentForm, ReportForm
 from django.views import generic, View
 from django.views.generic import ListView, CreateView, UpdateView
@@ -375,7 +375,6 @@ def asignarRol(request, slug, id_usuario):
 #Reportes---------------------------------------------------------------------------------------------------
 def report_post(request, slug):
     post = Post.objects.get(slug=slug)
-
     if request.method == 'POST':
         form = ReportForm(request.POST)
         if form.is_valid():
@@ -383,7 +382,17 @@ def report_post(request, slug):
             report.user = request.user
             report.post = post
             report.save()
+
+        # Contador de reportes
+            post.report_count += 1
+            post.save()
             messages.success(request, 'Gracias por informarnos!! Analizaremos y tomaremos las medidas correspondientes para ocultar/eliminar dicho contenido')
+        # Verificar si el post debe desactivarse
+            if post.report_count >= 8:
+                post.estado = estadoPost.DESACTIVADO
+                post.save()
+                messages.success(request, 'Este Post fue ocultado debido a que ha alcanzado el máximo número de reportes')
+      
             return redirect('detail', slug=slug)
 
     else:
