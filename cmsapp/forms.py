@@ -81,6 +81,7 @@ class AsignarRolForm(forms.ModelForm):
 
 #Reportes--------------------------------------------------------------
 class ReportForm(forms.ModelForm):
+    comment = forms.CharField(widget=forms.Textarea(attrs={'rows': 2, 'cols': 25}))
     class Meta:
         model = Report
-        fields = ['reason']
+        fields = ['reason', 'comment']

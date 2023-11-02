@@ -164,3 +164,6 @@ class Report(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     reason = models.CharField(max_length=255, choices=REASONS)
+    comment = models.TextField(max_length=200, help_text='Escriba detalladamente', default="Más detalles...")
+    def __str__(self):
+        return f"{self.post} - {self.reason} - {self.user.username}"
