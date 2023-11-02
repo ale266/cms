@@ -400,11 +400,3 @@ def report_post(request, slug):
 
     return render(request, 'cmsapp/reporte.html', {'form': form, 'post': post})
 
-#Post Reportados a ser ocultados
-def ocultar_post_reportado(request):
-    reports = Report.objects.values('post').annotate(report_count=models.Count('post')).filter(report_count__gte=3)
-    for report in reports:
-        post = Post.objects.get(pk=report['post'])
-        post.visible = False
-        post.save()
-    return render(request, 'cmsapp/post_ocultos.html')
