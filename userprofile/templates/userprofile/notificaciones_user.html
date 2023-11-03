@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %} Notificaciones {% endblock %}
+
+{% block content %}
+<style>
+    #cke_id_body{
+        width: 100% !important;
+        align-content: center;
+    }
+    #container{
+        width: 40%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: auto;
+        padding: 30px 20px 20px 20px;
+        border-radius: 30px;
+        margin-bottom: 20x;
+    }
+    #container h3{
+        text-align: center;  
+    }
+</style>
+<div class='container' id = 'container'>
+    <div class="row" >
+        <h3 class = "col-12 col-md-10" > Notificaciones de {{request.user}}</h3>
+    </div>
+    <hr>
+
+   {% for n in notificaciones %}
+        <div class="notifications-item">
+            <div class="text">
+            <h4>{{n.proyecto}}  <p>{{n.timestamp}}</p></h4>
+            <p>{{n.mensaje}}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+</main>
+{% endblock %}

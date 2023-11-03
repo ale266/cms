@@ -48,7 +48,7 @@
                                     <ul class="dropdown-menu">
                                     <li><a class="dropdown-item btn-lg" href="{% url 'account' %}">Perfil de Usuario</a></li>
                                     <li><a class="dropdown-item " href="{% url 'signout' %}">Cerrar Sesion</a></li>
-                                    
+                                    <li><a class="dropdown-item " id="notification-url" href="{% url 'listar_notis_user' request.user %}"> Ver todas las notificaciones</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     {% if perms.cmsapp.view_user %}
                                     <li><a class="dropdown-item" href="{% url 'lista_users' %}">Usuarios</a></li>
@@ -81,11 +81,19 @@
                     </div>
                 </div>
             </nav>
-                 {% for message in messages %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert" style = 'width: 40%; margin: auto; align-items:center;'>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                {% for message in messages %}
+                    <script>
+                        Swal.fire({
+                            title: 'Wow!',
+                            text: '{{message}}',
+                            icon: 'success',
+                        })
+                    </script>
+                <!-- <div class="alert alert-success alert-dismissible fade show" role="alert" style = 'width: 40%; margin: auto; align-items:center;'>
                     <strong>Wow!</strong> {{message}} 
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>        
+                </div>         -->
                 {% endfor %}
 
 
@@ -113,3 +121,7 @@
         <script src="{% static 'js/scripts.js' %}"></script>
     </body>
 </html>
+
+
+
+

@@ -61,7 +61,7 @@ class Notificaciones(models.Model):
     mensaje = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     post = models.TextField()
-    usuario = models.ForeignKey(User,on_delete = models.CASCADE)
+    usuario = models.ForeignKey(UserProfile,on_delete = models.CASCADE)
    
 
     def __str__(self):

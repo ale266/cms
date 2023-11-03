@@ -1,6 +1,8 @@
 <////  LISTA DE COMANDOS   ////>
 
 <//// para ejecutar ambiente de desarrollo
+python manage.py makemigrations --settings=cms.settings.development
+python manage.py migrate --settings=cms.settings.development
 python manage.py runserver --settings=cms.settings.development 
 User: Alexis        Password: equipo10
 

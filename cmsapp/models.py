@@ -97,6 +97,7 @@ class Post(models.Model):
     tipo = models.CharField(max_length=20, choices=tipo_choices, 
                     default=tipoPost.TEXTO)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True , verbose_name="Categoria")
+    report_count = models.PositiveIntegerField(default=0)
     body = models.TextField(verbose_name="Contenido", blank=True, null=True )
     post_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -111,7 +112,6 @@ class Post(models.Model):
     usuario_roles = models.ManyToManyField(RolUsuario)
     estado = models.CharField(max_length=20, choices=estado_choices, 
                     default=estadoPost.CREACION)
-    report_count = models.PositiveIntegerField(default=0)
     carrousel = models.ManyToManyField(Carrousel, verbose_name='Imagenes', blank=True )
     historial = models.ManyToManyField(historia)
     

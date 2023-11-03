@@ -1,8 +1,9 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 
 from cmsapp.models import Post
 from cmsapp.views import notificacion
-from .models import UserProfile
+from .models import Notificaciones, UserProfile
 from .forms import  AsignarRolForm, UpdateProfileForm, RegistrationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -127,3 +128,22 @@ def asignar_rol_usuario(request,id):
   contexto = {'usuario':usuario, 'user':request.user, 'form':form}
 
   return render(request,'userprofile/asignar_rol.html',contexto)
+
+
+
+def listar_notificaciones(request,username):
+  """
+   Vista que permite ver todas las notificaciones de un usuario 
+
+   Argumento:
+        request : HttpRequest object
+        username : El username del usuario con el cual se filtraran las notificaciones
+    
+    Return
+        HttpResponse
+  """
+
+  user =  get_object_or_404(UserProfile,username=username)
+  notificaciones = Notificaciones.objects.filter(usuario=user).order_by('-timestamp')
+  contexto = {'notificaciones':notificaciones}
+  return render(request,'userprofile/notificaciones_user.html',contexto)

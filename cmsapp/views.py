@@ -7,7 +7,7 @@ from django.urls import reverse, reverse_lazy
 from permisos.models import RolesdeSistema
 from django.db import models
 
-from userprofile.models import Notificaciones
+from userprofile.models import Notificaciones, UserProfile
 from .models import Category, Post, Comment, RolUsuario, Report, estadoPost, historia
 from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, PostUpdateForm, categoryForm, PostCommentForm, ReportForm
 from django.views import generic, View
@@ -242,7 +242,7 @@ def createPost(request):
             post.historial.add(h)
             post.save()
             messages.info(request, 'Blog creado exitosamente')
-            return redirect('create')
+            return redirect('index')
         else:
             messages.error(request, 'Blog no creado')
     context = {'form': form}    
@@ -289,15 +289,15 @@ def desactivar_post(request):
 
 
 #modificar este view para que desactive los blogs en vez de eliminarlos
-# def deletePost(request, slug):
-#     post = Post.objects.get(slug=slug)
-#     form = PostForm(instance=post)
-#     if request.method == 'POST':
-#         post.delete()
-#         messages.info(request, 'Blog eliminado exitosamente')
-#         return redirect('create')
-#     context = {'form': form}
-#     return render(request, 'cmsapp/delete.html', context) 
+def deletePost(request, slug):
+    post = Post.objects.get(slug=slug)
+    form = PostForm(instance=post)
+    if request.method == 'POST':
+        post.delete()
+        messages.info(request, 'Blog eliminado exitosamente')
+        return redirect('create')
+    context = {'form': form}
+    return render(request, 'cmsapp/delete.html', context) 
 
 def publishPost(request, slug):
     """
@@ -416,6 +416,7 @@ def asignarMiembro(request, slug):
             h = historia.objects.create(post_slug = post.slug)
             mensaje = str(request.user)+" te ha asignado como miembro del proyecto: "+str(post.title)
             for m in miembros :
+                usuario = UserProfile.objects.get(username=m.username)
                 h = historia.objects.create(post_slug = post.slug)
                 now = datetime.now()
                 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -424,7 +425,7 @@ def asignarMiembro(request, slug):
                 h.save()
                 post.historial.add(h)
                 post.save()
-                notificacion(mensaje,m,post.title)
+                notificacion(mensaje,usuario,post.title)
             return redirect('detail', slug=slug)
     contexto = {
         'form': form,
@@ -448,6 +449,7 @@ def asignarRol(request, slug, id_usuario):
             roles = form.cleaned_data['roles']
             usuario_rol = form.save()
             usuario = User.objects.get(id=id_usuario)
+            user = UserProfile.objects.get(username=usuario.username)
             usuario_rol.miembro = usuario
             usuario_rol.save()
             post.usuario_roles.add(usuario_rol)
@@ -457,13 +459,13 @@ def asignarRol(request, slug, id_usuario):
                 h = historia.objects.create(post_slug = post.slug)
                 now = datetime.now()
                 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-                evento = dt_string+","+str(request.user) + " asignó el rol" + str(r) + " al miembro " + str(usuario)
+                evento = dt_string+","+str(request.user) + " asignó el rol " + str(r) + " al miembro " + str(usuario)
                 mensaje = str(request.user)+" te ha asignado el rol de "+str(r)
                 h.evento = evento
                 h.save()
                 post.historial.add(h)
                 post.save()
-                notificacion(mensaje,usuario,post.title)
+                notificacion(mensaje,user,post.title)
 
             return redirect('detail', slug=slug)
     else:
@@ -510,3 +512,21 @@ def report_post(request, slug):
 
     return render(request, 'cmsapp/reporte.html', {'form': form, 'post': post})
 
+
+def ver_historial(request,slug):
+   """
+    Vista que permite visualizar el historial del post
+       Argumentos:
+        request: HttpRequest
+        id : id del proyecto
+       Return: HttpResponse    
+   """
+   post = get_object_or_404(Post, slug=slug)
+
+   eventos = []
+
+   eventos =  post.historial.all().order_by('-id')
+
+   contexto = {'evento':eventos,'post':post}
+
+   return render(request,'cmsapp/historial.html',contexto)
