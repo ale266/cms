@@ -3,7 +3,7 @@
     {% if request.user.is_authenticated %}
         {% for miembro in post.miembros.all %}
             {% for roles in post.usuario_roles.all %}
-                {% for rol in roles.roles.all %}
+                {% for rol in roles.roles.all|slice:":1" %}
                     {% if request.user.username == miembro.username  %}
                         <button class="btn btn-lg " aria-expanded="false" style="color: white;" >{{ rol }}</button>
                     {% endif%}
@@ -31,11 +31,11 @@
                             </div>
                             {% if post.estado != 'Desactivado' %}
                             <div class="col" style="text-align: right;">
-                                {% for miembro in post.miembros.all %}
+                                {% for miembro in post.miembros.all  %}
                                     {% for roles in post.usuario_roles.all %}
-                                        {% for rol in roles.roles.all %}
+                                        {% for rol in roles.roles.all|slice:":1" %}
                                             {% if rol.nombre == 'Publicador' and request.user.username == miembro.username  %}
-                                            <a href="{% url 'publish' post.slug %}" class="btn btn-success ml-3 bg-color-danger border-0">Publicar Post</a>
+                                                <a href="{% url 'publish' post.slug %}" class="btn btn-success ml-3 bg-color-danger border-0">Publicar Post</a>
                                             {% endif%}
                                         {% endfor%}
                                     {% endfor%}

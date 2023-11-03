@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django.shortcuts import get_object_or_404
 
 from permisos.models import RolesdeSistema
-from .models import Post, Category, Comment, RolUsuario, Report
+from .models import Carrousel, Post, Category, Comment, RolUsuario, Report
 from django.contrib.auth.models import User 
 class PostForm(ModelForm):
     class Meta:
@@ -17,7 +17,7 @@ class PostForm(ModelForm):
 class PostUpdateForm(ModelForm):
     class Meta:
         model = Post
-        exclude = ['slug', 'writer', 'likes', 'dislikes', 'views', 'roles', 'usuario_roles', 'miembros', 'estado']
+        exclude = ['slug', 'writer', 'likes', 'dislikes', 'views', 'roles', 'usuario_roles', 'miembros', 'estado', 'historial']
 
     def __init__(self, *args, **kwargs):
         super(PostUpdateForm, self).__init__(*args, **kwargs)
@@ -29,6 +29,14 @@ class categoryForm(ModelForm):
         model = Category
         # fields = ('title',)
         exclude = ['slug']
+
+
+class imageForm(ModelForm):
+    class Meta:
+        model = Carrousel
+        fields = ('image','description')
+        exclude = ['']
+
 
 class PostCommentForm(forms.ModelForm):
     content = forms.CharField(label='Ingrese su comentario', widget=forms.Textarea(attrs={'rows': 2, 'cols': 97}))

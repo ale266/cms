@@ -8,8 +8,8 @@ from permisos.models import RolesdeSistema
 from django.db import models
 
 from userprofile.models import Notificaciones, UserProfile
-from .models import Category, Post, Comment, RolUsuario, Report, estadoPost, historia
-from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, PostUpdateForm, categoryForm, PostCommentForm, ReportForm
+from .models import Carrousel, Category, Post, Comment, RolUsuario, Report, estadoPost, historia
+from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, PostUpdateForm, categoryForm, PostCommentForm, ReportForm, imageForm
 from django.views import generic, View
 from django.views.generic import ListView, CreateView, UpdateView
 from django.views.generic import FormView
@@ -395,7 +395,69 @@ def deleteCategory(request, slug):
     context = {'form': form}
     return render(request, 'cmsapp/deleteCategory.html', context) 
 
- 
+
+class listImages(ListView):
+    """
+    Vista donde el sistema lista las imagenes del sistema 
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
+    model = Carrousel
+    template_name =  'cmsapp/listImages.html' #object_list
+
+
+def createImages(request):
+    """
+    Vista donde el usuario crea las imagenes del sistema 
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
+    form = imageForm()
+    if request.method == 'POST':
+        form = imageForm(request.POST, request.FILES)
+        if form.is_valid:
+            image = form.save(commit = False)
+            image.save()
+            messages.info(request, 'Imagen creada exitosamente')
+            return redirect('list_images')
+        else:
+            messages.error(request, 'Imagen no creada')
+    context = {'form': form}    
+    return render(request, 'cmsapp/createImages.html', context)
+
+
+def updateImages (request, id):
+    """
+    Vista donde el usuario edita las imagenes del sistema 
+    Argumentos:request: HttpRequest, slug: etiqueta del post
+    Return: HttpResponse
+    """
+    image = Carrousel.objects.get(id=id)
+    form = imageForm(instance=image)
+    if request.method == 'POST':
+        form = imageForm(request.POST,request.FILES, instance = image)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Imagen modificada exitosamente')
+            return redirect('list_images')
+
+    context = {'form': form}
+    return render(request, 'cmsapp/createImages.html', context) 
+
+def deleteImages(request, id):
+    """
+    Vista donde el usuario elimina las imagenes del sistema 
+    Argumentos:request: HttpRequest, slug: etiqueta del post
+    Return: HttpResponse
+    """
+    image = Carrousel.objects.get(id=id)
+    form = imageForm(instance=image)
+    if request.method == 'POST':
+        image.delete()
+        messages.info(request, 'Imagen eliminada exitosamente')
+        return redirect('list_images')
+    context = {'form': form}
+    return render(request, 'cmsapp/deleteImages.html', context) 
 
 def asignarMiembro(request, slug):
     """
