@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 
 from cmsapp.models import Post
+from cmsapp.views import notificacion
 from .models import UserProfile
 from .forms import  AsignarRolForm, UpdateProfileForm, RegistrationForm
 from django.contrib import messages
@@ -111,7 +112,10 @@ def asignar_rol_usuario(request,id):
   if request.method == 'POST':
     form = AsignarRolForm (request.POST, usuario=usuario)
     if form.is_valid():
-      usuario.asignar_roles_usuarios(form.cleaned_data.get('Roles')) #obtiene los roles seleccionado
+      usuario.asignar_roles_usuarios(form.cleaned_data.get('Roles')) #obtiene los roles seleccionados
+      # para notificar al creador
+      mensaje = str(request.user)+" te ha asignado como creador de contenidos"
+      notificacion(mensaje,usuario,'')
       return redirect('lista_users')  
     
   else:

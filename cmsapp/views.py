@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import HttpResponseRedirect
 from django.contrib.sessions.models import Session
 from django.shortcuts import get_object_or_404, render, redirect
@@ -5,7 +6,9 @@ from django.urls import reverse, reverse_lazy
 
 from permisos.models import RolesdeSistema
 from django.db import models
-from .models import Category, Post, Comment, RolUsuario, Report, estadoPost
+
+from userprofile.models import Notificaciones
+from .models import Category, Post, Comment, RolUsuario, Report, estadoPost, historia
 from .forms import AsignarMiembroForm, AsignarRolForm, PostForm, PostUpdateForm, categoryForm, PostCommentForm, ReportForm
 from django.views import generic, View
 from django.views.generic import ListView, CreateView, UpdateView
@@ -16,12 +19,6 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib import messages
 from django.contrib.auth.models import User 
-#-------------------------------------eliminar
-def desactivar_post(request):
-    # Redirigir al usuario de vuelta a la página de su tablero Kanban
-    messages.success(request, 'El post ha sido desactivado correctamente.')
-    return redirect('kanban-board')
-#------------------------------------
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Tarea
@@ -208,7 +205,24 @@ def post_detail(request, slug):
     return render(request, 'detail.html', {'post': post})
 
 
+def notificacion(mensaje,usuario,post):
+  
+  """
+  Funcion donde se crean los objetos para las notificaciones
+   Arguementos:
+      mensaje : lo que se guardara como notificacion
+      usuario : el usuario que recibira la notificacion 
+      proyecto : el nombre del proyecto asociado a la notificacion
+  """
+  N = Notificaciones.objects.create(usuario=usuario,mensaje=mensaje,post=post)
+
+
 def createPost(request):
+    """
+    Vista donde el Creador puede crear un Contenido
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
     profile = request.user.userprofile
     form = PostForm()
     if request.method == 'POST':
@@ -218,6 +232,15 @@ def createPost(request):
             post.slug = slugify(post.title)
             post.writer = profile
             post.save()
+            #historial
+            h = historia.objects.create(post_slug = post.slug)
+            now = datetime.now()
+            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+            evento = dt_string+","+str(request.user) + " creó " + "el post "
+            h.evento = evento
+            h.save()
+            post.historial.add(h)
+            post.save()
             messages.info(request, 'Blog creado exitosamente')
             return redirect('create')
         else:
@@ -226,6 +249,11 @@ def createPost(request):
     return render(request, 'cmsapp/create.html', context)
 
 def updatePost (request, slug):
+    """
+    Vista donde el Editor puede editar un Contenido
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
     post = Post.objects.get(slug=slug)
     post.estado = 'En Edicion'
     form = PostUpdateForm(instance=post)
@@ -233,31 +261,62 @@ def updatePost (request, slug):
         form = PostUpdateForm(request.POST, request.FILES, instance = post)
         if form.is_valid():
             form.save()
+            #historial
+            h = historia.objects.create(post_slug = post.slug)
+            now = datetime.now()
+            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+            evento = dt_string+","+str(request.user) + " modificó " + "el post "
+            h.evento = evento
+            h.save()
+            post.historial.add(h)
+            post.save()
             messages.info(request, 'Blog modificado exitosamente')
             return redirect('detail', slug=post.slug)
     context = {'form': form}
     return render(request, 'cmsapp/update.html', context) 
 
+def desactivar_post(request):
+    """
+    Vista donde se desactiva un contenido, o bien por el administrador o 
+    por la cantidad de reportes superada
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
+    # Redirigir al usuario de vuelta a la página de su tablero Kanban
+    messages.success(request, 'El post ha sido desactivado correctamente.')
+    return redirect('kanban-board')
+
+
+
 #modificar este view para que desactive los blogs en vez de eliminarlos
-def deletePost(request, slug):
-    post = Post.objects.get(slug=slug)
-    form = PostForm(instance=post)
-    if request.method == 'POST':
-        post.delete()
-        messages.info(request, 'Blog eliminado exitosamente')
-        return redirect('create')
-    context = {'form': form}
-    return render(request, 'cmsapp/delete.html', context) 
+# def deletePost(request, slug):
+#     post = Post.objects.get(slug=slug)
+#     form = PostForm(instance=post)
+#     if request.method == 'POST':
+#         post.delete()
+#         messages.info(request, 'Blog eliminado exitosamente')
+#         return redirect('create')
+#     context = {'form': form}
+#     return render(request, 'cmsapp/delete.html', context) 
 
 def publishPost(request, slug):
     """
-    Donde el publicador puede publicar un proyecto
-    Argumentos:request: HttpRequest
+    Vista donde el publicador puede publicar un proyecto
+    Argumentos:request: HttpRequest, slug: etiqueta del post
     Return: HttpResponse
     """
     
     post = get_object_or_404(Post, slug=slug)
     post.estado = 'En Publicacion'
+    post.save()
+    #historial
+    h = historia.objects.create(post_slug = post.slug)
+    now = datetime.now()
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    evento = dt_string+","+str(request.user) + "publicó " + "el post "
+    h.evento = evento
+    h.save()
+    post.historial.add(h)
     post.save()
     messages.success(request, 'Post publicado satisfactoriamente')
     return redirect('detail', slug=post.slug)
@@ -273,11 +332,21 @@ def dislikePost(request, slug):
 
 
 class listCategory(ListView):
+    """
+    Vista donde el sistema lista los Post por categoria
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
     model = Category
     template_name =  'cmsapp/listCategory.html' #object_list
 
 
 def createCategory(request):
+    """
+    Vista donde el usuario crea una categoria de contenido
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    """
     form = categoryForm()
     if request.method == 'POST':
         form = categoryForm(request.POST)
@@ -294,6 +363,11 @@ def createCategory(request):
 
 
 def updateCategory (request, slug):
+    """
+    Vista donde el usuario edita una categoria de contenido
+    Argumentos:request: HttpRequest, slug: etiqueta del post
+    Return: HttpResponse
+    """
     category = Category.objects.get(slug=slug)
     form = categoryForm(instance=category)
     if request.method == 'POST':
@@ -307,6 +381,11 @@ def updateCategory (request, slug):
     return render(request, 'cmsapp/createCategory.html', context) 
 
 def deleteCategory(request, slug):
+    """
+    Vista donde el usuario elimina una categoria de contenido
+    Argumentos:request: HttpRequest, slug: etiqueta del post
+    Return: HttpResponse
+    """
     category = Category.objects.get(slug=slug)
     form = categoryForm(instance=category)
     if request.method == 'POST':
@@ -320,8 +399,8 @@ def deleteCategory(request, slug):
 
 def asignarMiembro(request, slug):
     """
-    Vista que donde el Creador puede seleccionar los participantes del post
-    Argumentos:request: HttpRequest
+    Vista que donde el Creador puede seleccionar los miembros del post
+    Argumentos:request: HttpRequest, slug: etiqueta del post
     Return: HttpResponse
     """
     print(slug)
@@ -333,6 +412,19 @@ def asignarMiembro(request, slug):
             miembros = form.cleaned_data['miembros']
             form.save()
             messages.success(request, 'Los miembros han sido asignados al post')
+            #historial y notificaciones
+            h = historia.objects.create(post_slug = post.slug)
+            mensaje = str(request.user)+" te ha asignado como miembro del proyecto: "+str(post.title)
+            for m in miembros :
+                h = historia.objects.create(post_slug = post.slug)
+                now = datetime.now()
+                dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+                evento = dt_string+","+str(request.user) + " asignó a " + str(m) + " al post "
+                h.evento = evento
+                h.save()
+                post.historial.add(h)
+                post.save()
+                notificacion(mensaje,m,post.title)
             return redirect('detail', slug=slug)
     contexto = {
         'form': form,
@@ -342,8 +434,8 @@ def asignarMiembro(request, slug):
 
 def asignarRol(request, slug, id_usuario):
     """
-    Vista que donde el Scrum master puede seleccionar el rol a asignar a un usuario dentro del proyecto
-    Argumentos:request: HttpRequest
+    Vista que donde el Creador puede seleccionar el rol a asignar a un usuario dentro del post
+    Argumentos:request: HttpRequest, slug: etiqueta del post
     Return: HttpResponse
     
     """
@@ -360,6 +452,19 @@ def asignarRol(request, slug, id_usuario):
             usuario_rol.save()
             post.usuario_roles.add(usuario_rol)
             messages.success(request,"Se asigno correctamente")
+            #historial y notificaciones
+            for r in roles :
+                h = historia.objects.create(post_slug = post.slug)
+                now = datetime.now()
+                dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+                evento = dt_string+","+str(request.user) + " asignó el rol" + str(r) + " al miembro " + str(usuario)
+                mensaje = str(request.user)+" te ha asignado el rol de "+str(r)
+                h.evento = evento
+                h.save()
+                post.historial.add(h)
+                post.save()
+                notificacion(mensaje,usuario,post.title)
+
             return redirect('detail', slug=slug)
     else:
         if usuario_rol:
@@ -372,8 +477,13 @@ def asignarRol(request, slug, id_usuario):
     contexto = {'form': form}
     return render(request, 'cmsapp/asignar_rol.html', contexto)
 
-#Reportes---------------------------------------------------------------------------------------------------
 def report_post(request, slug):
+    """
+    Vista que donde el usuario puede reportar un post
+    Argumentos:request: HttpRequest, slug: etiqueta del post
+    Return: HttpResponse
+    
+    """
     post = Post.objects.get(slug=slug)
     if request.method == 'POST':
         form = ReportForm(request.POST)

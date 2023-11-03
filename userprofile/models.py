@@ -53,6 +53,22 @@ class UserProfile (models.Model):
         self.user.groups.remove(grupo)
 
 
+class Notificaciones(models.Model):
+    """
+    Modelo para la implementacion de notificaciones para los usuarios del sistema
+    """
+    leido = models.BooleanField(default=False)
+    mensaje = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    post = models.TextField()
+    usuario = models.ForeignKey(User,on_delete = models.CASCADE)
+   
+
+    def __str__(self):
+        return self.mensaje
+ 
+          
+
 # class RolUsuario(models.Model):
 #     """
 #     Modelo para la clase de RolUsuario con los campos necesarios para el mismo

@@ -64,13 +64,33 @@ class RolUsuario(models.Model):
 
         return ''.join([rol for rol in self.roles.all()])
 class Carrousel (models.Model):
+     """
+     Objeto donde se guardaran las imagenes para 
+     seleccionarlas en un post de tipo imagen
+    """
      image = models.ImageField(upload_to='img', default= 'NULL', verbose_name="Imagen")
      description  = models.CharField(max_length=200, verbose_name="Descripcion")
 
      def __str__(self):
         return self.description
-    
+     
+
+class historia(models.Model):
+    """
+     Objeto donde se guardaran los mensajes de los eventos de un post 
+     que forman parte del historial del post
+    """
+
+    post_slug = models.SlugField(null=True)
+    evento = models.TextField(max_length=200, blank=True)
+
+    def __str__(self):
+        return self.evento
+
 class Post(models.Model):
+    """
+     Modelo de la clase Post, donde se guardan todos los datos sobre un contenido
+    """
     writer = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Creador')
     title  = models.CharField(max_length=500, verbose_name="Titulo", unique=True)
     image = models.ImageField(upload_to='img', default= 'NULL', verbose_name="Logo")
@@ -93,6 +113,7 @@ class Post(models.Model):
                     default=estadoPost.CREACION)
     report_count = models.PositiveIntegerField(default=0)
     carrousel = models.ManyToManyField(Carrousel, verbose_name='Imagenes', blank=True )
+    historial = models.ManyToManyField(historia)
     
     def total_likes(self):
         return self.likes.count()
@@ -128,6 +149,9 @@ class Post(models.Model):
         return self.title
     
 class Comment(models.Model):
+    """
+     Objeto donde se guardaran los comentarios de un contenido
+    """
     content = models.CharField(max_length=2000, help_text='Escriba un comentario...', verbose_name="Comentario")
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     post_date = models.DateTimeField(auto_now_add=True) #Fecha de creación
@@ -144,6 +168,10 @@ class Comment(models.Model):
 
 
 class Category(models.Model):
+    """
+     Modelo de la clase categoria, donde se guardan las categorias
+     de cada contenido
+    """
     title = models.CharField(max_length=100 , verbose_name="Titulo", unique=True)
     category_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     slug = models.SlugField()
@@ -154,6 +182,9 @@ class Category(models.Model):
 
 #Reportes----------------------------------------------------------------------------------
 class Report(models.Model):
+    """
+     Objeto donde se guardaran los reportes de cada contenido
+    """
     REASONS = (
         ('Spam', 'Spam'),
         ('Violencia', 'Violencia'),
@@ -168,3 +199,5 @@ class Report(models.Model):
     comment = models.TextField(max_length=200, help_text='Escriba detalladamente', default="Más detalles...")
     def __str__(self):
         return f"{self.post} - {self.reason} - {self.user.username}"
+    
+
