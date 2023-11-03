@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'userprofile.apps.UserprofileConfig',
     'crispy_forms',
     'crispy_bootstrap4',
-    'apps.core',  # AGREGUE apartir de aca 
+    'cms.cmsapp',  # AGREGUE apartir de aca 
     'apps.core.management.commands',
 ]
 
