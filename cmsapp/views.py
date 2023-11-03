@@ -536,6 +536,17 @@ def asignarRol(request, slug, id_usuario):
             data = []
             usuario = User.objects.get(id=id_usuario)
             data = usuario_rol
+            for r in  data.roles.all(): 
+                h = historia.objects.create(post_slug = post.slug)
+                now = datetime.now()
+                dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+                evento = dt_string+","+str(request.user) + " quitó el rol" + str(r) + " al miembro " + str(usuario)
+                mensaje = "Se te ha quitado el rol de "+str(r)
+                h.evento = evento
+                h.save()
+                post.historial.add(h)
+                post.save()
+                notificacion(mensaje,usuario,post.title)
         else:
             form = AsignarRolForm(slug, id_usuario, )
     contexto = {'form': form}

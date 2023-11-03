@@ -65,21 +65,26 @@
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
                         
-                        {% if request.user.is_authenticated %}
-                            {{total_likes}} <a href='{% url "like" post.slug %}'><button class = 'btn btn-primary btn-sm'> <i class="fa fa-thumbs-up" aria-hidden="true"></i></button></a>
-                            {{total_dislikes}} <a href='{% url "dislike" post.slug %}'><button class = 'btn btn-danger btn-sm'> <i class="fa fa-thumbs-down" aria-hidden="true"></i></button></a>
-                            {% if post.id %}{% url 'count_comments' post.id %}{% endif %} {{ post.comment_set.count }} <button class = 'btn btn-primary btn-sm'> <i class="fas fa-comment" aria-hidden="true"></i></button></a>
-                        {%endif%}
-                        {{ post.views }}  <button class ='btn btn-danger btn-sm'><i class="fas fa-eye" style="font-size: 15px; color:rgb(255, 255, 255);"></i></button>
-                        <button class = 'btn btn-primary btn-sm' onclick="copyToClipboard('{{ post.get_absolute_url }}')" style="margin-left: 10px;"><i class="fa-solid fa-share-from-square"></i></button>
-                            <!-- <a href='{% url "kanban-board" %}' class = 'btn btn-danger'>Tabla Kanban</i></a> -->
-                            <!-- <a href='{% url "delete" post.slug %}' class = 'btn btn-danger'><i class="fas fa-trash"></i></a> -->
-                        <!--Reportes----------------------------------------------------------------------------------------->
-                        {% if request.user.is_authenticated %}
-                            <a href="{% url 'reportar_publicacion' post.slug %}" class ='btn btn-danger btn-sm' style="margin-left: 10px; margin-right: 10px;"><i class="fa fa-flag"></i> Reportar</a>
+                         <!--Likes dislikes vistas y reportes----------------------------------------------------------------------------------------->
+                         {% for miembro in post.miembros.all  %}
+                         {% for roles in post.usuario_roles.all %}
+                             {% for rol in roles.roles.all|slice:":1" %}
+                                 {% if rol.nombre == 'Suscriptor' and request.user.username == miembro.username  %}
+                                     {{total_likes}} <a href='{% url "like" post.slug %}'><button class = 'btn btn-primary btn-sm'> <i class="fa fa-thumbs-up" aria-hidden="true"></i></button></a>
+                                     {{total_dislikes}} <a href='{% url "dislike" post.slug %}'><button class = 'btn btn-danger btn-sm'> <i class="fa fa-thumbs-down" aria-hidden="true"></i></button></a>
+                                     {% if post.id %}{% url 'count_comments' post.id %}{% endif %} {{ post.comment_set.count }} <button class = 'btn btn-primary btn-sm'> <i class="fas fa-comment" aria-hidden="true"></i></button></a>
+                                     {{ post.views }}  <button class ='btn btn-danger btn-sm'><i class="fas fa-eye" style="font-size: 15px; color:rgb(255, 255, 255);"></i></button>
+                                     <button class = 'btn btn-primary btn-sm' onclick="copyToClipboard('{{ post.get_absolute_url }}')" style="margin-left: 10px;"><i class="fa-solid fa-share-from-square"></i></button>
+                                     <a href="{% url 'reportar_publicacion' post.slug %}" class ='btn btn-danger btn-sm' style="margin-left: 10px; margin-right: 10px;"><i class="fa fa-flag"></i> Reportar</a>
+
+                                 {% endif%}
+                                {% endfor%}
+                            {% endfor%}
+                        {% endfor%}
+                        {% if perms.cmsapp.view_user %}
                             <a href="{% url 'historial' post.slug %}" class="btn btn-primary ml-3 bg-color-danger border-0">Historial de Proyecto</a>
                         {%endif%}
-                        
+                        <!--Asignar miembros y roles al post----------------------------------------------------------------------------------------->
                         {% if post.estado != 'Desactivado' %}
                             {% if post.writer.name == request.user.username %}
                                 <a href="{% url 'asignar_miembro' post.slug %}" class="btn btn-primary ml-3 bg-color-danger border-0">Asignar miembros</a>
@@ -118,7 +123,7 @@
                     <!-- Post content-->
                 </article>
                 
-                    <!-- Post carrousel-->
+                    <!-- Post carrousel de iamgenes-->
                     
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-indicators">
@@ -159,18 +164,23 @@
     <h3 id="comments-section">Comentarios</h3>
 
     <!-- Formulario de comentarios -->
-    {% if request.user.is_authenticated %}
-        <form method="post">
-            {% csrf_token %}
-            {{ comment_form.as_p }}
-            <button class="btn btn-primary" type="submit" style="margin-bottom: 10px;">Comentar</button>
-        </form>
-    {% else %}
-    <div class="alert alert-warning" role="alert">
-        <i class="fas fa-exclamation-triangle"></i> Iniciar sesión para dejar un comentario.
+    {% for miembro in post.miembros.all  %}
+        {% for roles in post.usuario_roles.all %}
+            {% for rol in roles.roles.all|slice:":1" %}
+                {% if rol.nombre == 'Suscriptor' and request.user.username == miembro.username  %}
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <button class="btn btn-primary" type="submit" style="margin-bottom: 10px;">Comentar</button>
+                    </form>
+                {% endif %}    
+           {% endfor%}
+       {% endfor%}
+   {% endfor%}
+   <div class="alert alert-warning" role="alert">
+    <i class="fas fa-exclamation-triangle"></i> Iniciar sesión como Suscriptor para dejar un comentario.
+    <!-- <a class="btn btn-danger btn-sm" href="{% url 'signin' %}">Iniciar Sesion</a> -->
     </div>
-    {% endif %}
-
 <!-- Mostrar comentarios existentes -->
 {% for comment in post.comment_set.all %}
     <!-- Renderizar comentarios existentes de forma más estilizada y encuadrada con sombras -->
@@ -193,9 +203,9 @@
             {{ comment.content|linebreaks }}
         </div>
     </div>
-{% empty %}
+    {% empty %}
     <p>No hay comentarios aún.</p>
-{% endfor %}
+    {% endfor %}
     <script>
         function copyToClipboard(text) {
         var textArea = document.createElement("textarea");
