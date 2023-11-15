@@ -16,6 +16,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib import messages
 from django.contrib.auth.models import User 
+from django.http import HttpResponse
 #-------------------------------------eliminar
 def desactivar_post(request):
     # Redirigir al usuario de vuelta a la página de su tablero Kanban
@@ -130,7 +131,7 @@ def detail(request, slug):
 
     context = {
         'post': post,
-        'comment_form': comment_form, 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes
+        'comment_form': comment_form, 'posts' : posts, 'total_likes': total_likes, 'total_dislikes': total_dislikes,
     }
 
     return render(request, 'cmsapp/detail.html', context)
@@ -205,7 +206,22 @@ def count_comments(request, post_id):
 #Obtener URL
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    return render(request, 'detail.html', {'post': post})
+    
+    if request.method == 'POST':
+        # Incrementar el contador al hacer clic en el botón de copia
+        post.copy_count += 1
+        post.save()
+
+    posts = Post.objects.exclude(post_id__exact=post.post_id)[:5] #para mostrar en recent posts solo 5 post
+    total_likes = post.total_likes()
+    total_dislikes = post.total_dislikes()
+
+    context = {
+        'post': post,
+        'copy_count' : post.copy_count,
+        'posts' : posts, 'total_likes' : total_likes, 'total_dislikes' : total_dislikes
+    }
+    return render(request, 'cmsapp/detail.html', context)
 
 
 def createPost(request):
