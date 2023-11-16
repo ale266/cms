@@ -13,6 +13,10 @@
         text-align: left;
     }
 
+    .estadistica td:nth-child(2) {
+    text-align: center;
+    }
+
     .estadistica th {
         background-color: #f2f2f2;
     }
@@ -28,7 +32,7 @@
     <table class="estadistica">
         <th>Concepto </th><th>Cantidad</th>
         <tr><td>Likes </td><td>{{total_likes}}</td></tr>
-        <tr><td>Dislikes: </td><td>{{total_dislikes}}</td></tr>
+        <tr><td>Dislikes </td><td>{{total_dislikes}}</td></tr>
         <tr><td>Views </td><td> {{ post.views }}</td></tr>
         <tr><td>Comentarios </td><td> {{ post.comment_set.count }}</td></tr>
         <tr><td>Compartir enlace </td><td> {{ post.copy_count }}</td></tr>
