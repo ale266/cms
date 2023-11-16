@@ -154,7 +154,8 @@ def delete_comment(request):
     
     # Manejar la situación si alguien trata de acceder a esta vista directamente sin el método POST
     return redirect(request.META.get('HTTP_REFERER', 'home'), pk=post_id)  # Redirigir a la página anterior, si no está disponible, redirige a 'home'
-#Comentarios
+
+#Comentarios----------------------------------------------------------------------------------------------------------------------
 class PostDetailView(generic.DetailView):#Vista Detallada para el modelo Post -- comentarios
     model = Post
     queryset = Post.objects.filter(
@@ -196,12 +197,16 @@ class PostView(View):
     def post(self, request, *args, **kwargs):
         view = PostCommentFormView.as_view()
         return view(request, *args, **kwargs)
-
+             
 #Contador de comentarios
-def count_comments(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+def count_comments(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     comments_count = Comment.objects.filter(post=post).count()
     return render(request, 'detail.html', {'comments_count': comments_count})
+"""def count_comments(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    comments_count = Comment.objects.filter(post=post).count()
+    return render(request, 'detail.html', {'comments_count': comments_count})"""
 
 #Obtener URL
 def post_detail(request, slug):
@@ -415,4 +420,20 @@ def report_post(request, slug):
         form = ReportForm()
 
     return render(request, 'cmsapp/reporte.html', {'form': form, 'post': post})
+
+#Estadísticas------------------------------------------------------------------------------------------------------
+def estadisticas_post(request, slug):
+    post = get_object_or_404(Post, slug = slug)
+    # Obtener el conteo de comentarios para el post
+    comment_count = Comment.objects.filter(post=post).count()
+    total_interacciones = post.likes.count() + post.dislikes.count() + post.views + post.copy_count + post.report_count + comment_count
+    context = {
+            'post': post,
+            'total_likes': post.likes.count(),
+            'total_dislikes': post.dislikes.count(),
+            'total_interacciones': total_interacciones,
+            'comment_count': comment_count,
+        }
+
+    return render(request, 'cmsapp/estadisticas_post.html', context)
 
