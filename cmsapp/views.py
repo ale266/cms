@@ -422,6 +422,8 @@ def report_post(request, slug):
     return render(request, 'cmsapp/reporte.html', {'form': form, 'post': post})
 
 #Estadísticas------------------------------------------------------------------------------------------------------
+import matplotlib
+matplotlib.use('Agg') #Función que indica a Matplotlib que use el backend 'Agg', que no requiere un bucle principal.
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
@@ -432,12 +434,12 @@ def estadisticas_post(request, slug):
     total_interacciones = post.likes.count() + post.dislikes.count() + post.views + post.copy_count + post.report_count + comment_count
     
     # Crear datos para el gráfico circular
-    labels = ['Likes', 'Dislikes', 'Views', 'Copies', 'Reports', 'Comments']
+    labels = ['Likes', 'Dislikes', 'Vistas', 'Copias de URL', 'Denuncias', 'Comentarios']
     sizes = [post.likes.count(), post.dislikes.count(), post.views, post.copy_count, post.report_count, comment_count]
     colors = ['green', 'red', 'blue', 'purple', 'orange', 'fuchsia']  # Asigna colores a cada categoría
 
     # Crear el gráfico circular en el hilo principal
-    fig, ax = plt.subplots(figsize=(4.5,4.5))
+    fig, ax = plt.subplots(figsize=(5.5,5.5))
     pie_result = ax.pie(sizes, autopct='', startangle=90, colors=colors)  # Eliminar etiquetas y porcentajes del gráfico
     wedges, _, _ = pie_result  # Obtener la variable 'wedges'
     ax.axis('equal')
@@ -445,7 +447,7 @@ def estadisticas_post(request, slug):
 
      # Configurar leyenda con colores y porcentajes
     legend_labels = [f'{label}: {percentage:.1f}%' for label, percentage in zip(labels, [s / total_interacciones * 100 for s in sizes])]
-    legend = ax.legend(wedges, legend_labels, title="Categorías", loc="center right", bbox_to_anchor=(1.85, 0.5))
+    legend = ax.legend(wedges, legend_labels, title="Concepto", loc="center right", bbox_to_anchor=(1.85, 0.5))
 
 
     # Alinear los textos de la leyenda con los colores correspondientes
