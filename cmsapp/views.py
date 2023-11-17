@@ -422,6 +422,7 @@ def report_post(request, slug):
     return render(request, 'cmsapp/reporte.html', {'form': form, 'post': post})
 
 #Estadísticas------------------------------------------------------------------------------------------------------
+#Gráficos estadísticos por post
 import matplotlib
 matplotlib.use('Agg') #Función que indica a Matplotlib que use el backend 'Agg', que no requiere un bucle principal.
 import matplotlib.pyplot as plt
@@ -439,7 +440,7 @@ def estadisticas_post(request, slug):
     colors = ['green', 'red', 'blue', 'purple', 'orange', 'fuchsia']  # Asigna colores a cada categoría
 
     # Crear el gráfico circular en el hilo principal
-    fig, ax = plt.subplots(figsize=(5.5,5.5))
+    fig, ax = plt.subplots(figsize=(8,8))
     pie_result = ax.pie(sizes, autopct='', startangle=90, colors=colors)  # Eliminar etiquetas y porcentajes del gráfico
     wedges, _, _ = pie_result  # Obtener la variable 'wedges'
     ax.axis('equal')
@@ -453,6 +454,7 @@ def estadisticas_post(request, slug):
     # Alinear los textos de la leyenda con los colores correspondientes
     for text, color in zip(legend.get_texts(), colors):
         text.set_color(color)
+        text.set_size(20)
 
     # Ajustar el diseño para evitar solapamiento
     plt.subplots_adjust(left=0.1, right=0.6)
@@ -485,3 +487,4 @@ def estadisticas_post(request, slug):
    
     return render(request, 'cmsapp/estadisticas_post.html', context)
 
+#Datos estadísticos general
