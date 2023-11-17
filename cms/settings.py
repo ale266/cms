@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'userprofile.apps.UserprofileConfig',
     'crispy_forms',
     'crispy_bootstrap4',
+    'chartjs',
 ]
 
 MIDDLEWARE = [

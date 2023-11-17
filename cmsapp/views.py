@@ -422,18 +422,64 @@ def report_post(request, slug):
     return render(request, 'cmsapp/reporte.html', {'form': form, 'post': post})
 
 #Estadísticas------------------------------------------------------------------------------------------------------
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+
 def estadisticas_post(request, slug):
     post = get_object_or_404(Post, slug = slug)
-    # Obtener el conteo de comentarios para el post
     comment_count = Comment.objects.filter(post=post).count()
     total_interacciones = post.likes.count() + post.dislikes.count() + post.views + post.copy_count + post.report_count + comment_count
-    context = {
-            'post': post,
-            'total_likes': post.likes.count(),
-            'total_dislikes': post.dislikes.count(),
-            'total_interacciones': total_interacciones,
-            'comment_count': comment_count,
-        }
+    
+    # Crear datos para el gráfico circular
+    labels = ['Likes', 'Dislikes', 'Views', 'Copies', 'Reports', 'Comments']
+    sizes = [post.likes.count(), post.dislikes.count(), post.views, post.copy_count, post.report_count, comment_count]
+    colors = ['green', 'red', 'blue', 'purple', 'orange', 'fuchsia']  # Asigna colores a cada categoría
 
+    # Crear el gráfico circular en el hilo principal
+    fig, ax = plt.subplots(figsize=(4.5,4.5))
+    pie_result = ax.pie(sizes, autopct='', startangle=90, colors=colors)  # Eliminar etiquetas y porcentajes del gráfico
+    wedges, _, _ = pie_result  # Obtener la variable 'wedges'
+    ax.axis('equal')
+
+
+     # Configurar leyenda con colores y porcentajes
+    legend_labels = [f'{label}: {percentage:.1f}%' for label, percentage in zip(labels, [s / total_interacciones * 100 for s in sizes])]
+    legend = ax.legend(wedges, legend_labels, title="Categorías", loc="center right", bbox_to_anchor=(1.85, 0.5))
+
+
+    # Alinear los textos de la leyenda con los colores correspondientes
+    for text, color in zip(legend.get_texts(), colors):
+        text.set_color(color)
+
+    # Ajustar el diseño para evitar solapamiento
+    plt.subplots_adjust(left=0.1, right=0.6)
+
+    # Ajustar el diseño para asegurar que la leyenda esté completamente visible
+    plt.tight_layout()
+
+    # Guardar la imagen en un objeto BytesIO
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    plt.close()
+
+    # Convertir la imagen a base64
+    image_png = buffer.getvalue()
+    graphic = base64.b64encode(image_png).decode()
+
+    # Pasar la imagen a la plantilla
+    context = {
+        'post': post,
+        'total_likes': post.likes.count(),
+        'total_dislikes': post.dislikes.count(),
+        'post.views': post.views,
+        'post.copy_count': post.copy_count,
+        'post.report_count': post.report_count,
+        'comment_count': comment_count,
+        'total_interacciones': total_interacciones,
+        'graphic': graphic,
+    }
+   
     return render(request, 'cmsapp/estadisticas_post.html', context)
 

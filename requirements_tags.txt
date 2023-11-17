@@ -14,3 +14,5 @@ gunicorn==21.2.0 #servidor web, para manejar varias peticiones en django
 django-allauth==0.55.0 #para ingresar con GOOGLE
 #sqlparse==0.4.4
 #tzdata==2023.3
+#django-chartjs---->Gráficos estadísticos
+#asgiref
