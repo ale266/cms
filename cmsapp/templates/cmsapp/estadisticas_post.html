@@ -44,12 +44,12 @@
     <hr>
     <table class="estadistica">
         <th>Concepto </th><th>Cantidad</th>
-        <tr><td>Likes </td><td>{{total_likes}}</td></tr>
-        <tr><td>Dislikes </td><td>{{total_dislikes}}</td></tr>
-        <tr><td>Vistas </td><td> {{ post.views }}</td></tr>
-        <tr><td>Comentarios </td><td> {{ post.comment_set.count }}</td></tr>
-        <tr><td>Compartir URL </td><td> {{ post.copy_count }}</td></tr>
-        <tr><td>Denuncias </td><td> {{post.report_count}} </td></tr>
+        <tr><td> <i class="fa fa-thumbs-up" aria-hidden="true"></i> Likes </td><td>{{total_likes}}</td></tr>
+        <tr><td><i class="fa fa-thumbs-down" aria-hidden="true"></i> Dislikes </td><td>{{total_dislikes}}</td></tr>
+        <tr><td><i class="fas fa-eye"></i> Vistas </td><td> {{ post.views }}</td></tr>
+        <tr><td><i class="fas fa-comment" aria-hidden="true"></i> Comentarios </td><td> {{ post.comment_set.count }}</td></tr>
+        <tr><td><i class="fa-solid fa-link"></i> Compartir URL </td><td> {{ post.copy_count }}</td></tr>
+        <tr><td><i class="fa fa-flag"></i> Denuncias </td><td> {{post.report_count}} </td></tr>
         <tr><td>Total interacciones </td><td> {{ total_interacciones }} </td></tr>
     </table>
 
