@@ -487,4 +487,9 @@ def estadisticas_post(request, slug):
    
     return render(request, 'cmsapp/estadisticas_post.html', context)
 
-#Datos estadísticos general
+#Datos estadísticos por categoría---------------------------------------------------------------------------------------------
+from .models import Category
+
+def reporte_categoria(request):
+    category = Category.objects.prefetch_related('post_set').all()
+    return render(request, 'cmsapp/reporte_categoria.html', {'category': category})

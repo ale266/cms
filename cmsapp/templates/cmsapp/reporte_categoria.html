@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.list_category{
+    border-style: solid;
+    width: 500px;
+}
+
+</style>
+
+    <div class="list_category">
+        {% for categoria in category %}
+        <h2>{{ categoria.title }}</h2>
+        <ul>
+            {% for post in categoria.post_set.all %}
+                <li>{{ post.title }}</li>
+            {% endfor %}
+        </ul>
+        {% endfor %}
+    </div>
+{% endblock %}

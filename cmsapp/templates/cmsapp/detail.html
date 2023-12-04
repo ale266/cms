@@ -81,6 +81,7 @@
                                     <!-- Reportes -->
                                     <a href="{% url 'reportar_publicacion' post.slug %}" class='btn btn-danger btn-sm'style="margin-left: 2px; margin-right: 8px;"><i class="fa fa-flag"></i> Denunciar</a>
                                     <a href="{% url 'estadisticas_post' post.slug %}" class='btn btn-primary btn-sm' style="margin-left: 2px; margin-right: 8px;"><i class="fa-solid fa-chart-line"></i> Ver Estadística</a>
+                                    <a href="{% url 'reporte_categoria' %}" class='btn btn-primary btn-sm' style="margin-left: 2px; margin-right: 8px;"><i class="fa-solid fa-chart-line"></i> Por Categoría</a>
                                     
                                     {% endif %}            
                         </div>
