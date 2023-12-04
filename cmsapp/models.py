@@ -94,7 +94,7 @@ class Post(models.Model):
     report_count = models.PositiveIntegerField(default=0)
     carrousel = models.ManyToManyField(Carrousel, verbose_name='Imagenes', blank=True )
     copy_count = models.PositiveIntegerField(default=0) #contador copias link
-
+    
     def total_likes(self):
         return self.likes.count()
 
@@ -103,6 +103,9 @@ class Post(models.Model):
     
     def total_copy_count(self):
         return self.copy_count
+    
+    def comment_count(self):
+        return Comment.objects.filter(post=self).count()
     
     def save(self, *args, **kwargs):
         # Genera automáticamente el slug a partir del título si no se proporciona uno

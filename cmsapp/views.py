@@ -431,12 +431,12 @@ import base64
 
 def estadisticas_post(request, slug):
     post = get_object_or_404(Post, slug = slug)
-    comment_count = Comment.objects.filter(post=post).count()
-    total_interacciones = post.likes.count() + post.dislikes.count() + post.views + post.copy_count + post.report_count + comment_count
+    comment_count = post.comment_count
+    total_interacciones = post.likes.count() + post.dislikes.count() + post.views + post.copy_count + post.report_count + post.comment_count()
     
     # Crear datos para el gráfico circular
     labels = ['Likes', 'Dislikes', 'Vistas', 'Copias de URL', 'Denuncias', 'Comentarios']
-    sizes = [post.likes.count(), post.dislikes.count(), post.views, post.copy_count, post.report_count, comment_count]
+    sizes = [post.likes.count(), post.dislikes.count(), post.views, post.copy_count, post.report_count, post.comment_count()]
     colors = ['green', 'red', 'blue', 'purple', 'orange', 'fuchsia']  # Asigna colores a cada categoría
 
     # Crear el gráfico circular en el hilo principal
