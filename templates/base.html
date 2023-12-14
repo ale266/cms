@@ -81,11 +81,21 @@
                     </div>
                 </div>
             </nav>
+
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                  {% for message in messages %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert" style = 'width: 40%; margin: auto; align-items:center;'>
+
+                 <script>
+                    Swal.fire({
+                        "title": "Wow!",
+                        "text": "{{message}}",
+                        "icon":"success"
+                    })
+                 </script>
+                <!-- <div class="alert alert-success alert-dismissible fade show" role="alert" style = 'width: 40%; margin: auto; align-items:center;'>
                     <strong>Wow!</strong> {{message}} 
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>        
+                </div>         -->
                 {% endfor %}
 
 

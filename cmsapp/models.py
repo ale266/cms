@@ -74,10 +74,10 @@ class Post(models.Model):
     writer = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Creador')
     title  = models.CharField(max_length=500, verbose_name="Titulo", unique=True)
     image = models.ImageField(upload_to='img', default= 'NULL', verbose_name="Logo")
-    tipo = models.CharField(max_length=20, choices=tipo_choices, 
-                    default=tipoPost.TEXTO)
+    # tipo = models.CharField(max_length=20, choices=tipo_choices, 
+                    # default=tipoPost.TEXTO)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True , verbose_name="Categoria")
-    body = models.TextField(verbose_name="Contenido", blank=True, null=True )
+    body = RichTextField(verbose_name="Contenido", blank=True, null=True )
     post_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -92,7 +92,7 @@ class Post(models.Model):
     estado = models.CharField(max_length=20, choices=estado_choices, 
                     default=estadoPost.CREACION)
     report_count = models.PositiveIntegerField(default=0)
-    carrousel = models.ManyToManyField(Carrousel, verbose_name='Imagenes', blank=True )
+    # carrousel = models.ManyToManyField(Carrousel, verbose_name='Imagenes', blank=True )
     copy_count = models.PositiveIntegerField(default=0) #contador copias link
     
     def total_likes(self):

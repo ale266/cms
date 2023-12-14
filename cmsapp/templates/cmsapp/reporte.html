@@ -1,8 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="report_form">
-    <h2 style="margin: 10px;">Reportar Publicación</h2>
+
+<style>
+    #cke_id_body{
+        width: 100% !important;
+        align-content: center;
+    }
+    #container{
+        width: 30%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: auto;
+        padding: 30px 20px 20px 20px;
+        border-radius: 30px;
+        margin-bottom: 20x;
+    }
+    #container h3{
+        text-align: center;  
+    }
+</style>
+
+<div class='container' id = 'container'>
+    <h2 >Reportar Publicación</h2>
         <form method="post" class="report-form">
             {% csrf_token %}
             <div class="form-group">
@@ -21,7 +40,7 @@
         </form>
         
 </div>
-
+</main>
 {% endblock %}
 
 <!--<form method="post">

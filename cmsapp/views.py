@@ -249,15 +249,15 @@ def createPost(request):
 def updatePost (request, slug):
     post = Post.objects.get(slug=slug)
     post.estado = 'En Edicion'
-    form = PostUpdateForm(instance=post)
+    form = PostForm(instance=post)
     if request.method == 'POST':
-        form = PostUpdateForm(request.POST, request.FILES, instance = post)
+        form = PostForm(request.POST, request.FILES, instance = post)
         if form.is_valid():
             form.save()
             messages.info(request, 'Blog modificado exitosamente')
             return redirect('detail', slug=post.slug)
     context = {'form': form}
-    return render(request, 'cmsapp/update.html', context) 
+    return render(request, 'cmsapp/create.html', context) 
 
 #modificar este view para que desactive los blogs en vez de eliminarlos
 def deletePost(request, slug):
