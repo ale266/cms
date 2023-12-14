@@ -1,0 +1,24 @@
+[
+    {
+        "model": "cmsapp_category",
+        "pk": 1,
+        "fields": {
+            "password": "!2hT156HToEWlyOo7F98qiBaKp7zaL1xa8pdPGUdi",
+            "last_login": "2022-11-24T22:21:31.078Z",
+            "is_superuser": false,
+            "username": "jennifer_nathaly",
+            "first_name": "Jennifer Nathaly",
+            "last_name": "Staple Giménez",
+            "email": "jenny.staple@fpuna.edu.py",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2022-11-24T14:51:31.301Z",
+            "groups": [
+                2,
+                4
+            ],
+            "user_permissions": []
+        }
+    }
+
+]
