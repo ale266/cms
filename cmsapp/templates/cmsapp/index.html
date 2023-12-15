@@ -58,7 +58,7 @@
         <div class="row gx-5">
             {% for post in posts %}
                 {% if post.estado == 'En Edicion' or post.estado == 'En Creacion'  %}
-                     {% for miembro in post.miembros.all|slice:":1"%} <!-- ve si es miembro y sale del for al instante-->
+                     {% for miembro in post.miembros.all%} <!-- ve si es miembro y sale del for al instante-->
                         {% if miembro.username == request.user.username or perms.cmsapp.view_post %}
                             <div class="col-lg-4 mb-5">
                                 <div class="card h-100 shadow border-0">

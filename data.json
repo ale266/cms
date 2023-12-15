@@ -1,0 +1,129 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2023-12-15T15:02:18.717Z",
+    "user": 1,
+    "content_type": 21,
+    "object_id": "1",
+    "object_repr": "Google",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$AdVja1kvE4xwgVg3Jv9Sm4$YTvoCMhqiYZ3jtWGuEj+blyy/TWMuWESaWCa/vnRpFU=",
+    "last_login": "2023-12-15T15:01:09.468Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2023-12-15T15:00:59.811Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$L2sZacsOO8kfW9sudCmlX9$ijNZUpQE2BISyyKyed2OmqI71VBifdqGJd3Gy70uR1s=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Gonza",
+    "first_name": "",
+    "last_name": "",
+    "email": "gonza@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-12-15T15:02:48.843Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$OOa5b1NnBUeCCA8K0rRTmG$174o4gNfeSIRZ3TdMzMeg1EMR9AHAdtGDaCXuEZLsC0=",
+    "last_login": "2023-12-15T15:03:12.249Z",
+    "is_superuser": false,
+    "username": "Alexis",
+    "first_name": "",
+    "last_name": "",
+    "email": "alexis@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-12-15T15:02:58.880Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 21,
+  "fields": {
+    "app_label": "socialaccount",
+    "model": "socialapp"
+  }
+},
+{
+  "model": "userprofile.userprofile",
+  "pk": "381cd5a5-ece8-496d-bf35-e7443f9112ce",
+  "fields": {
+    "user": 3,
+    "name": "",
+    "email": "",
+    "username": "Alexis",
+    "profession": "",
+    "picture": "",
+    "about": ""
+  }
+},
+{
+  "model": "userprofile.userprofile",
+  "pk": "b7ccdb63-52fe-4192-9340-4837ad3eb5fd",
+  "fields": {
+    "user": 1,
+    "name": "",
+    "email": "",
+    "username": "admin",
+    "profession": "",
+    "picture": "",
+    "about": ""
+  }
+},
+{
+  "model": "userprofile.userprofile",
+  "pk": "d11fbf48-64f5-483f-af4b-309042edc161",
+  "fields": {
+    "user": 2,
+    "name": "",
+    "email": "",
+    "username": "Gonza",
+    "profession": "",
+    "picture": "",
+    "about": ""
+  }
+},
+{
+  "model": "socialaccount.socialapp",
+  "pk": 1,
+  "fields": {
+    "provider": "google",
+    "provider_id": "google",
+    "name": "Google",
+    "client_id": "1029409564555-u47306rjubggnmjkf605lkk6j2obcrbo.apps.googleusercontent.com",
+    "secret": "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",
+    "key": "",
+    "settings": {}
+  }
+}
+]

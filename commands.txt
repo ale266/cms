@@ -32,3 +32,8 @@ sphinx-apidoc -o source/modules ..    <////  DOCUMENTATION
 make html <////  DOCUMENTATION
 
 ingresar a la carpeta donde estan los test y ejecutar en consola: pytest <////  Test
+
+
+
+python -Xutf8 ./manage.py dumpdata --indent 2 > data.json --settings=cms.settings.production  <////  para exportar database 
+python -Xutf8 ./manage.py loaddata data.json --settings=cms.settings.production  <////  para importar database 
