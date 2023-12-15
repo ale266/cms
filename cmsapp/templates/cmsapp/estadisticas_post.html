@@ -1,4 +1,3 @@
-{% extends 'base.html' %}
 
 {% block content %}
 <style>
@@ -39,7 +38,7 @@
 </style>
 
 
-<h2 style="margin-left: 20px;">Datos Estadísticos de {{ post.title }}</h2><hr>
+<h2 style="margin-left: 20px;">Datos Estadísticos del contenido: {{ post.title }}</h2><hr>
 <div class="contenedor">
     <hr>
     <table class="estadistica">
@@ -62,5 +61,6 @@
 </main>
 <div style="margin: 10px 10px 42px 10px;">
     <a href="{%url 'detail' post.slug %}" class ='btn btn-danger btn-sm' style="font-size: 15px;"> <i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+    <!-- <a href="{%url 'generar_pdf'%}" class ='btn btn-danger btn-sm' style="font-size: 15px;">Descargar PDF</i></a> -->
 </div>
 {% endblock %}

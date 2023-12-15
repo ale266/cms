@@ -43,7 +43,7 @@ class estadoPost:
    
     CREACION = "En Creacion"
     ENEDICION = "En Edicion"
-    PUBLICACION = "En publicacion"
+    PUBLICACION = "En Publicacion"
     DESACTIVADO = "Desactivado"
 
 estado_choices = (

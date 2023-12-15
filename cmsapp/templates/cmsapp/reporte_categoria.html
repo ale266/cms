@@ -1,4 +1,3 @@
-{% extends 'base.html' %}
 {% block content %}
 
 <style>
@@ -24,6 +23,7 @@
         text-align: center;  
     }
 </style>
+<h2 style="margin-left: 20px;">Contenidos por categoria: {{ post.title }}</h2><hr>
 
 <div class='container' id = 'container'>
     <div class="list_category">
@@ -37,5 +37,7 @@
         {% endfor %}
     </div>
 </div>
+
+
 </main>
 {% endblock %}

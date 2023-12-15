@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load socialaccount %}
-{% providers_media_js%}
+
 {%load static%}
 <html lang="en">
     <head>
@@ -58,6 +58,7 @@
                                     {% endif %}
                                     {% if perms.cmsapp.view_tarea %}
                                     <li><a class="dropdown-item" href='{% url "kanban-board" %}'>Tabla Kanban</a></li>
+                                    <li><a class="dropdown-item" href='{% url "reportes_pdf" %}'>Reportes</a></li>
                                     {% endif %}
                                     
                                     

@@ -3,6 +3,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('category/<str:categoria>', views.indexCat, name='indexCat'),
+    path('reportes-pdf/', views.reportes_pdf, name='reportes_pdf'),
     # path('test/<str:categoria>', views.pregunta, name='test'),
     path('post/<slug:slug>/', views.post_detail, name='post_detail'),
     path('dislike-post/<str:slug>', views.dislikePost, name= 'dislike'),
@@ -22,7 +23,10 @@ urlpatterns = [
     path('eliminar-comentario/', views.delete_comment, name= 'delete_comment'),
     path('asignar_miembro/<str:slug>', views.asignarMiembro, name='asignar_miembro'),
     path('asignar_rol/<str:slug>/miembro/<int:id_usuario>', views.asignarRol, name='asignar_rol'),
-    
+    path('generar-pdf/', views.pdf_view, name='generar_pdf'),
+    path('reportes-pdf/grafico-visualizaciones/', views.grafico_visualizaciones, name='grafico_visualizaciones'),
+    path('reportes-pdf/grafico-estados/', views.grafico_estados, name='grafico_estados'),
+    path('reportes-pdf/grafico-denuncias/', views.grafico_denuncias, name='grafico_denuncias'),
 
     path('kanban-board/', views.kanban_board, name='kanban-board'),
     # path('crear-tarea/', views.crear_tarea, name='crear-tarea'),  # Nueva URL para el formulario de creación
@@ -30,5 +34,5 @@ urlpatterns = [
     path('desactivar/', views.desactivar_post, name='desactivar-post'),
     path('reportar/<str:slug>/', views.report_post, name='reportar_publicacion'),
     path('estadisticas_post/<str:slug>/', views.estadisticas_post, name='estadisticas_post'),
-    path('reporte_categoria/', views.reporte_categoria, name='reporte_categoria'),
+    path('reportes-pdf/reporte_categoria/', views.reporte_categoria, name='reporte_categoria'),
 ]

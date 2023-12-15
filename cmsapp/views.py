@@ -1,3 +1,4 @@
+import datetime
 from django.http import HttpResponseRedirect
 from django.contrib.sessions.models import Session
 from django.shortcuts import get_object_or_404, render, redirect
@@ -17,6 +18,9 @@ from django.utils.text import slugify
 from django.contrib import messages
 from django.contrib.auth.models import User 
 from django.http import HttpResponse
+from cmsapp import renderers
+
+
 #-------------------------------------eliminar
 def desactivar_post(request):
     # Redirigir al usuario de vuelta a la página de su tablero Kanban
@@ -484,12 +488,167 @@ def estadisticas_post(request, slug):
         'total_interacciones': total_interacciones,
         'graphic': graphic,
     }
-   
-    return render(request, 'cmsapp/estadisticas_post.html', context)
+    return renderers.render_to_pdf('cmsapp/estadisticas_post.html', context)  #renderizar en pdf 
+    # return render(request, 'cmsapp/estadisticas_post.html', context) #renderizar en html 
+
+
+from django.db.models import Sum
+
+def grafico_visualizaciones(request):
+    categorys = Category.objects.all()
+    total_views = []
+    for categoria in categorys:
+        # Obtener todos los posts de la categoría
+        posts = categoria.post_set.all()
+
+        # Sumar los likes de la categoría
+        suma_total_views = sum(post.views for post in posts)
+        total_views.append(suma_total_views)
+
+   # Crear el gráfico de barras
+    labels = [categoria.title for categoria in categorys]
+    views = total_views
+    # likes = [categoria.total_likes for categoria in categorias_con_interacciones]
+    # dislikes = [categoria.total_dislikes for categoria in categorias_con_interacciones]
+
+    bar_width = 0.35
+    index = range(len(labels))
+
+    plt.bar(index, views, bar_width, label='Visualizaciones')
+    # plt.bar(index, likes, bar_width, label='Likes')
+    # plt.bar([i + bar_width for i in index], dislikes, bar_width, label='Dislikes')
+
+    plt.xlabel('Categorías')
+    plt.ylabel('Cantidad')
+    plt.title('Visualizaciones por Categorías')
+    plt.xticks([i + bar_width / 2 for i in index], labels)
+    plt.legend()
+
+    # Guardar la imagen en un objeto BytesIO
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plt.close()
+
+    # Convertir la imagen a base64 para incrustarla en la plantilla HTML
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return renderers.render_to_pdf('cmsapp/grafico-visualizaciones.html', {'img_base64': img_base64})
+    # return render(request, 'cmsapp/likes_dislikes_por_categorias.html', {'img_base64': img_base64})
+
+
+
+def grafico_denuncias(request):
+    categorys = Category.objects.all()
+    total_report_count = []
+    for categoria in categorys:
+        # Obtener todos los posts de la categoría
+        posts = categoria.post_set.all()
+
+        # Sumar los likes de la categoría
+        suma_total_report_count = sum(post.report_count for post in posts)
+        total_report_count.append(suma_total_report_count)
+
+   # Crear el gráfico de barras
+    labels = [categoria.title for categoria in categorys]
+    report_count = total_report_count
+    # likes = [categoria.total_likes for categoria in categorias_con_interacciones]
+    # dislikes = [categoria.total_dislikes for categoria in categorias_con_interacciones]
+
+    bar_width = 0.35
+    index = range(len(labels))
+
+    plt.bar(index, report_count, bar_width, label='Denuncias')
+    # plt.bar(index, likes, bar_width, label='Likes')
+    # plt.bar([i + bar_width for i in index], dislikes, bar_width, label='Dislikes')
+
+    plt.xlabel('Categorías')
+    plt.ylabel('Cantidad')
+    plt.title('Denuncias por Categoría')
+    plt.xticks([i + bar_width / 2 for i in index], labels)
+    plt.legend()
+
+    # Guardar la imagen en un objeto BytesIO
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plt.close()
+
+    # Convertir la imagen a base64 para incrustarla en la plantilla HTML
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return renderers.render_to_pdf('cmsapp/grafico-denuncias.html', {'img_base64': img_base64})
+    # return render(request, 'cmsapp/likes_dislikes_por_categorias.html', {'img_base64': img_base64})
+
+
+
+from django.db.models import Sum
+
+def grafico_estados(request):
+    estados_posibles = [choice[0] for choice in Post._meta.get_field('estado').choices]
+
+    # Inicializar la tupla para almacenar la cantidad de posts por estado
+    estados = []
+    cantidad_posts = []
+    for estado in estados_posibles:
+        cantidad = Post.objects.filter(estado=estado).count()
+        estados.append(estado)
+        cantidad_posts.append(cantidad)
+
+   # Crear el gráfico de barras
+    plt.bar(estados, cantidad_posts)
+    plt.xlabel('Estado')
+    plt.ylabel('Cantidad de Posts')
+    plt.title('Cantidad de Posts por Estado')
+    
+
+    # Guardar la imagen en un objeto BytesIO
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plt.close()
+
+    # Convertir la imagen a base64 para incrustarla en la plantilla HTML
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return renderers.render_to_pdf('cmsapp/grafico-posts-por-estado.html', {'img_base64': img_base64})
+    # return render(request, 'cmsapp/grafico-posts-por-estado.html', {'img_base64': img_base64})
 
 #Datos estadísticos por categoría---------------------------------------------------------------------------------------------
 from .models import Category
 
 def reporte_categoria(request):
     category = Category.objects.prefetch_related('post_set').all()
-    return render(request, 'cmsapp/reporte_categoria.html', {'category': category})
+    # return render(request, 'cmsapp/reporte_categoria.html', {'category': category})
+    return renderers.render_to_pdf('cmsapp/reporte_categoria.html', {'category': category})
+
+
+#Vistas para exportar a PDF---------------------------------------------------------------------------------------------
+from django.shortcuts import render
+from django.views.generic import TemplateView
+from wkhtmltopdf.views import PDFTemplateView
+
+class MyPDFView(PDFTemplateView):
+    template_name = 'cmsapp/mi_template.html'
+
+    def get_context_data(self, **kwargs):
+        # Puedes agregar datos adicionales al contexto si es necesario
+        return super().get_context_data(
+            pagesize="A4",
+            title="Mi PDF",
+            **kwargs
+        )
+    
+
+
+
+
+
+def pdf_view(request):
+    data = {
+        'today': datetime.date.today(), 
+        'amount': 39.99,
+        'customer_name': 'Cooper Mann',
+        'invoice_number': 1233434,
+    }
+    return renderers.render_to_pdf('cmsapp/mi_template.html', data)
+
+def reportes_pdf(request):
+    return render(request, 'cmsapp/reportes-pdf.html')

@@ -1,0 +1,74 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    #cke_id_body{
+        width: 100% !important;
+        align-content: center;
+    }
+    #container{
+        width: 40%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: auto;
+        padding: 30px 20px 20px 20px;
+        border-radius: 30px;
+        margin-bottom: 20x;
+    }
+    #container h3{
+        text-align: center;  
+    }
+</style>
+
+<div class='container' id = 'container'>
+     <h3><strong>Menu Reportes</strong></h3>
+    <main role="main" class="container">
+        <div class="jumbotron" style="background-color: rgb(243, 243, 243); border-radius: 10px;">
+            <h4>Contenidos por categoria</h4>
+            <a class="btn btn-primary" href="reporte_categoria" role="button">View navbar docs &raquo;</a>
+        </div>
+    </main>
+    <br>
+    <main role="main" class="container">
+        <div class="jumbotron" style="background-color: rgb(243, 243, 243); border-radius: 10px;">
+            <h4>Numero de visualizaciones</h4>
+            <a class="btn btn-primary" href="grafico-visualizaciones" role="button">View navbar docs &raquo;</a>
+        </div>
+    </main>
+    <br>
+    <main role="main" class="container">
+        <div class="jumbotron" style="background-color: rgb(243, 243, 243); border-radius: 10px;">
+            <h4>Numero de denuncias</h4>
+            <a class="btn btn-primary" href="grafico-denuncias" role="button">View navbar docs &raquo;</a>
+        </div>
+    </main>
+    <br>
+    <main role="main" class="container">
+        <div class="jumbotron" style="background-color: rgb(243, 243, 243); border-radius: 10px;">
+            <h4>Cantidad de contenidos por estado</h4>
+            <a class="btn btn-primary" href="grafico-estados" role="button">View navbar docs &raquo;</a>
+        </div>
+    </main>
+</div>
+
+
+<script> 
+    let inputfields = document.getElementsByTagName('input')
+    let bodyfield = document.getElementById('id_body')
+    let selectfield = document.getElementById('id_category')
+    let selectfield2 = document.getElementById('id_tipo')
+    let selectfield3 = document.getElementById('id_carrousel')
+    for (let i=0; i<inputfields.length;i++){
+        inputfields[i].classList.add('form-control')
+    }
+    bodyfield.classList.add('form-control')
+    selectfield.classList.add('form-control')
+    selectfield2.classList.add('form-control')
+    selectfield3.classList.add('form-control')
+
+    
+
+</script>
+
+</main>
+{% endblock %}
