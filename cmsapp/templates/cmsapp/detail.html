@@ -37,7 +37,19 @@
                                             {% if roles.miembro == miembro %}
                                             {% if rol.nombre == 'Publicador' and request.user.username == miembro.username  %}
                                             <a href="{% url 'publish' post.slug %}" class="btn btn-success ml-3 bg-color-danger border-0">Publicar Post</a>
+                                           
                                             {% endif%}
+                                            {% endif %}
+                                        {% endfor%}
+                                    {% endfor%}
+                                {% endfor%}
+                                {% for miembro in post.miembros.all %}
+                                    {% for roles in post.usuario_roles.all %}
+                                        {% for rol in roles.roles.all %}
+                                            {% if roles.miembro == miembro %}
+                                                {% if rol.nombre == 'Editor' and request.user.username == miembro.username  %}
+                                                            <a href='{% url "update" post.slug %}' class = 'btn btn-primary'>Editar post <i class="fas fa-pen"></i></a>
+                                                {% endif %}
                                             {% endif %}
                                         {% endfor%}
                                     {% endfor%}
@@ -82,7 +94,7 @@
                                     </form>
                                     <!-- Reportes -->
                                     <a href="{% url 'reportar_publicacion' post.slug %}" class='btn btn-danger btn-sm'style="margin-left: 2px; margin-right: 8px;"><i class="fa fa-flag"></i> Denunciar</a>
-                                    <a href="{% url 'estadisticas_post' post.slug %}" class='btn btn-primary btn-sm' style="margin-left: 2px; margin-right: 8px;"><i class="fa-solid fa-chart-line"></i> Ver Estadística</a>
+                                    
                                     <!-- <a href="{% url 'reporte_categoria' %}" class='btn btn-primary btn-sm' style="margin-left: 2px; margin-right: 8px;"><i class="fa-solid fa-chart-line"></i> Por Categoría</a> -->
                                     
                                     {% endif %}            
@@ -92,10 +104,12 @@
                         {% if post.estado != 'Desactivado' %}
                             {% if post.writer.name == request.user.username %}
                                 <a href="{% url 'asignar_miembro' post.slug %}" class="btn btn-primary btn-sm">Asignar miembros</a>
+                                <a href="{% url 'estadisticas_post' post.slug %}" class='btn btn-primary btn-sm' style="margin-left: 2px; margin-right: 8px;"><i class="fa-solid fa-chart-line"></i> Ver Estadística</a>
                             {% endif %}
                             {% if request.user.is_authenticated %}
                         </div>
                             <div class="card-body">
+                                {% if post.writer.name == request.user.username %}
                                 <h6>Miembros del post:</h6>
                                 <ul class="list-group list-group-flush">
                                     {% for miembro in post.miembros.all %}
@@ -109,9 +123,7 @@
                                                     {% for rol in roles.roles.all %}
                                                         {% if roles.miembro == miembro %}
                                                         <p>-{{rol}}</p>
-                                                        {% if rol.nombre == 'Editor' and request.user.username == miembro.username  %}
-                                                        <a href='{% url "update" post.slug %}' class = 'btn btn-primary'>Editar post <i class="fas fa-pen"></i></a>
-                                                        {% endif %}
+                                                        
                                                         {% endif %}
                                                     {% endfor %} 
                                                 {% endfor %}
@@ -120,6 +132,7 @@
                                     {% endfor %}
                                 </ul>
                             </div>
+                            {% endif %}
                             {%endif%}
                         {%endif%}
                     </header>

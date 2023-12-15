@@ -27,6 +27,8 @@ urlpatterns = [
     path('reportes-pdf/grafico-visualizaciones/', views.grafico_visualizaciones, name='grafico_visualizaciones'),
     path('reportes-pdf/grafico-estados/', views.grafico_estados, name='grafico_estados'),
     path('reportes-pdf/grafico-denuncias/', views.grafico_denuncias, name='grafico_denuncias'),
+    path('ejecutar_script/', views.ejecutar_script, name='ejecutar_script'),
+
 
     path('kanban-board/', views.kanban_board, name='kanban-board'),
     # path('crear-tarea/', views.crear_tarea, name='crear-tarea'),  # Nueva URL para el formulario de creación

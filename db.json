@@ -1,0 +1,34 @@
+[
+{
+  "model": "cmsapp.category",
+  "pk": "29e34cb8-8568-456a-8126-249c5d314efd",
+  "fields": {
+    "title": "Tech",
+    "slug": "tech"
+  }
+},
+{
+  "model": "cmsapp.category",
+  "pk": "43602b6d-cb51-4c72-abd4-1c049680ceb6",
+  "fields": {
+    "title": "Varios",
+    "slug": "varios"
+  }
+},
+{
+  "model": "cmsapp.category",
+  "pk": "af101288-9a6a-4c4e-bebc-42780732ff35",
+  "fields": {
+    "title": "Social",
+    "slug": "social"
+  }
+},
+{
+  "model": "cmsapp.category",
+  "pk": "cff7c505-433a-457a-87f1-c5fb32b98c9e",
+  "fields": {
+    "title": "Programacion",
+    "slug": "programacion"
+  }
+}
+]

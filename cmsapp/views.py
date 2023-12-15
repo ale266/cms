@@ -19,6 +19,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User 
 from django.http import HttpResponse
 from cmsapp import renderers
+import subprocess
 
 
 #-------------------------------------eliminar
@@ -652,3 +653,24 @@ def pdf_view(request):
 
 def reportes_pdf(request):
     return render(request, 'cmsapp/reportes-pdf.html')
+
+
+from django.http import HttpResponse
+
+def ejecutar_script(request):
+    try:
+        # Ruta completa al archivo .sh
+        ruta_script = r'C:\Users\vox\Desktop\cms\script.sh'
+
+        # Ejecutar el script utilizando PowerShell
+        resultado = subprocess.run(['powershell', '-File', ruta_script], capture_output=True, text=True)
+
+        # Obtener la salida del comando
+        salida = resultado.stdout
+
+        # Retornar una respuesta al cliente
+        return HttpResponse(f'Script ejecutado con éxito: {salida}')
+
+    except subprocess.CalledProcessError as e:
+        # Manejar errores si el script falla
+        return HttpResponse(f'Error al ejecutar el script: {e.stderr}', status=500)
