@@ -27,7 +27,7 @@ docker compose up --build
 
 
 
-python -m django_pydoc.py -b <////  DOCUMENTATION
+python -m django_pydoc.py -b <////  DOCUMENTATION pydoc
 sphinx-apidoc -o source/modules ..    <////  DOCUMENTATION
 make html <////  DOCUMENTATION
 

@@ -24,6 +24,12 @@ import subprocess
 
 #-------------------------------------eliminar
 def desactivar_post(request):
+    """
+    Vista en donde el usuario puede desactivar un contenido
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     # Redirigir al usuario de vuelta a la página de su tablero Kanban
     messages.success(request, 'El post ha sido desactivado correctamente.')
     return redirect('kanban-board')
@@ -34,6 +40,12 @@ from .models import Tarea
 
 @login_required
 def crear_tarea(request):
+    """
+    Vista en donde el usuario puede crear una tarea para el kanban
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     if request.method == 'POST':
         titulo = request.POST['titulo']
         descripcion = request.POST['descripcion']
@@ -52,6 +64,12 @@ def crear_tarea(request):
 from .models import Tarea
 
 def kanban_board(request):
+    """
+    Vista en donde el administrador puede observar y modificar el tablero kanban  
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     posts_en_creacion = Post.objects.filter(estado='En Creacion')
     posts_en_edicion = Post.objects.filter(estado='En Edicion')
     posts_en_publicacion = Post.objects.filter(estado='En Publicacion')
@@ -69,6 +87,12 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 
 def mover_post(request,slug, nuevo_estado):
+    """
+    Vista en donde el administrador puede mover un contenido de un estado a otro en el kanban
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     post = get_object_or_404(Post, slug=slug)
     post.estado = nuevo_estado
     post.save()
@@ -89,6 +113,12 @@ def mover_post(request,slug, nuevo_estado):
 
 # VISTAS BASADAS EN FUNCIONES
 def index(request):
+    """
+    Vista principal en donde se observan todos los contenidos publicados
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     posts = Post.objects.all()
     categories = Category.objects.all()
     user = request.user
@@ -98,6 +128,12 @@ def index(request):
     return render(request, 'cmsapp/index.html', context)
 
 def indexCat(request, categoria):
+    """
+    Vista en donde se observan todos los contenidos publicados por categoria
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     posts = Post.objects.all()
     categories = Category.objects.all()
     categoryO = Category.objects.get(title=categoria)
@@ -107,6 +143,12 @@ def indexCat(request, categoria):
 
 
 def detail(request, slug):
+    """
+    Vista en donde se observa el detalle de un contenido 
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     post = get_object_or_404(Post, slug=slug)
     session_key = request.session.session_key
      # Verifica si ya se ha registrado la visualización en esta sesión
@@ -142,6 +184,12 @@ def detail(request, slug):
     return render(request, 'cmsapp/detail.html', context)
 
 def delete_comment(request):
+    """
+    Vista en donde el usuario puede eliminar un comentario del contenido
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     if request.method == 'POST':
         comment_id = request.POST.get('comment_id')
         post_id = request.POST.get('post_id')
@@ -162,6 +210,12 @@ def delete_comment(request):
 
 #Comentarios----------------------------------------------------------------------------------------------------------------------
 class PostDetailView(generic.DetailView):#Vista Detallada para el modelo Post -- comentarios
+    """
+    Vista en donde el usuario puede ver el contenido con los comentarios
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     model = Post
     queryset = Post.objects.filter(
          created__lte=timezone.now()
@@ -173,6 +227,12 @@ class PostDetailView(generic.DetailView):#Vista Detallada para el modelo Post --
         return context
 
 class PostCommentFormView(LoginRequiredMixin, SingleObjectMixin, FormView):
+    """
+    Vista en donde el usuario puede  comentar un contenido
+    Argumentos:request: HttpRequest, LoginRequiredMixin, SingleObjectMixin, FormView)
+    Return: HttpResponse
+    
+    """
     template_name = 'cmsapp/detail.html'
     form_class = PostCommentForm
     model = Post
@@ -193,6 +253,12 @@ class PostCommentFormView(LoginRequiredMixin, SingleObjectMixin, FormView):
 
 
 class PostView(View):
+    """
+    Vista en donde el usuario puede  observar un contenido
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     #metodo get
     def get(self, request, *args, **kwargs):
         view = PostDetailView.as_view()
@@ -205,6 +271,12 @@ class PostView(View):
              
 #Contador de comentarios
 def count_comments(request, slug):
+    """
+    Vista que sirve para contar la cantidad de comentarios
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     post = get_object_or_404(Post, slug=slug)
     comments_count = Comment.objects.filter(post=post).count()
     return render(request, 'detail.html', {'comments_count': comments_count})
@@ -215,6 +287,12 @@ def count_comments(request, slug):
 
 #Obtener URL
 def post_detail(request, slug):
+    """
+    Vista para acceder a la URL de un contenido
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     post = get_object_or_404(Post, slug=slug)
     
     if request.method == 'POST':
@@ -235,6 +313,12 @@ def post_detail(request, slug):
 
 
 def createPost(request):
+    """
+    Vista en donde el usuario puede crear un contenido
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     profile = request.user.userprofile
     form = PostForm()
     if request.method == 'POST':
@@ -252,6 +336,12 @@ def createPost(request):
     return render(request, 'cmsapp/create.html', context)
 
 def updatePost (request, slug):
+    """
+    Vista en donde el usuario puede editar un contenido
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     post = Post.objects.get(slug=slug)
     post.estado = 'En Edicion'
     form = PostForm(instance=post)
@@ -266,6 +356,12 @@ def updatePost (request, slug):
 
 #modificar este view para que desactive los blogs en vez de eliminarlos
 def deletePost(request, slug):
+    """
+    Vista en donde el usuario puede eliminar un contenido (se cambia por desactivar)
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     post = Post.objects.get(slug=slug)
     form = PostForm(instance=post)
     if request.method == 'POST':
@@ -277,7 +373,7 @@ def deletePost(request, slug):
 
 def publishPost(request, slug):
     """
-    Donde el publicador puede publicar un proyecto
+    Vista donde el publicador puede publicar un proyecto
     Argumentos:request: HttpRequest
     Return: HttpResponse
     """
@@ -289,21 +385,45 @@ def publishPost(request, slug):
     return redirect('detail', slug=post.slug)
 
 def likePost(request, slug):
+    """
+    Vista en donde el usuario puede  dar like a un contenido
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     post = Post.objects.get(slug=slug)
     post.likes.add(request.user.userprofile)
     return HttpResponseRedirect(reverse('detail', args=[str(slug)])) 
 def dislikePost(request, slug):
+    """
+    Vista en donde el usuario puede  dar dislke a un contenido
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     post = Post.objects.get(slug=slug)
     post.dislikes.add(request.user.userprofile)
     return HttpResponseRedirect(reverse('detail', args=[str(slug)])) 
 
 
 class listCategory(ListView):
+    """
+    Vista en donde se listan las categorias de contenido
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     model = Category
     template_name =  'cmsapp/listCategory.html' #object_list
 
 
 def createCategory(request):
+    """
+    Vista en donde el usuario puede crear una categoria
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     form = categoryForm()
     if request.method == 'POST':
         form = categoryForm(request.POST)
@@ -320,6 +440,12 @@ def createCategory(request):
 
 
 def updateCategory (request, slug):
+    """
+    Vista en donde el usuario puede editar una categoria
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     category = Category.objects.get(slug=slug)
     form = categoryForm(instance=category)
     if request.method == 'POST':
@@ -333,6 +459,12 @@ def updateCategory (request, slug):
     return render(request, 'cmsapp/createCategory.html', context) 
 
 def deleteCategory(request, slug):
+    """
+    Vista en donde el usuario puede eiminar una categoria
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     category = Category.objects.get(slug=slug)
     form = categoryForm(instance=category)
     if request.method == 'POST':
