@@ -400,6 +400,12 @@ def asignarRol(request, slug, id_usuario):
 
 #Reportes---------------------------------------------------------------------------------------------------
 def report_post(request, slug):
+    """
+    Vista en donde el usuario puede denunciar un post
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     post = Post.objects.get(slug=slug)
     if request.method == 'POST':
         form = ReportForm(request.POST)
@@ -435,6 +441,12 @@ from io import BytesIO
 import base64
 
 def estadisticas_post(request, slug):
+    """
+    Vista en donde el creador puede ver las estadisticas de su contenido
+    Argumentos:request: HttpRequest, slug
+    Return: HttpResponse
+    
+    """
     post = get_object_or_404(Post, slug = slug)
     comment_count = post.comment_count
     total_interacciones = post.likes.count() + post.dislikes.count() + post.views + post.copy_count + post.report_count + post.comment_count()
@@ -496,6 +508,12 @@ def estadisticas_post(request, slug):
 from django.db.models import Sum
 
 def grafico_visualizaciones(request):
+    """
+    Vista en donde el administrador puede ver y descargar los reportes sobre las visualizaciones de contenidos
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     categorys = Category.objects.all()
     total_views = []
     for categoria in categorys:
@@ -539,6 +557,12 @@ def grafico_visualizaciones(request):
 
 
 def grafico_denuncias(request):
+    """
+    Vista en donde el administrador puede ver y descargar la cantidad de denuncias por categoria de contenidos
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """   
     categorys = Category.objects.all()
     total_report_count = []
     for categoria in categorys:
@@ -584,6 +608,12 @@ def grafico_denuncias(request):
 from django.db.models import Sum
 
 def grafico_estados(request):
+    """
+    Vista en donde el administrador puede ver y descargar un reporte sobre la cantidad de estados de los contenidos
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     estados_posibles = [choice[0] for choice in Post._meta.get_field('estado').choices]
 
     # Inicializar la tupla para almacenar la cantidad de posts por estado
@@ -616,6 +646,12 @@ def grafico_estados(request):
 from .models import Category
 
 def reporte_categoria(request):
+    """
+    Vista en donde el administrador puede ver y descargar un reporte sobre los contenidos filtrados por categoria
+    Argumentos:request: HttpRequest
+    Return: HttpResponse
+    
+    """
     category = Category.objects.prefetch_related('post_set').all()
     # return render(request, 'cmsapp/reporte_categoria.html', {'category': category})
     return renderers.render_to_pdf('cmsapp/reporte_categoria.html', {'category': category})
@@ -627,6 +663,12 @@ from django.views.generic import TemplateView
 from wkhtmltopdf.views import PDFTemplateView
 
 class MyPDFView(PDFTemplateView):
+    """
+    Vista para convertir una vista a PDF
+    Argumentos:request: PDFTemplateView
+    Return: HttpResponse
+    
+    """
     template_name = 'cmsapp/mi_template.html'
 
     def get_context_data(self, **kwargs):
@@ -643,6 +685,12 @@ class MyPDFView(PDFTemplateView):
 
 
 def pdf_view(request):
+    """
+    Vista para convertir una vista a PDF
+    Argumentos:request: request
+    Return: HttpResponse
+    
+    """
     data = {
         'today': datetime.date.today(), 
         'amount': 39.99,

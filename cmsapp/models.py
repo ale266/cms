@@ -161,6 +161,10 @@ class Category(models.Model):
 
 #Reportes----------------------------------------------------------------------------------
 class Report(models.Model):
+    """
+    Modelo para implementar el reporte de un contenido
+    
+    """
     REASONS = (
         ('Spam', 'Spam'),
         ('Violencia', 'Violencia'),
