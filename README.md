@@ -5,6 +5,8 @@ Repo de ingenieria de software 2
 
 # para ejecutar ambiente de desarrollo
 
+pip install -r requirements.txt
+
 python manage.py makemigrations --settings=cms.settings.development
 
 python manage.py migrate --settings=cms.settings.development 
