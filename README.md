@@ -1,5 +1,6 @@
 # Cms
 Este es el repositorio del proyecto de Ingeniería de Software 2.
+[![cms1.png](https://i.postimg.cc/SNT6j6TQ/cms1.png)](https://postimg.cc/mt9z5HWK)
 ## Comandos
 
 ### 1. **Ambiente de Desarrollo**
